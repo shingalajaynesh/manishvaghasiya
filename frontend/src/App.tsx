@@ -6,6 +6,8 @@ import { EmailCapture } from './components/EmailCapture'
 import { SocialLinks } from './components/SocialLinks'
 import { FloatingParticles } from './components/FloatingParticles'
 import { Footer } from './components/Footer'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 export default function App() {
   // Keep-alive ping to Render backend (every 14 minutes)
@@ -34,6 +36,10 @@ export default function App() {
     <main className="min-h-screen bg-[#0A0A0A] text-white overflow-x-hidden relative font-inter">
       {/* Ambient gold particle background */}
       <FloatingParticles />
+
+      {/* Vercel Web Analytics & Speed Insights */}
+      <Analytics />
+      <SpeedInsights />
 
       {/* Gold top border accent */}
       <div className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#D4A017] to-transparent z-50" />
