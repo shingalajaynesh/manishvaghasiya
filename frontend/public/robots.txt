@@ -3,7 +3,6 @@ Allow: /
 Disallow: /api/
 Disallow: /_next/
 Sitemap: https://www.manishvaghasiya.com/sitemap.xml
-Sitemap: https://www.manishvaghasiya.in/sitemap.xml
 
 # Google
 User-agent: Googlebot
