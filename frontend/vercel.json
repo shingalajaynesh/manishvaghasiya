@@ -1,0 +1,16 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "manishvaghasiya.in" }],
+      "destination": "https://www.manishvaghasiya.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.manishvaghasiya.in" }],
+      "destination": "https://www.manishvaghasiya.com/$1",
+      "permanent": true
+    }
+  ]
+}
