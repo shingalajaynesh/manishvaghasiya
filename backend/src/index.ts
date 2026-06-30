@@ -3,6 +3,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import { subscribeRouter } from './routes/subscribe'
+import { contactRouter } from './routes/contact'
 import { rateLimiter } from './middleware/rateLimiter'
 
 dotenv.config()
@@ -24,6 +25,7 @@ app.use(cors({
 app.use(express.json())
 app.use('/api', rateLimiter)
 app.use('/api', subscribeRouter)
+app.use('/api', contactRouter)
 
 app.get('/health', (_, res) => res.json({ status: 'ok' }))
 
