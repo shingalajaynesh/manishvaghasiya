@@ -1,6 +1,6 @@
 import { ArrowRightOutlined, DownloadOutlined, FileTextOutlined, PlayCircleOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import { Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { articles, getTopicHubBySlug } from '../../content/editorial'
 import { routePaths } from '../../content/routes'
 import { ContentCard } from '../../shared/components/site/ContentCard'
@@ -8,6 +8,7 @@ import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
 
 export function TopicHubPage() {
+  const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
   const hub = slug ? getTopicHubBySlug(slug) : undefined
 
@@ -91,7 +92,7 @@ export function TopicHubPage() {
             <p>4. Connect the hub to a workshop, seminar, or inquiry path where relevant.</p>
           </div>
           <div className="mt-6">
-            <Button type="primary" icon={<ArrowRightOutlined />} href={routePaths.resources}>
+            <Button type="primary" icon={<ArrowRightOutlined />} onClick={() => navigate(routePaths.resources)}>
               View resources
             </Button>
           </div>

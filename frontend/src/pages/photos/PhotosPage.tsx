@@ -1,4 +1,5 @@
 import { Button, Card, Col, Image, Row, Space, Tabs, Tag, Typography } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import { routePaths } from '../../content/routes'
 import { speakerMedia } from '../../content/speakerMedia'
 import { PageHero } from '../../shared/components/site/PageHero'
@@ -34,6 +35,7 @@ const galleryGroups = [
 ]
 
 export function PhotosPage() {
+  const navigate = useNavigate()
   return (
     <>
       <PageHero
@@ -64,7 +66,7 @@ export function PhotosPage() {
                 <Paragraph className="!mb-0 !text-base !leading-8 !text-[var(--text-soft)]">
                   The homepage now stays focused on clarity and conversion, while this gallery page carries the full photo story in a more elegant way.
                 </Paragraph>
-                <Button type="primary" href={routePaths.book}>
+                <Button type="primary" onClick={() => navigate(routePaths.book)}>
                   Book Manish
                 </Button>
               </Space>

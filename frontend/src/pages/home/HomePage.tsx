@@ -26,6 +26,7 @@ import { EmailCaptureForm } from '../../shared/components/site/EmailCaptureForm'
 import { MotionSection } from '../../shared/components/site/MotionSection'
 import { PageSection } from '../../shared/components/site/PageSection'
 import { SocialLinks } from '../../shared/components/site/SocialLinks'
+import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../shared/lib/language'
 
 const { Paragraph, Text, Title } = Typography
@@ -38,6 +39,7 @@ const audienceIcons = {
 }
 
 export function HomePage() {
+  const navigate = useNavigate()
   const featuredArticles = articles.slice(0, 3)
   const featuredResources = homeResources.slice(0, 2)
   const { language } = useLanguage()
@@ -59,13 +61,13 @@ export function HomePage() {
                   {translate(siteDictionary.home.heroDescription, language)}
                 </Paragraph>
                 <div className="hero-actions">
-                  <Button type="primary" size="large" href={routePaths.topics} className="hero-action-button">
+                  <Button type="primary" size="large" onClick={() => navigate(routePaths.topics)} className="hero-action-button">
                     {translate(siteDictionary.home.exploreTopics, language)}
                   </Button>
-                  <Button size="large" icon={<DownloadOutlined />} href={routePaths.studentGuide} style={{ borderColor: 'var(--line-strong)' }} className="hero-action-button">
+                  <Button size="large" icon={<DownloadOutlined />} onClick={() => navigate(routePaths.studentGuide)} style={{ borderColor: 'var(--line-strong)' }} className="hero-action-button">
                     {translate(siteDictionary.home.getResources, language)}
                   </Button>
-                  <Button size="large" icon={<PictureOutlined />} href={routePaths.photos} style={{ borderColor: 'var(--line-strong)' }} className="hero-action-button">
+                  <Button size="large" icon={<PictureOutlined />} onClick={() => navigate(routePaths.photos)} style={{ borderColor: 'var(--line-strong)' }} className="hero-action-button">
                     View Photos
                   </Button>
                 </div>
@@ -161,7 +163,7 @@ export function HomePage() {
           ))}
         </div>
         <div className="mt-8">
-          <Button type="primary" icon={<PictureOutlined />} href={routePaths.photos}>
+          <Button type="primary" icon={<PictureOutlined />} onClick={() => navigate(routePaths.photos)}>
             Open full photo gallery
           </Button>
         </div>
@@ -251,7 +253,7 @@ export function HomePage() {
           ))}
         </Row>
         <div className="mt-8">
-          <Button type="primary" size="large" icon={<ArrowRightOutlined />} href={routePaths.book}>
+          <Button type="primary" size="large" icon={<ArrowRightOutlined />} onClick={() => navigate(routePaths.book)}>
             Book Manish for your institution
           </Button>
         </div>

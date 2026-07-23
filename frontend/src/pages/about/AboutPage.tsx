@@ -1,5 +1,6 @@
 import { CustomerServiceOutlined, TeamOutlined, YoutubeOutlined } from '@ant-design/icons'
 import { Button, Space, Tag, Typography } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import { siteDictionary, translate } from '../../content/i18n'
 import { routePaths } from '../../content/routes'
 import { speakerMedia } from '../../content/speakerMedia'
@@ -11,6 +12,7 @@ import { useLanguage } from '../../shared/lib/language'
 const { Paragraph, Title } = Typography
 
 export function AboutPage() {
+  const navigate = useNavigate()
   const { language } = useLanguage()
 
   return (
@@ -41,7 +43,7 @@ export function AboutPage() {
                 The website is being structured as a serious platform for speaking programs, guidance content,
                 downloadable student resources, and future digital products that can grow with the audience.
               </Paragraph>
-              <Button type="primary" size="large" href={routePaths.book}>
+              <Button type="primary" size="large" onClick={() => navigate(routePaths.book)}>
                 Book Manish
               </Button>
             </Space>
