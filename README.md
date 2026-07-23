@@ -1,44 +1,63 @@
-# Manish Vaghasiya — Official Website (Coming Soon)
+# Manish Vaghasiya Platform
 
-A premium, interactive, and SEO-optimized **Coming Soon** landing page and subscriber capture API for Manish Vaghasiya (Transformational Speaker & Coach).
+This repository is now organized as a small product workspace rather than a prototype dump.
 
----
+It contains:
 
-## 📁 Project Structure
+- `frontend`: React + Vite + TypeScript frontend
+- `backend`: Express + TypeScript backend
+- `data-models`: centralized shared data-model layer
+- `docs/strategy`: strategy, planning, and foundation documents
+
+## Repository Structure
 
 ```text
 manishvaghasiya/
-├── frontend/                  # React + Vite + TypeScript (UI layer)
-│   ├── src/
-│   │   ├── components/        # Interactive components (Hero, Particles, Countdown)
-│   │   └── hooks/             # Custom utility hooks (useCountdown)
-│   ├── public/                # SEO assets (sitemap.xml, robots.txt, manifest.json)
-│   ├── index.html             # Main entry point with full SEO Schema markup
-│   └── vercel.json            # Vercel redirection logic for .in domain
-├── backend/                   # Node.js + Express + TypeScript (API layer)
-│   ├── src/
-│   │   ├── models/            # MongoDB Schemas (Subscriber)
-│   │   ├── routes/            # Subscription endpoints
-│   │   └── middleware/        # express-rate-limit validation
-│   └── .env.example           # API configuration template
-└── README.md                  # Development & deployment instructions
+|-- backend/
+|   |-- src/
+|   |   |-- middleware/
+|   |   |-- models/
+|   |   `-- routes/
+|   |-- .env.example
+|   |-- package.json
+|   `-- tsconfig.json
+|-- data-models/
+|   `-- src/
+|-- docs/
+|   `-- strategy/
+|       |-- manish-vaghasiya-website-strategy.md
+|       `-- phase-1-foundation-blueprint.md
+|-- frontend/
+|   |-- public/
+|   |-- src/
+|   |   |-- app/
+|   |   |-- content/
+|   |   |-- features/
+|   |   |-- pages/
+|   |   `-- shared/
+|   |-- package.json
+|   |-- tailwind.config.js
+|   |-- vite.config.ts
+|   `-- vercel.json
+|-- README.md
+`-- tsconfig.json
 ```
 
----
+## Local Development
 
-## 🛠️ Local Development Setup
+Use Node.js `20+`.
 
-Ensure you have [Node.js (v20+)](https://nodejs.org) installed.
-
-### 1. Clone & Set Up Backend
+### API
 
 ```bash
 cd backend
 npm install
 cp .env.example .env
+npm run dev
 ```
 
-Edit the `.env` file with your credentials:
+Environment variables:
+
 ```env
 PORT=4000
 MONGODB_URI=mongodb+srv://<user>:<pass>@cluster0.xxxxx.mongodb.net/manishvaghasiya
@@ -47,48 +66,53 @@ SMTP_PASS=your-gmail-app-password
 ADMIN_EMAIL=manish@manishvaghasiya.com
 ADMIN_KEY=your-secret-admin-key
 ```
-*Note: If no `MONGODB_URI` is provided, the backend will automatically start in **Offline Mock Mode**, allowing you to test form submissions locally without database connections!*
 
-Start the backend:
-```bash
-npm run dev
-```
+If `MONGODB_URI` is missing, the API starts in offline preview mode so form flows can still be tested locally.
 
-### 2. Set Up Frontend
+### Web
 
 ```bash
-cd ../frontend
+cd frontend
 npm install
-```
-
-Start the frontend:
-```bash
 npm run dev
 ```
-Open `http://localhost:5173` in your browser.
 
----
+The frontend runs on `http://localhost:5173`.
 
-## 🚀 Testing & Verification
+## Current Product Direction
 
-We have verified the following core components locally:
-- **TypeScript & Vite Builds**: The frontend compiles cleanly into a production bundle via `npm run build`.
-- **API Form Submission**: Successfully parses names and emails via `zod`.
-- **Offline Fallback**: Submitting the signup form works even if MongoDB is not connected (useful for local development).
-- **Rate Limiting**: Exceeding 5 requests in 15 minutes properly yields a `429 Too Many Requests` response.
+This is no longer planned as a simple coming-soon page.
 
----
+The target product is:
 
-## 🌍 Production Deployment
+- a Gujarati-first content platform
+- a trust layer for Manish Vaghasiya's public brand
+- a lead generation system for PDFs, workshops, and bookings
+- a future monetization engine for ebooks, affiliate, and AdSense
 
-### Frontend (Vercel)
-1. Import the root repository in Vercel.
-2. Set the root directory of the project to `frontend`.
-3. Add the following environment variable:
-   - `VITE_API_URL`: Set to your deployed backend API URL (e.g., `https://api.manishvaghasiya.com`).
-4. Vercel will automatically read `vercel.json` and map the permanent 301 redirection from `.in` domains to the canonical `.com` domain.
+Core planning documents:
 
-### Backend (Railway / Render / Heroku)
-1. Deploy the backend using the Node.js builder.
-2. Set the build command to `npm run build` and start command to `npm start`.
-3. Configure the environment variables in your hosting provider's dashboard corresponding to `.env.example`.
+- [docs/strategy/manish-vaghasiya-website-strategy.md](D:\WEBSITE DEVELOPMENT\manishvaghasiya\docs\strategy\manish-vaghasiya-website-strategy.md)
+- [docs/strategy/phase-1-foundation-blueprint.md](D:\WEBSITE DEVELOPMENT\manishvaghasiya\docs\strategy\phase-1-foundation-blueprint.md)
+
+## Deployment Notes
+
+### Web
+
+- Deploy `frontend`
+- Set `VITE_API_URL` to the deployed API URL
+- Vercel can keep using `vercel.json` inside `frontend`
+
+### API
+
+- Deploy `backend`
+- Build command: `npm run build`
+- Start command: `npm start`
+
+## Verification
+
+Recent checks completed:
+
+- frontend production build succeeds from `frontend`
+- repository structure has been reorganized for long-term scale
+- strategy and blueprint docs now live under `docs/strategy`

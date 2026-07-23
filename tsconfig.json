@@ -13,6 +13,7 @@
   },
   "include": [
     "frontend/src/**/*",
-    "backend/src/**/*"
+    "backend/src/**/*",
+    "data-models/src/**/*"
   ]
 }
