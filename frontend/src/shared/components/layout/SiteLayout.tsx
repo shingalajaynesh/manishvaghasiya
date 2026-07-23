@@ -1,5 +1,6 @@
 import { Layout } from 'antd'
 import { Outlet } from 'react-router-dom'
+import { CookieConsentBanner } from '../site/CookieConsentBanner'
 import { Footer } from '../site/Footer'
 import { SiteHeader } from '../site/SiteHeader'
 
@@ -13,6 +14,7 @@ export function SiteLayout() {
         <Outlet />
       </Content>
       <Footer />
+      <CookieConsentBanner />
     </Layout>
   )
 }

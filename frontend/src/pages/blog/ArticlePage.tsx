@@ -3,6 +3,7 @@ import { Button, Tag, Typography } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getArticleBySlug, topicHubs } from '../../content/editorial'
 import { routePaths } from '../../content/routes'
+import { AdContainer } from '../../shared/components/site/AdContainer'
 import { EmailCaptureForm } from '../../shared/components/site/EmailCaptureForm'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
@@ -20,7 +21,7 @@ export function ArticlePage() {
       <PageHero
         eyebrow="Article"
         title="Article not found"
-        description="This article slug is not available yet."
+        description="The requested article is not available. Please explore our main blog listing."
       />
     )
   }
@@ -65,7 +66,7 @@ export function ArticlePage() {
         description={article.excerpt}
       />
 
-      <PageSection title="Article" description="Each article should answer a real question clearly, connect to its topic hub, and lead into a relevant next step.">
+      <PageSection title="Article Guide" description="Practical guidance crafted for students, parents, and families.">
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
           <article className="rounded-2xl border border-[var(--line-soft)] bg-white p-7 shadow-editorial lg:p-10">
             <div className="flex flex-wrap gap-3">
@@ -86,7 +87,7 @@ export function ArticlePage() {
             {article.keyTakeaways?.length ? (
               <div className="mt-8 rounded-2xl bg-[var(--panel-soft)] p-6">
                 <Title level={3} className="font-playfair !mb-4 !text-2xl !text-[var(--text-strong)]">
-                  Key takeaways
+                  Key Takeaways
                 </Title>
                 <ul className="space-y-3 text-sm leading-7 text-[var(--text-soft)]">
                   {article.keyTakeaways.map((takeaway) => (
@@ -99,6 +100,8 @@ export function ArticlePage() {
               </div>
             ) : null}
 
+            <AdContainer slotId="article-top-ad" />
+
             {article.sections?.length ? (
               <div className="mt-8 space-y-10">
                 {article.sections.map((section) => (
@@ -107,8 +110,8 @@ export function ArticlePage() {
                       {section.heading}
                     </Title>
                     <div className="space-y-4 text-base leading-8 text-[var(--text-soft)]">
-                      {section.paragraphs.map((paragraph) => (
-                        <Paragraph key={paragraph} className="!mb-0">
+                      {section.paragraphs.map((paragraph, pIdx) => (
+                        <Paragraph key={pIdx} className="!mb-0 whitespace-pre-line">
                           {paragraph}
                         </Paragraph>
                       ))}
@@ -116,24 +119,14 @@ export function ArticlePage() {
                   </section>
                 ))}
               </div>
-            ) : (
-              <div className="mt-8 space-y-4 text-base leading-8 text-[var(--text-soft)]">
-                <Paragraph className="!mb-0">
-                  This article is already part of the content system, and the next editorial pass
-                  can expand it into a fuller guide while keeping the same topic, audience, and
-                  conversion role.
-                </Paragraph>
-                <Paragraph className="!mb-0">
-                  Every article on this platform should remain tied to a topic cluster, a clear
-                  audience problem, and a relevant conversion path.
-                </Paragraph>
-              </div>
-            )}
+            ) : null}
+
+            <AdContainer slotId="article-bottom-ad" />
 
             {article.faqs?.length ? (
               <div className="mt-10 border-t border-[var(--line-soft)] pt-8">
                 <Title level={3} className="font-playfair !mb-6 !text-2xl !text-[var(--text-strong)]">
-                  Frequently asked questions
+                  Frequently Asked Questions
                 </Title>
                 <div className="space-y-4">
                   {article.faqs.map((faq) => (
@@ -154,23 +147,28 @@ export function ArticlePage() {
           <aside className="space-y-6">
             <div className="rounded-2xl border border-[var(--line-soft)] bg-white p-6 shadow-editorial">
               <Text className="!mb-3 !block !text-xs !font-semibold !uppercase !tracking-[0.2em] !text-[var(--text-muted)]">
-                Free resource
+                Free Resource
               </Text>
               <Title level={3} className="font-playfair !mb-2 !text-2xl !text-[var(--text-strong)]">
                 {article.leadMagnet}
               </Title>
               <Paragraph className="!mb-4 !text-sm !leading-7 !text-[var(--text-soft)]">
-                A relevant downloadable asset helps the article continue the relationship instead of ending as a dead-end page.
+                Download our practical PDF guide designed to help you apply these principles at home.
               </Paragraph>
-              <Button type="primary" icon={<DownloadOutlined />} onClick={() => navigate(article.leadMagnet === 'Student Confidence Starter Guide' ? routePaths.studentGuide : routePaths.resources)} block>
-                Download now
+              <Button
+                type="primary"
+                icon={<DownloadOutlined />}
+                onClick={() => navigate(article.leadMagnet === 'Student Confidence Starter Guide' ? routePaths.studentGuide : routePaths.resources)}
+                block
+              >
+                Download Now
               </Button>
             </div>
 
             {relatedHub ? (
               <div className="rounded-2xl border border-[var(--line-soft)] bg-white p-6 shadow-editorial">
                 <Text className="!mb-3 !block !text-xs !font-semibold !uppercase !tracking-[0.2em] !text-[var(--text-muted)]">
-                  Topic hub
+                  Topic Hub
                 </Text>
                 <Title level={3} className="font-playfair !mb-2 !text-2xl !text-[var(--text-strong)]">
                   {relatedHub.title}
@@ -178,21 +176,26 @@ export function ArticlePage() {
                 <Paragraph className="!mb-4 !text-sm !leading-7 !text-[var(--text-soft)]">
                   {relatedHub.description}
                 </Paragraph>
-                <Button type="link" icon={<ArrowRightOutlined />} onClick={() => navigate(`${routePaths.topics}/${relatedHub.slug}`)} className="!px-0 !text-[var(--accent-earth)]">
-                  Explore this hub
+                <Button
+                  type="link"
+                  icon={<ArrowRightOutlined />}
+                  onClick={() => navigate(`${routePaths.topics}/${relatedHub.slug}`)}
+                  className="!px-0 !text-[var(--accent-earth)]"
+                >
+                  Explore This Topic Hub
                 </Button>
               </div>
             ) : null}
 
             <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--panel-soft)] p-6">
               <Text className="!mb-3 !block !text-xs !font-semibold !uppercase !tracking-[0.2em] !text-[var(--text-muted)]">
-                Stay updated
+                Stay Updated
               </Text>
               <Title level={4} className="font-playfair !mb-2 !text-xl !text-[var(--text-strong)]">
-                Get new articles
+                Get New Articles
               </Title>
               <Paragraph className="!mb-4 !text-sm !leading-7 !text-[var(--text-soft)]">
-                Join the mailing list for practical guidance and resources.
+                Join our subscriber list for practical guidance and new resource updates.
               </Paragraph>
               <EmailCaptureForm successLabel="Continue" />
             </div>

@@ -43,7 +43,7 @@ export const articles: ArticleSummary[] = [
     updatedAt: '2026-07-13',
     author: 'Manish Vaghasiya Team',
     keyTakeaways: [
-      'Teenagers need listening before correction.',
+      'Teenagers need active listening before correction or discipline.',
       'Frequent comparison breaks trust faster than most parents realize.',
       'Calm routines and respectful conversation matter more than dramatic lectures.',
     ],
@@ -205,7 +205,7 @@ export const articles: ArticleSummary[] = [
   {
     slug: 'father-and-son-relationship-problems-and-solutions',
     title: 'Father and son relationship problems and solutions',
-    excerpt: 'Practical guidance on respect, expectations, and rebuilding connection.',
+    excerpt: 'Practical guidance on respect, expectations, and rebuilding connection between fathers and sons.',
     topic: 'Family Relationships',
     audience: 'Families',
     readTime: '8 min read',
@@ -217,74 +217,232 @@ export const articles: ArticleSummary[] = [
   {
     slug: 'mother-child-emotional-bonding-habits',
     title: 'Mother-child emotional bonding habits',
-    excerpt: 'A parenting-support article centered on trust, routine, and emotional closeness.',
+    excerpt: 'A parenting-support article centered on trust, routine, and emotional closeness between mothers and children.',
     topic: 'Parenting',
     audience: 'Parents',
     readTime: '6 min read',
     leadMagnet: 'Parenting Mistakes Gujarati Families Should Avoid',
     publishedAt: '2026-07-13',
-    updatedAt: '2026-07-13',
-    author: 'Manish Vaghasiya Team',
+    updatedAt: '2026-07-23',
+    author: 'Manish Vaghasiya',
+    keyTakeaways: [
+      'Emotional safety allows children to share thoughts without fear of sudden anger.',
+      'Daily dedicated non-academic conversation strengthens lifelong bonds.',
+      'Mothers must balance nurturing care with encouraging independent confidence.',
+    ],
+    sections: [
+      {
+        heading: 'The foundation of mother-child trust',
+        paragraphs: [
+          'A mother’s influence shapes a child’s emotional security and self-perception. When a child feels unconditionally accepted at home, they develop resilience against external peer pressure and academic stress.',
+          'However, daily routines often get consumed by reminders about homework, chores, and schedules, leaving little room for heart-to-heart conversations.',
+        ],
+      },
+      {
+        heading: 'Building daily emotional connection habits',
+        paragraphs: [
+          'Spend 15 minutes each evening talking about feelings, lighthearted topics, or daily experiences without bringing up exam marks or mistakes.',
+          'Practice calm listening when a child shares a problem. When a child knows their mother won’t panic or scold immediately, they share earlier when difficulties arise.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'How can working mothers maintain a strong emotional bond with children?',
+        answer: 'Focus on consistent quality time over quantity. Uninterrupted daily check-ins build deep security.',
+      },
+    ],
   },
   {
     slug: 'how-to-reduce-stress-before-exams',
     title: 'How to reduce stress before exams',
-    excerpt: 'A student-focused support piece on pressure, routine, and emotional steadiness.',
+    excerpt: 'A student-focused support piece on pressure, revision routines, and emotional steadiness during test periods.',
     topic: 'Students and Career Guidance',
     audience: 'Students',
     readTime: '6 min read',
     leadMagnet: 'Student Confidence Starter Guide',
     publishedAt: '2026-07-13',
-    updatedAt: '2026-07-13',
-    author: 'Manish Vaghasiya Team',
+    updatedAt: '2026-07-23',
+    author: 'Manish Vaghasiya',
+    keyTakeaways: [
+      'Exam stress stems from perceived lack of control and fear of outcomes.',
+      'Structured revision schedules with planned breaks calm anxiety naturally.',
+      'Physical wellness, hydration, and steady sleep directly improve focus.',
+    ],
+    sections: [
+      {
+        heading: 'Understanding the mechanics of exam anxiety',
+        paragraphs: [
+          'Exams create stress when students attempt last-minute cramming or focus excessively on future results rather than the immediate task.',
+          'Recognizing that exam panic is a temporary physiological reaction allows students to take control through practical study techniques.',
+        ],
+      },
+      {
+        heading: 'Actionable strategies for pre-exam calmness',
+        paragraphs: [
+          'Break large subjects into bite-sized 45-minute study blocks separated by 10-minute mental resets. Avoid late-night study sessions right before test day.',
+          'Parents should maintain a peaceful home atmosphere and avoid adding extra expectation pressure during revision weeks.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'What should a student do if panic strikes in the examination hall?',
+        answer: 'Take 3 deep, slow breaths, close your eyes for 30 seconds, read the easiest question first, and regain momentum step by step.',
+      },
+    ],
   },
   {
     slug: 'career-confusion-after-10th-and-12th',
     title: 'Career confusion after 10th and 12th',
-    excerpt: 'A decision-support article to help students and parents navigate early career uncertainty.',
+    excerpt: 'A decision-support article to help students and parents navigate early career uncertainty with clarity.',
     topic: 'Students and Career Guidance',
     audience: 'Students',
     readTime: '10 min read',
     leadMagnet: 'Student Confidence Starter Guide',
     publishedAt: '2026-07-13',
-    updatedAt: '2026-07-13',
-    author: 'Manish Vaghasiya Team',
+    updatedAt: '2026-07-23',
+    author: 'Manish Vaghasiya',
+    keyTakeaways: [
+      'Career choices should reflect genuine aptitude and personal interest, not societal trends alone.',
+      'Parents and students must explore modern career pathways beyond traditional narrow options.',
+      'Step-by-step career guidance prevents costly misalignments later in life.',
+    ],
+    sections: [
+      {
+        heading: 'Navigating post-10th and 12th decision points',
+        paragraphs: [
+          'The transition after 10th and 12th grades is one of the most stressful phases for Indian students and parents alike. Peer pressure and high expectations often lead to hasty career selections.',
+          'True clarity emerges when students evaluate their natural strengths, skill interests, and long-term learning willingness.',
+        ],
+      },
+      {
+        heading: 'Collaborative decision-making for families',
+        paragraphs: [
+          'Parents should serve as supportive facilitators rather than decision enforcers. Conduct research together, consult career counselors, and explore modern industry demands.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'What if a student’s interest differs from family expectations?',
+        answer: 'Have an open conversation supported by aptitude assessment data, course syllabus facts, and realistic career outcome research.',
+      },
+    ],
   },
   {
     slug: 'self-discipline-habits-for-students',
     title: 'Self-discipline habits for students',
-    excerpt: 'A practical article about small routines that improve confidence and consistency.',
-    topic: 'Habits and Discipline',
+    excerpt: 'A practical article about small routines that build long-term confidence and academic consistency.',
+    topic: 'Students and Career Guidance',
     audience: 'Students',
     readTime: '7 min read',
-    leadMagnet: '30-Day Positive Habit Tracker',
+    leadMagnet: 'Student Confidence Starter Guide',
     publishedAt: '2026-07-13',
-    updatedAt: '2026-07-13',
-    author: 'Manish Vaghasiya Team',
+    updatedAt: '2026-07-23',
+    author: 'Manish Vaghasiya',
+    keyTakeaways: [
+      'Discipline is a daily muscle built through small routines, not sudden bursts of willpower.',
+      'Minimizing smartphone distractions creates hours of free mental energy.',
+      'Consistency outperforms temporary intensity every single time.',
+    ],
+    sections: [
+      {
+        heading: 'Why motivation fails without discipline',
+        paragraphs: [
+          'Motivational videos create temporary excitement, but self-discipline keeps students working when excitement fades.',
+          'Developing steady habits regarding sleep, study blocks, and exercise creates long-term mental resilience.',
+        ],
+      },
+      {
+        heading: 'Four core habits for daily student success',
+        paragraphs: [
+          '1. Fixed wake-up time to anchor circadian rhythm.\n2. Study environment free from digital notifications.\n3. Daily task listing prioritised by importance.\n4. Evening reflection on progress made.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'How long does it take to form a new discipline habit?',
+        answer: 'Research shows habits take between 21 to 66 days of consistent practice to become natural routines.',
+      },
+    ],
   },
   {
     slug: 'common-parenting-mistakes-in-indian-homes',
     title: 'Common parenting mistakes in Indian homes',
-    excerpt: 'A direct and practical post designed for search, emotional resonance, and lead capture.',
+    excerpt: 'A direct and practical post designed to help parents identify emotional blind spots and cultivate healthier family dynamics.',
     topic: 'Parenting',
     audience: 'Parents',
     readTime: '8 min read',
     leadMagnet: 'Parenting Mistakes Gujarati Families Should Avoid',
     publishedAt: '2026-07-13',
-    updatedAt: '2026-07-13',
-    author: 'Manish Vaghasiya Team',
+    updatedAt: '2026-07-23',
+    author: 'Manish Vaghasiya',
+    keyTakeaways: [
+      'Over-protectiveness can unknowingly stifle a child’s problem-solving skills.',
+      'Equating love with academic marks damages a child’s intrinsic motivation.',
+      'Open dialogue fosters far greater respect than rigid authoritarian rules.',
+    ],
+    sections: [
+      {
+        heading: 'Identifying well-intentioned parenting patterns',
+        paragraphs: [
+          'Indian parents pour immense sacrifice into their children’s futures. However, certain traditional habits—such as public comparison or emotional guilt—can undermine a child’s confidence.',
+          'Recognizing these patterns is not about blame; it is about adopting healthier communication for modern family challenges.',
+        ],
+      },
+      {
+        heading: 'Shifting from control to guidance',
+        paragraphs: [
+          'Allow children to make age-appropriate choices and experience natural consequences. This builds self-reliance and deep trust in parental support.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'How can parents handle disagreement without shouting?',
+        answer: 'Establish a rule to pause heated discussions for 10 minutes. Resume when both parent and child have calm emotional states.',
+      },
+    ],
   },
   {
     slug: 'how-to-handle-anger-in-relationships',
     title: 'How to handle anger in relationships',
-    excerpt: 'A relationship article focused on repair, patience, and emotionally intelligent communication.',
-    topic: 'Marriage and Communication',
+    excerpt: 'A relationship article focused on repair, patience, and emotionally intelligent communication inside the family.',
+    topic: 'Family Relationships',
     audience: 'Families',
     readTime: '9 min read',
     leadMagnet: '21 Family Communication Tips',
     publishedAt: '2026-07-13',
-    updatedAt: '2026-07-13',
-    author: 'Manish Vaghasiya Team',
+    updatedAt: '2026-07-23',
+    author: 'Manish Vaghasiya',
+    keyTakeaways: [
+      'Anger is usually a protective cover for hurt, fear, or unfulfilled needs.',
+      'Pausing before responding prevents hurtful words that break long-term trust.',
+      'Conflict resolution requires seeking understanding rather than proving victory.',
+    ],
+    sections: [
+      {
+        heading: 'De-escalating emotional tension in marriage and family',
+        paragraphs: [
+          'Anger flares up when individuals feel misunderstood or undervalued in family conversations. When emotions take over, logic retreats.',
+          'Learning emotional regulation techniques allows family members to express disagreements constructively without destroying relationship warmth.',
+        ],
+      },
+      {
+        heading: 'Practical tools for managing relationship anger',
+        paragraphs: [
+          'Use "I feel" statements instead of accusatory "You always" statements. Take structured cooling-off timeouts when tempers rise.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is the best way to apologize after a heated argument?',
+        answer: 'Acknowledge the specific behavior or harsh tone, express genuine regret without making excuses, and state how you will communicate better next time.',
+      },
+    ],
   },
 ]
 

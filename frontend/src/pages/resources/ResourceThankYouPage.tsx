@@ -8,40 +8,42 @@ import { SeoHead } from '../../shared/components/site/SeoHead'
 
 const steps = [
   {
-    title: 'Check your email',
-    description: 'The download link and first follow-up message should arrive immediately.',
+    title: 'Check Your Email',
+    description: 'We have sent a direct link to your requested PDF guide right to your inbox.',
     icon: <MailOutlined />,
   },
   {
-    title: 'Read a related article',
-    description: 'Send users into a relevant article so the site becomes more useful and memorable.',
+    title: 'Read a Recommended Article',
+    description: 'Explore our latest student confidence and study stress guidance articles.',
     icon: <CheckCircleOutlined />,
   },
   {
-    title: 'Join the next layer later',
-    description: 'Once trust grows, users can be invited to ebook, program, or community offers.',
+    title: 'Explore Live Seminars',
+    description: 'Discover upcoming student confidence keynotes and parenting workshops in Gujarat.',
     icon: <DownloadOutlined />,
   },
 ]
 
 export function ResourceThankYouPage() {
   const navigate = useNavigate()
+
   return (
     <>
       <SeoHead
         title="Thank You — Student Guide Download | Manish Vaghasiya"
-        description="Thank you for downloading the Student Confidence Starter Guide. Check your inbox for the download link and next steps."
+        description="Thank you for requesting the Student Confidence Starter Guide. Your download link is on its way."
         canonicalUrl="https://www.manishvaghasiya.com/resources/student-confidence-starter-guide/thank-you"
+        noIndex={true}
       />
       <PageHero
-        eyebrow="Thank You"
-        title="Your next step should feel helpful, not pushy."
-        description="This thank-you page is part of the funnel strategy. After a download, the site should guide users into the right next action while trust is still high."
+        eyebrow="Registration Complete"
+        title="Thank you for downloading the guide!"
+        description="Your Student Confidence Starter Guide link has been dispatched to your email address."
       />
 
       <PageSection
-        title="What happens after signup"
-        description="The student guide funnel should continue with value-first communication and a clean next-step path."
+        title="What to do next"
+        description="Follow these recommended steps while your guide arrives."
       >
         <div className="grid gap-5 md:grid-cols-3">
           {steps.map((card) => (
@@ -56,13 +58,13 @@ export function ResourceThankYouPage() {
         </div>
       </PageSection>
 
-      <PageSection title="Recommended next actions">
+      <PageSection title="Recommended next reading">
         <div className="flex flex-wrap gap-4">
           <Button type="primary" icon={<ArrowRightOutlined />} onClick={() => navigate('/blog/how-students-can-build-confidence-after-failure')}>
-            Read the related article
+            Read: Building Confidence After Failure
           </Button>
           <Button onClick={() => navigate(routePaths.book)} style={{ borderColor: 'var(--line-strong)' }}>
-            Explore seminar options
+            Explore Seminar & Workshop Options
           </Button>
         </div>
       </PageSection>

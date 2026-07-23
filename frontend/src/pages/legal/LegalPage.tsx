@@ -5,14 +5,16 @@ import { SeoHead } from '../../shared/components/site/SeoHead'
 
 const { Title } = Typography
 
+export interface LegalSection {
+  readonly heading: string
+  readonly body: string
+}
+
 interface LegalPageProps {
   eyebrow: string
   title: string
   description: string
-  sections: Array<{
-    heading: string
-    body: string
-  }>
+  sections: ReadonlyArray<LegalSection>
 }
 
 export function LegalPage({ eyebrow, title, description, sections }: LegalPageProps) {

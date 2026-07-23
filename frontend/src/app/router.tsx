@@ -42,8 +42,8 @@ export const router = createBrowserRouter([
         element: (
           <LegalPage
             eyebrow="Privacy Policy"
-            title="Privacy and data use should be clear before monetization starts."
-            description="This page will explain what information is collected, why it is collected, and how users can contact the site about privacy questions."
+            title="Our commitment to protecting your privacy and personal data."
+            description="This policy outlines how manishvaghasiya.com collects, uses, and safeguards reader data and cookie preferences."
             sections={legalDrafts.privacy}
           />
         ),
@@ -53,8 +53,8 @@ export const router = createBrowserRouter([
         element: (
           <LegalPage
             eyebrow="Terms and Conditions"
-            title="Terms help define how the site, content, and offers can be used."
-            description="This page will set expectations around content use, liabilities, user responsibilities, and platform interactions."
+            title="Terms of use governing our website content and educational services."
+            description="These terms outline the rules, intellectual property rights, and user responsibilities when accessing manishvaghasiya.com."
             sections={legalDrafts.terms}
           />
         ),
@@ -64,8 +64,8 @@ export const router = createBrowserRouter([
         element: (
           <LegalPage
             eyebrow="Editorial Policy"
-            title="Editorial standards are part of long-term trust and SEO quality."
-            description="This page will explain how articles are selected, written, reviewed, and updated so the platform is not perceived as low-trust AI content."
+            title="Our editorial standards for original, high-trust content."
+            description="Learn how our articles, guides, and educational materials are researched, written, and verified for quality."
             sections={legalDrafts.editorial}
           />
         ),
@@ -75,8 +75,8 @@ export const router = createBrowserRouter([
         element: (
           <LegalPage
             eyebrow="Corrections Policy"
-            title="A corrections policy signals accountability and content maturity."
-            description="This page will describe how factual issues are reviewed, fixed, and documented when necessary."
+            title="Accountability and procedures for content accuracy."
+            description="How we handle factual corrections, update article timestamps, and review reader reports."
             sections={legalDrafts.corrections}
           />
         ),
@@ -86,8 +86,8 @@ export const router = createBrowserRouter([
         element: (
           <LegalPage
             eyebrow="Ad Disclosure"
-            title="Ads and affiliate relationships should be explained clearly and early."
-            description="This page will explain how the site handles advertising, sponsored placements, and monetized recommendations."
+            title="Transparency in advertising and network placements."
+            description="Details on how Google AdSense and authorized ad networks operate on our platform."
             sections={legalDrafts.adDisclosure}
           />
         ),
@@ -97,8 +97,8 @@ export const router = createBrowserRouter([
         element: (
           <LegalPage
             eyebrow="Affiliate Disclosure"
-            title="Affiliate recommendations should stay relevant, transparent, and user-first."
-            description="This page will explain how the site may earn from carefully selected product recommendations without compromising trust."
+            title="Transparent recommendations and affiliate relationship notices."
+            description="Information regarding potential commissions earned through recommended books and educational tools."
             sections={legalDrafts.affiliateDisclosure}
           />
         ),

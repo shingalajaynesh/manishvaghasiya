@@ -5,6 +5,7 @@ export interface SeoHeadProps {
   description: string
   canonicalUrl?: string
   ogImage?: string
+  noIndex?: boolean
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
 
@@ -13,6 +14,7 @@ export function SeoHead({
   description,
   canonicalUrl,
   ogImage = 'https://www.manishvaghasiya.com/og-image.jpg',
+  noIndex = false,
   jsonLd,
 }: SeoHeadProps) {
   useEffect(() => {
@@ -39,8 +41,14 @@ export function SeoHead({
       el.setAttribute('content', content)
     }
 
-    // 2. Meta description
+    // 2. Meta description & robots
     updateMeta('meta[name="description"]', description)
+
+    if (noIndex) {
+      updateMeta('meta[name="robots"]', 'noindex, follow')
+    } else {
+      updateMeta('meta[name="robots"]', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1')
+    }
 
     // 3. OpenGraph & Twitter
     updateMeta('meta[property="og:title"]', fullTitle)
@@ -73,7 +81,7 @@ export function SeoHead({
     } else if (scriptEl) {
       scriptEl.remove()
     }
-  }, [title, description, canonicalUrl, ogImage, jsonLd])
+  }, [title, description, canonicalUrl, ogImage, noIndex, jsonLd])
 
   return null
 }

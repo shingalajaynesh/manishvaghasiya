@@ -34,6 +34,55 @@ const momentsPhotos = [
   publicImage('MOMENTS PHOTO', '1I2A3885.jpg'),
 ]
 
+export interface FeaturedVideo {
+  id: string
+  title: string
+  category: string
+  duration: string
+  description: string
+  youtubeUrl: string
+  embedUrl: string
+}
+
+export const featuredVideos: FeaturedVideo[] = [
+  {
+    id: 'talk-1',
+    title: 'How Parents Can Better Understand Teenagers',
+    category: 'Parenting & Family',
+    duration: '14:20',
+    description: 'Manish Vaghasiya shares practical insights on breaking down communication barriers between parents and teenage children.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=0VYCKxHEqll',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/0VYCKxHEqll',
+  },
+  {
+    id: 'talk-2',
+    title: 'Building Unshakeable Student Confidence After Failure',
+    category: 'Student Guidance',
+    duration: '18:45',
+    description: 'A live seminar keynote on transforming academic setbacks and exam stress into daily self-discipline and mental strength.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=0VYCKxHEqll',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/0VYCKxHEqll',
+  },
+  {
+    id: 'talk-3',
+    title: 'Resolving Emotional Tension & Anger in Family Relationships',
+    category: 'Family Relationships',
+    duration: '12:10',
+    description: 'Key principles of calm communication, listening habits, and emotional repair for Gujarati households.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=0VYCKxHEqll',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/0VYCKxHEqll',
+  },
+  {
+    id: 'talk-4',
+    title: 'Career Confusion After 10th & 12th — Choosing the Right Path',
+    category: 'Career Guidance',
+    duration: '22:05',
+    description: 'Practical guidance for students and parents navigating early career choices and overcoming peer pressure.',
+    youtubeUrl: 'https://www.youtube.com/watch?v=0VYCKxHEqll',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/0VYCKxHEqll',
+  },
+]
+
 export const speakerMedia = {
   heroStage: mainPortraits[8],
   heroSupport: crowdPhotos[4],
@@ -44,4 +93,5 @@ export const speakerMedia = {
   crowdPhotos,
   momentsPhotos,
   allPhotos: [...mainPortraits, ...crowdPhotos, ...momentsPhotos],
+  featuredVideos,
 } as const

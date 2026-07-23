@@ -10,34 +10,40 @@ import { SeoHead } from '../../shared/components/site/SeoHead'
 
 export function TopicsPage() {
   const navigate = useNavigate()
+
   return (
     <>
       <SeoHead
-        title="Topic Hubs & Guidance Areas | Manish Vaghasiya"
+        title="Guidance Topics & Life Themes | Manish Vaghasiya"
         description="Explore organized topic hubs on parenting, family relationships, and student career guidance from Manish Vaghasiya."
         canonicalUrl="https://www.manishvaghasiya.com/topics"
       />
       <PageHero
-        eyebrow="Topic Hubs"
-        title="Organize content around real audience pain points."
-        description="Topic hubs help readers find the right guidance quickly while giving the site a stronger editorial and SEO structure."
+        eyebrow="Guidance Topics"
+        title="Practical life guidance organized around your needs."
+        description="Select a topic category to access specialized articles, downloadable workbooks, and seminar recommendations."
       />
 
       <PageSection
-        title="Priority hubs"
-        description="These are the first topic areas that align best with Manish Vaghasiya's current public themes and the strongest Phase 1 growth opportunities."
+        title="Core topic hubs"
+        description="Explore our primary guidance categories designed for students, parents, and families."
       >
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {topicHubs.map((topic) => (
             <div key={topic.title} className="flex flex-col gap-3">
               <ContentCard
                 title={topic.title}
                 description={topic.description}
-                meta={`${topic.supportingArticleSlugs.length + 1} articles`}
+                meta={`${topic.supportingArticleSlugs.length + 1} Articles & Guides`}
                 tone={topic.slug === 'students-and-career-guidance' ? 'forest' : 'warm'}
               />
-              <Button type="link" icon={<ArrowRightOutlined />} onClick={() => navigate(`${routePaths.topics}/${topic.slug}`)} className="!self-start !px-1 !text-[var(--accent-earth)]">
-                Open topic hub
+              <Button
+                type="link"
+                icon={<ArrowRightOutlined />}
+                onClick={() => navigate(`${routePaths.topics}/${topic.slug}`)}
+                className="!self-start !px-1 !text-[var(--accent-earth)]"
+              >
+                Explore {topic.title} Hub
               </Button>
             </div>
           ))}

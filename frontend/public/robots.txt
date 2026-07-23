@@ -1,15 +1,19 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /_next/
+
 Sitemap: https://www.manishvaghasiya.com/sitemap.xml
 
-# Google
+# Google Crawlers
 User-agent: Googlebot
 Allow: /
 
-# Block AI scrapers (optional)
+User-agent: Mediapartners-Google
+Allow: /
+
+# Block aggressive AI scrapers (optional)
 User-agent: GPTBot
 Disallow: /
+
 User-agent: ChatGPT-User
 Disallow: /

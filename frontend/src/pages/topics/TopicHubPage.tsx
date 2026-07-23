@@ -18,7 +18,7 @@ export function TopicHubPage() {
       <PageHero
         eyebrow="Topic Hub"
         title="Topic hub not found"
-        description="This topic hub has not been set up yet."
+        description="The requested guidance topic is not available. Explore our main topics directory."
       />
     )
   }
@@ -34,30 +34,30 @@ export function TopicHubPage() {
         canonicalUrl={`https://www.manishvaghasiya.com/topics/${hub.slug}`}
       />
       <PageHero
-        eyebrow="Topic Hub"
+        eyebrow="Guidance Topic Hub"
         title={hub.title}
         description={hub.description}
       />
 
       <PageSection
-        title="How this hub is structured"
-        description="Each hub connects a pillar article, supporting content, a relevant lead magnet, and a clear conversion path."
+        title="Featured pillar guide & resources"
+        description="Start with our comprehensive pillar article and matching downloadable workbook."
       >
         <div className="grid gap-5 md:grid-cols-3">
           <ContentCard
-            title="Pillar Article"
-            description={pillar ? pillar.title : 'Pillar article to be assigned'}
+            title="Core Pillar Guide"
+            description={pillar ? pillar.title : 'Comprehensive topic guide'}
             icon={<FileTextOutlined />}
             tone="warm"
           />
           <ContentCard
-            title="Lead Magnet"
+            title="Free PDF Workbook"
             description={hub.resourceTitle}
             icon={<DownloadOutlined />}
             tone="forest"
           />
           <ContentCard
-            title="Conversion Path"
+            title="Live Seminar Program"
             description={hub.conversionTitle}
             icon={<PlayCircleOutlined />}
             tone="warm"
@@ -66,8 +66,8 @@ export function TopicHubPage() {
       </PageSection>
 
       <PageSection
-        title="Supporting articles"
-        description="These articles support the same audience problem space and should interlink naturally."
+        title="Related articles & guides"
+        description="Deepen your understanding with these practical articles."
       >
         <div className="grid gap-5 md:grid-cols-2">
           {supporting.map((article) => (
@@ -78,8 +78,13 @@ export function TopicHubPage() {
                 meta={article.audience}
                 tone={article.topic === 'Parenting' ? 'forest' : 'warm'}
               />
-              <Button type="link" icon={<ArrowRightOutlined />} href={`${routePaths.blog}/${article.slug}`} className="!self-start !px-1 !text-[var(--accent-earth)]">
-                Read article
+              <Button
+                type="link"
+                icon={<ArrowRightOutlined />}
+                onClick={() => navigate(`${routePaths.blog}/${article.slug}`)}
+                className="!self-start !px-1 !text-[var(--accent-earth)]"
+              >
+                Read Full Article
               </Button>
             </div>
           ))}
@@ -87,19 +92,22 @@ export function TopicHubPage() {
       </PageSection>
 
       <PageSection
-        title="Where this hub should lead"
-        description="A strong topic hub should move readers deeper into helpful content and then toward a relevant resource or program."
+        title="Recommended next steps"
+        description="Apply these principles at home or book a live seminar session."
       >
         <div className="rounded-2xl border border-[var(--line-soft)] bg-white p-7 shadow-editorial">
           <div className="grid gap-4 text-sm leading-7 text-[var(--text-soft)]">
-            <p>1. Start with the pillar article to understand the main question this hub answers.</p>
-            <p>2. Move into supporting posts that solve narrower problems around the same audience need.</p>
-            <p>3. Offer a matching downloadable resource so trust turns into an owned audience relationship.</p>
-            <p>4. Connect the hub to a workshop, seminar, or inquiry path where relevant.</p>
+            <p>1. Start with the pillar article to understand the underlying principles of {hub.title.toLowerCase()}.</p>
+            <p>2. Review supporting articles for targeted solutions to specific everyday challenges.</p>
+            <p>3. Download the free PDF resource to work through practical exercises with your family or students.</p>
+            <p>4. Reach out to book a live workshop session for your school, college, or community group.</p>
           </div>
-          <div className="mt-6">
+          <div className="mt-6 flex flex-wrap gap-4">
             <Button type="primary" icon={<ArrowRightOutlined />} onClick={() => navigate(routePaths.resources)}>
-              View resources
+              Download Free Resources
+            </Button>
+            <Button onClick={() => navigate(routePaths.book)} style={{ borderColor: 'var(--line-strong)' }}>
+              Book a Workshop
             </Button>
           </div>
         </div>

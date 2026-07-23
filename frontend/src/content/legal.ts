@@ -1,102 +1,102 @@
 export const legalDrafts = {
   privacy: [
     {
-      heading: 'Information we collect',
-      body: 'This website may collect contact details such as name and email when users subscribe for resources, updates, or communication. Technical data such as IP address, browser data, and analytics events may also be collected to improve site performance and protect forms from abuse.',
+      heading: 'Information We Collect',
+      body: 'This website collects personal contact information—such as your name, email address, and phone number—strictly when you voluntarily submit forms for resource downloads, seminar bookings, or newsletter subscriptions. Technical metadata including IP address, browser type, device information, and diagnostic analytics events are also logged to maintain platform security, prevent form abuse, and optimize content presentation.',
     },
     {
-      heading: 'How information is used',
-      body: 'Collected information is used to deliver requested resources, respond to inquiries, improve the website, and send relevant follow-up communication related to Manish Vaghasiya content, programs, or digital products. The site should avoid unrelated or misleading promotional communication.',
+      heading: 'How Information Is Used',
+      body: 'Collected information is used exclusively to fulfill your requests for resources, respond to inquiries regarding Manish Vaghasiya speaking programs, deliver educational content updates, and improve overall website usability. We enforce a strict policy against selling, renting, or trading user personal data to third-party marketers.',
     },
     {
-      heading: 'Third-party tools and storage',
-      body: 'The website may use third-party infrastructure for analytics, hosting, email delivery, and form processing. Users should be informed when those tools store or process data on the site’s behalf.',
+      heading: 'Cookies and Advertising Technologies',
+      body: 'This site utilizes essential cookies for security and session state. Optional analytics and Google AdSense advertising cookies may be set with your consent to serve personalized or non-personalized advertisements, analyze traffic patterns, and measure ad performance. You may modify your cookie choices at any time via our Cookie Consent Banner.',
     },
     {
-      heading: 'User rights and contact',
-      body: 'Users should have a clear way to request access, correction, or deletion of their personal data by contacting the site team through the published contact information.',
+      heading: 'Third-Party Analytics and Infrastructure',
+      body: 'We rely on trusted third-party service providers—including Vercel for web hosting, Google Analytics for aggregated usage reporting, and Google AdSense for advertisement delivery. These services process data under their respective privacy policies and in compliance with international privacy regulations.',
+    },
+    {
+      heading: 'Data Subject Rights and Contact Details',
+      body: 'Under applicable privacy laws (including GDPR, CCPA, and Indian IT Regulations), you have the right to request access to, correction of, or deletion of your personal data stored by this platform. To exercise your rights, please submit a written request via email to info@manishvaghasiya.com.',
     },
   ],
   terms: [
     {
-      heading: 'Use of the website',
-      body: 'Visitors may use this website for personal information, learning, and inquiry purposes. Content should not be copied, republished, or redistributed in misleading ways without permission.',
+      heading: 'Acceptance of Terms',
+      body: 'By accessing and using this website (manishvaghasiya.com), you agree to be bound by these Terms and Conditions. If you do not accept these terms in full, you must discontinue your use of the website immediately.',
     },
     {
-      heading: 'Content and advice boundaries',
-      body: 'Articles, videos, and resources are intended for educational and informational use. They should not be presented as medical, legal, or other licensed professional advice unless clearly stated.',
+      heading: 'Intellectual Property and Content Use',
+      body: 'All articles, video materials, speech excerpts, original graphics, downloadable PDFs, and website branding are the intellectual property of Manish Vaghasiya unless otherwise indicated. Content may be shared for personal, non-commercial educational purposes provided clear attribution is maintained. Unauthorized reproduction, automated scraping, or commercial resale is strictly prohibited.',
     },
     {
-      heading: 'Offers and communication',
-      body: 'Programs, resources, and future digital products may change over time. The site should reserve the right to update pricing, availability, and content while keeping communication clear and fair.',
+      heading: 'Disclaimer of Professional Advice',
+      body: 'Articles, seminars, and downloadable resources provided on this platform offer motivational coaching, educational insights, and life guidance. They do not constitute licensed medical, psychiatric, psychological, legal, or financial advice. For clinical mental health conditions or formal legal matters, always consult a licensed healthcare or legal professional.',
     },
     {
-      heading: 'Responsible access',
-      body: 'Users should not misuse forms, attempt to disrupt the service, or use the platform for spam, abuse, or unauthorized scraping.',
+      heading: 'User Conduct and Responsible Use',
+      body: 'Visitors agree to use all contact forms, comment sections, and downloadable offers responsibly. Any attempt to introduce malicious software, launch denial-of-service attacks, submit fake contact entries, or harvest user data will result in immediate IP blockage and potential legal action.',
+    },
+    {
+      heading: 'Limitation of Liability',
+      body: 'Manish Vaghasiya and the platform editorial team shall not be held liable for any direct, indirect, incidental, or consequential damages resulting from your access to or reliance upon the informational content provided on this website.',
     },
   ],
   editorial: [
     {
-      heading: 'Editorial purpose',
-      body: 'This platform is designed to publish practical life guidance for students, parents, and families, rooted in Manish Vaghasiya’s public themes, seminar insights, and helpful people-first content practices.',
+      heading: 'Editorial Purpose and Standards',
+      body: 'Our platform publishes high-value, practical life guidance for students, parents, and families. Every piece of content is created to address genuine audience questions surrounding youth confidence, family harmony, parenting dynamics, and personal development.',
     },
     {
-      heading: 'Content standards',
-      body: 'Content should be original, emotionally responsible, culturally relevant, and written to solve real audience problems. Thin AI-generated filler, copied transcripts, and low-value quote pages should be avoided.',
+      heading: 'Originality and Fact-Checking Policy',
+      body: 'We strictly reject mass-produced AI content, scraped materials, and repetitive keyword-stuffed articles. Content is authored and thoroughly reviewed to ensure cultural resonance, emotional responsibility, and practical utility.',
     },
     {
-      heading: 'Review and updates',
-      body: 'Important pages should be reviewed periodically for clarity, relevance, and accuracy. When articles are meaningfully improved, updated dates should reflect that work.',
+      heading: 'Content Review and Revision Cycle',
+      body: 'Articles and topic hubs undergo periodic editorial review to reflect current guidance, updated study methodologies, and audience feedback. Publication and last-updated timestamps are displayed on all articles to ensure transparency.',
     },
     {
-      heading: 'Transparency',
-      body: 'Where appropriate, the site should identify authorship, update history, commercial relationships, and the reasoning behind recommendations or product mentions.',
+      heading: 'Editorial Independence',
+      body: 'Commercial relationships, speaking sponsorships, and advertising partnerships do not dictate our editorial opinions. Recommended books, educational tools, and resources are selected strictly based on their genuine value to our readers.',
     },
   ],
   corrections: [
     {
-      heading: 'Correction intent',
-      body: 'When factual mistakes, misleading wording, or broken information are identified, the website should correct them promptly and responsibly.',
+      heading: 'Commitment to Accuracy',
+      body: 'We strive for accuracy across all published articles, guides, and media statements. When errors of fact, typo mistakes, or outdated details occur, we are committed to fixing them promptly and transparently.',
     },
     {
-      heading: 'How issues are reviewed',
-      body: 'Potential corrections can be reviewed through internal editorial checks or contact messages from readers, partners, or institutions.',
+      heading: 'Reporting a Correction',
+      body: 'Readers, educators, and event organizers who spot factual errors or broken information are encouraged to notify our editorial team by sending detailed feedback to info@manishvaghasiya.com with the subject line "Correction Request".',
     },
     {
-      heading: 'What gets updated',
-      body: 'Corrections may include edits to article facts, outdated details, broken links, missing disclosures, or clarification of unclear guidance.',
-    },
-    {
-      heading: 'Reader contact',
-      body: 'Readers should be able to report correction requests using the public contact methods listed on the website.',
+      heading: 'Correction Procedure',
+      body: 'Upon verification, corrections are implemented directly in the article or page text. Substantive factual updates will be noted with an updated timestamp at the top of the relevant piece.',
     },
   ],
   adDisclosure: [
     {
-      heading: 'Advertising approach',
-      body: 'This website may display advertising in the future, including AdSense or other approved networks, only after the site has strong content depth and a clean user experience.',
+      heading: 'Advertising Policy',
+      body: 'This website displays advertisements delivered via Google AdSense and authorized advertising networks to support our independent publishing, free educational resources, and content platform maintenance.',
     },
     {
-      heading: 'User-first rule',
-      body: 'Ads should not overwhelm content, interrupt reading excessively, or make the website feel misleading or low trust.',
+      heading: 'Ad Placement Standards',
+      body: 'Advertisements are clearly distinguished from editorial content. We do not permit deceptive ad placements, pop-under windows, sticky ads blocking main navigation, or advertising content that overlaps with interactive buttons.',
     },
     {
-      heading: 'Sponsored and commercial content',
-      body: 'If any page includes sponsored mentions or paid placements, the site should identify that clearly so users can distinguish editorial content from commercial material.',
+      heading: 'Route-Level Advertising Eligibility',
+      body: 'Under our strict ad placement rules, advertisements are prohibited on transactional routes, contact pages, private forms, legal policies, and download thank-you pages, ensuring an unobtrusive reading experience.',
     },
   ],
   affiliateDisclosure: [
     {
-      heading: 'Affiliate relationships',
-      body: 'Some pages may recommend books, journals, educational tools, or other relevant resources using affiliate links. If a user purchases through those links, the site may earn a commission at no extra cost to the user.',
+      heading: 'Affiliate Links Notice',
+      body: 'Certain articles or resource pages may contain affiliate links to recommended books, study planners, or educational tools. If you make a purchase through these links, we may earn a small commission at no additional cost to you.',
     },
     {
-      heading: 'Recommendation policy',
-      body: 'Affiliate products should stay aligned with the site’s audience and topic focus. Random, unrelated, or low-trust offers should not be used.',
-    },
-    {
-      heading: 'Trust before monetization',
-      body: 'Recommendations should be made because they are relevant and genuinely useful, not simply because they pay the highest commission.',
+      heading: 'Selective Recommendation Policy',
+      body: 'We only recommend books, products, and tools that Manish Vaghasiya or our editorial team have personally evaluated and determined to be genuinely helpful for students, parents, and families.',
     },
   ],
 } as const
