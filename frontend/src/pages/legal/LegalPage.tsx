@@ -1,6 +1,7 @@
 import { Typography } from 'antd'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 const { Title } = Typography
 
@@ -17,6 +18,10 @@ interface LegalPageProps {
 export function LegalPage({ eyebrow, title, description, sections }: LegalPageProps) {
   return (
     <>
+      <SeoHead
+        title={`${title} | Manish Vaghasiya`}
+        description={description}
+      />
       <PageHero eyebrow={eyebrow} title={title} description={description} />
 
       <PageSection

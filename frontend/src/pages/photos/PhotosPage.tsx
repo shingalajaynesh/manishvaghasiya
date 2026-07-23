@@ -4,6 +4,7 @@ import { routePaths } from '../../content/routes'
 import { speakerMedia } from '../../content/speakerMedia'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 const { Paragraph, Title } = Typography
 
@@ -38,6 +39,11 @@ export function PhotosPage() {
   const navigate = useNavigate()
   return (
     <>
+      <SeoHead
+        title="Event Photography Gallery | Manish Vaghasiya"
+        description="Browse authentic event photography, stage moments, crowd scale, and main portraits of Manish Vaghasiya from seminars and public speaking sessions."
+        canonicalUrl="https://www.manishvaghasiya.com/photos"
+      />
       <PageHero
         eyebrow="Photo gallery"
         title="A dedicated visual gallery for Manish Vaghasiya."

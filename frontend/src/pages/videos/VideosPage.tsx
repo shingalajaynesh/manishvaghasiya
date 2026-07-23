@@ -1,6 +1,7 @@
 import { PlayCircleOutlined } from '@ant-design/icons'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 const videoThemes = [
   'Family communication and respect',
@@ -13,6 +14,11 @@ const videoThemes = [
 export function VideosPage() {
   return (
     <>
+      <SeoHead
+        title="Video Library & Talks | Manish Vaghasiya"
+        description="Watch video clips, motivational seminars, and practical life advice from Manish Vaghasiya."
+        canonicalUrl="https://www.manishvaghasiya.com/videos"
+      />
       <PageHero
         eyebrow="Videos"
         title="Video content should feed the editorial engine, not sit separately."

@@ -6,11 +6,17 @@ import { routePaths } from '../../content/routes'
 import { ContentCard } from '../../shared/components/site/ContentCard'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 export function BlogPage() {
   const navigate = useNavigate()
   return (
     <>
+      <SeoHead
+        title="Articles & Editorial Platform | Manish Vaghasiya"
+        description="Read articles on parenting, family relationships, confidence, and self-discipline for Gujarati students and families."
+        canonicalUrl="https://www.manishvaghasiya.com/blog"
+      />
       <PageHero
         eyebrow="Editorial Platform"
         title="Useful articles, not content for content's sake."

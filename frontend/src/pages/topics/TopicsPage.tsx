@@ -6,11 +6,17 @@ import { routePaths } from '../../content/routes'
 import { ContentCard } from '../../shared/components/site/ContentCard'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 export function TopicsPage() {
   const navigate = useNavigate()
   return (
     <>
+      <SeoHead
+        title="Topic Hubs & Guidance Areas | Manish Vaghasiya"
+        description="Explore organized topic hubs on parenting, family relationships, and student career guidance from Manish Vaghasiya."
+        canonicalUrl="https://www.manishvaghasiya.com/topics"
+      />
       <PageHero
         eyebrow="Topic Hubs"
         title="Organize content around real audience pain points."

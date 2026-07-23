@@ -6,6 +6,7 @@ import { routePaths } from '../../content/routes'
 import { EmailCaptureForm } from '../../shared/components/site/EmailCaptureForm'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 const { Paragraph, Text, Title } = Typography
 
@@ -25,9 +26,39 @@ export function ArticlePage() {
   }
 
   const relatedHub = topicHubs.find((hub) => hub.title === article.topic)
+  const canonicalUrl = `https://www.manishvaghasiya.com/blog/${article.slug}`
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.excerpt,
+    datePublished: article.publishedAt,
+    dateModified: article.updatedAt,
+    author: {
+      '@type': 'Person',
+      name: article.author || 'Manish Vaghasiya',
+      url: 'https://www.manishvaghasiya.com',
+    },
+    publisher: {
+      '@type': 'Person',
+      name: 'Manish Vaghasiya',
+      url: 'https://www.manishvaghasiya.com',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+  }
 
   return (
     <>
+      <SeoHead
+        title={`${article.title} | Manish Vaghasiya`}
+        description={article.excerpt}
+        canonicalUrl={canonicalUrl}
+        jsonLd={articleJsonLd}
+      />
       <PageHero
         eyebrow={article.topic}
         title={article.title}

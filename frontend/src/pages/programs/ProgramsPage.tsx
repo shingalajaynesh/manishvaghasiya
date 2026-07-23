@@ -2,10 +2,16 @@ import { programCards } from '../../content/pages'
 import { ContentCard } from '../../shared/components/site/ContentCard'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 export function ProgramsPage() {
   return (
     <>
+      <SeoHead
+        title="Speaking Programs & Workshops | Manish Vaghasiya"
+        description="Explore Manish Vaghasiya's speaking programs: Student Confidence Seminars, Parenting Workshops, and Family Guidance Sessions."
+        canonicalUrl="https://www.manishvaghasiya.com/programs"
+      />
       <PageHero
         eyebrow="Programs"
         title="Programs translate public authority into clear offers."

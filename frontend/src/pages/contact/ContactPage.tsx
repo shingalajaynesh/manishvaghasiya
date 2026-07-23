@@ -3,6 +3,7 @@ import { siteDictionary, translate } from '../../content/i18n'
 import { ContentCard } from '../../shared/components/site/ContentCard'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 import { useLanguage } from '../../shared/lib/language'
 
 export function ContactPage() {
@@ -10,6 +11,11 @@ export function ContactPage() {
 
   return (
     <>
+      <SeoHead
+        title="Contact Manish Vaghasiya Team | Office & Inquiries"
+        description="Get in touch with the Manish Vaghasiya team for event bookings, seminar availability, media inquiries, and program details."
+        canonicalUrl="https://www.manishvaghasiya.com/contact"
+      />
       <PageHero
         eyebrow={translate(siteDictionary.contact.eyebrow, language)}
         title={translate(siteDictionary.contact.title, language)}

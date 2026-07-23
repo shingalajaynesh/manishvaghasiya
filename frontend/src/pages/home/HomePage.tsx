@@ -27,6 +27,7 @@ import { MotionSection } from '../../shared/components/site/MotionSection'
 import { PageSection } from '../../shared/components/site/PageSection'
 import { SocialLinks } from '../../shared/components/site/SocialLinks'
 import { useNavigate } from 'react-router-dom'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 import { useLanguage } from '../../shared/lib/language'
 
 const { Paragraph, Text, Title } = Typography
@@ -46,6 +47,11 @@ export function HomePage() {
 
   return (
     <>
+      <SeoHead
+        title="Manish Vaghasiya | Practical Life Guidance for Students, Parents & Families"
+        description="Transformational Coach & Inspirational Speaker. Practical Gujarati-first life guidance for students, parents, and families. 1.5M+ followers, 4500+ programs delivered."
+        canonicalUrl="https://www.manishvaghasiya.com/"
+      />
       <section className="editorial-container px-1 pb-6 pt-6 sm:px-2 sm:pb-8 sm:pt-8 lg:pt-12">
         <div className="editorial-hero px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-12">
           <Row gutter={[40, 32]} align="middle">

@@ -2,10 +2,16 @@ import { CalendarOutlined, FileTextOutlined, SafetyOutlined } from '@ant-design/
 import { ContentCard } from '../../shared/components/site/ContentCard'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 export function BookManishPage() {
   return (
     <>
+      <SeoHead
+        title="Book Manish Vaghasiya | Seminars & Keynotes"
+        description="Book Manish Vaghasiya for school seminars, college youth sessions, parenting workshops, and institutional keynotes."
+        canonicalUrl="https://www.manishvaghasiya.com/book-manish"
+      />
       <PageHero
         eyebrow="Book Manish"
         title="Seminar and workshop inquiries should feel clear from the first visit."

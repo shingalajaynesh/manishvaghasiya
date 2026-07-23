@@ -7,6 +7,7 @@ import { speakerMedia } from '../../content/speakerMedia'
 import { ContentCard } from '../../shared/components/site/ContentCard'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 import { useLanguage } from '../../shared/lib/language'
 
 const { Paragraph, Title } = Typography
@@ -17,6 +18,11 @@ export function AboutPage() {
 
   return (
     <>
+      <SeoHead
+        title="About Manish Vaghasiya | Transformational Speaker & Life Coach"
+        description="Learn about Manish Vaghasiya — transformational speaker, life coach, and consultant based in Surat, Gujarat. Over 4500+ sessions delivered to students, parents, and families."
+        canonicalUrl="https://www.manishvaghasiya.com/about"
+      />
       <PageHero
         eyebrow={translate(siteDictionary.about.eyebrow, language)}
         title={translate(siteDictionary.about.title, language)}

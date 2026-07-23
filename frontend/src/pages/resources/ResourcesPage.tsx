@@ -7,11 +7,17 @@ import { ContentCard } from '../../shared/components/site/ContentCard'
 import { EmailCaptureForm } from '../../shared/components/site/EmailCaptureForm'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 export function ResourcesPage() {
   const navigate = useNavigate()
   return (
     <>
+      <SeoHead
+        title="Free PDF Resources & Guides | Manish Vaghasiya"
+        description="Download free guides for students, parenting tips, and family communication workbooks from Manish Vaghasiya."
+        canonicalUrl="https://www.manishvaghasiya.com/resources"
+      />
       <PageHero
         eyebrow="Free Resources"
         title="Free resources turn traffic into an owned audience."

@@ -6,6 +6,7 @@ import { routePaths } from '../../content/routes'
 import { ContentCard } from '../../shared/components/site/ContentCard'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 export function TopicHubPage() {
   const navigate = useNavigate()
@@ -27,6 +28,11 @@ export function TopicHubPage() {
 
   return (
     <>
+      <SeoHead
+        title={`${hub.title} Topic Hub | Manish Vaghasiya`}
+        description={hub.description}
+        canonicalUrl={`https://www.manishvaghasiya.com/topics/${hub.slug}`}
+      />
       <PageHero
         eyebrow="Topic Hub"
         title={hub.title}

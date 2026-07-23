@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { routePaths } from '../../content/routes'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 const steps = [
   {
@@ -27,6 +28,11 @@ export function ResourceThankYouPage() {
   const navigate = useNavigate()
   return (
     <>
+      <SeoHead
+        title="Thank You — Student Guide Download | Manish Vaghasiya"
+        description="Thank you for downloading the Student Confidence Starter Guide. Check your inbox for the download link and next steps."
+        canonicalUrl="https://www.manishvaghasiya.com/resources/student-confidence-starter-guide/thank-you"
+      />
       <PageHero
         eyebrow="Thank You"
         title="Your next step should feel helpful, not pushy."

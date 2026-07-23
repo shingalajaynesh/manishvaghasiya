@@ -3,10 +3,16 @@ import { routePaths } from '../../content/routes'
 import { EmailCaptureForm } from '../../shared/components/site/EmailCaptureForm'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
+import { SeoHead } from '../../shared/components/site/SeoHead'
 
 export function ResourceLandingPage() {
   return (
     <>
+      <SeoHead
+        title="Student Confidence Starter Guide (Free PDF Download) | Manish Vaghasiya"
+        description="Free downloadable guide for students by Manish Vaghasiya. Build confidence, handle exam stress, and overcome failure with practical strategies."
+        canonicalUrl="https://www.manishvaghasiya.com/resources/student-confidence-starter-guide"
+      />
       <PageHero
         eyebrow="Lead Magnet"
         title="Student Confidence Starter Guide"
