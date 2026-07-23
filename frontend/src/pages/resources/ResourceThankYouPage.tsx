@@ -1,5 +1,6 @@
 import { ArrowRightOutlined, CheckCircleOutlined, DownloadOutlined, MailOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import { routePaths } from '../../content/routes'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
@@ -23,6 +24,7 @@ const steps = [
 ]
 
 export function ResourceThankYouPage() {
+  const navigate = useNavigate()
   return (
     <>
       <PageHero
@@ -50,10 +52,10 @@ export function ResourceThankYouPage() {
 
       <PageSection title="Recommended next actions">
         <div className="flex flex-wrap gap-4">
-          <Button type="primary" icon={<ArrowRightOutlined />} href="/blog/how-students-can-build-confidence-after-failure">
+          <Button type="primary" icon={<ArrowRightOutlined />} onClick={() => navigate('/blog/how-students-can-build-confidence-after-failure')}>
             Read the related article
           </Button>
-          <Button href={routePaths.book} style={{ borderColor: 'var(--line-strong)' }}>
+          <Button onClick={() => navigate(routePaths.book)} style={{ borderColor: 'var(--line-strong)' }}>
             Explore seminar options
           </Button>
         </div>

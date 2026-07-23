@@ -1,6 +1,6 @@
 import { ArrowRightOutlined, BookOutlined, DownloadOutlined, TagOutlined } from '@ant-design/icons'
 import { Button, Tag, Typography } from 'antd'
-import { Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getArticleBySlug, topicHubs } from '../../content/editorial'
 import { routePaths } from '../../content/routes'
 import { EmailCaptureForm } from '../../shared/components/site/EmailCaptureForm'
@@ -10,6 +10,7 @@ import { PageSection } from '../../shared/components/site/PageSection'
 const { Paragraph, Text, Title } = Typography
 
 export function ArticlePage() {
+  const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
   const article = slug ? getArticleBySlug(slug) : undefined
 
@@ -130,7 +131,7 @@ export function ArticlePage() {
               <Paragraph className="!mb-4 !text-sm !leading-7 !text-[var(--text-soft)]">
                 A relevant downloadable asset helps the article continue the relationship instead of ending as a dead-end page.
               </Paragraph>
-              <Button type="primary" icon={<DownloadOutlined />} href={article.leadMagnet === 'Student Confidence Starter Guide' ? routePaths.studentGuide : routePaths.resources} block>
+              <Button type="primary" icon={<DownloadOutlined />} onClick={() => navigate(article.leadMagnet === 'Student Confidence Starter Guide' ? routePaths.studentGuide : routePaths.resources)} block>
                 Download now
               </Button>
             </div>
@@ -146,7 +147,7 @@ export function ArticlePage() {
                 <Paragraph className="!mb-4 !text-sm !leading-7 !text-[var(--text-soft)]">
                   {relatedHub.description}
                 </Paragraph>
-                <Button type="link" icon={<ArrowRightOutlined />} href={`${routePaths.topics}/${relatedHub.slug}`} className="!px-0 !text-[var(--accent-earth)]">
+                <Button type="link" icon={<ArrowRightOutlined />} onClick={() => navigate(`${routePaths.topics}/${relatedHub.slug}`)} className="!px-0 !text-[var(--accent-earth)]">
                   Explore this hub
                 </Button>
               </div>

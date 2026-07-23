@@ -55,19 +55,19 @@ export function AboutPage() {
             title="Public positioning"
             description="Public profiles consistently present Manish Vaghasiya as a transformational coach, inspirational speaker, trainer, and consultant."
             icon={<CustomerServiceOutlined />}
-            tone="sunrise"
+            tone="warm"
           />
           <ContentCard
             title="Audience reach"
             description="Public audience signals show around 1.5 million Instagram followers, roughly 192 thousand YouTube subscribers, and more than 4500 programs."
             icon={<TeamOutlined />}
-            tone="sunrise"
+            tone="warm"
           />
           <ContentCard
             title="Content themes"
             description="The strongest visible themes are family guidance, parenting, student confidence, relationships, and practical life lessons for Gujarati audiences."
             icon={<YoutubeOutlined />}
-            tone="sunrise"
+            tone="warm"
           />
         </div>
       </PageSection>

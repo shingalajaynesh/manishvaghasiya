@@ -1,6 +1,6 @@
 import { ArrowRightOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { articles } from '../../content/editorial'
 import { routePaths } from '../../content/routes'
 import { ContentCard } from '../../shared/components/site/ContentCard'
@@ -8,6 +8,7 @@ import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
 
 export function BlogPage() {
+  const navigate = useNavigate()
   return (
     <>
       <PageHero
@@ -31,7 +32,7 @@ export function BlogPage() {
                   tone={article.topic === 'Parenting' ? 'forest' : 'warm'}
                 />
               </Link>
-              <Button type="link" icon={<ArrowRightOutlined />} href={`${routePaths.blog}/${article.slug}`} className="!self-start !px-1 !text-[var(--accent-earth)]">
+              <Button type="link" icon={<ArrowRightOutlined />} onClick={() => navigate(`${routePaths.blog}/${article.slug}`)} className="!self-start !px-1 !text-[var(--accent-earth)]">
                 Read article
               </Button>
             </div>

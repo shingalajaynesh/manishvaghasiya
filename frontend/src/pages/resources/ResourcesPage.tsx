@@ -1,5 +1,6 @@
 import { DownloadOutlined, MailOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import { resourceCards } from '../../content/pages'
 import { routePaths } from '../../content/routes'
 import { ContentCard } from '../../shared/components/site/ContentCard'
@@ -8,6 +9,7 @@ import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
 
 export function ResourcesPage() {
+  const navigate = useNavigate()
   return (
     <>
       <PageHero
@@ -31,7 +33,7 @@ export function ResourcesPage() {
                 tone={title === 'Student Confidence Starter Guide' ? 'forest' : 'warm'}
               />
               {title === 'Student Confidence Starter Guide' ? (
-                <Button type="link" icon={<DownloadOutlined />} href={routePaths.studentGuide} className="!self-start !px-1 !text-[var(--accent-earth)]">
+                <Button type="link" icon={<DownloadOutlined />} onClick={() => navigate(routePaths.studentGuide)} className="!self-start !px-1 !text-[var(--accent-earth)]">
                   Open landing page
                 </Button>
               ) : null}
