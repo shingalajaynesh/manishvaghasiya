@@ -63,7 +63,7 @@ PORT=4000
 MONGODB_URI=mongodb+srv://<user>:<pass>@cluster0.xxxxx.mongodb.net/manishvaghasiya
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-gmail-app-password
-ADMIN_EMAIL=manish@manishvaghasiya.com
+ADMIN_EMAIL=manishvaghasiya.tech@gmail.com
 ADMIN_KEY=your-secret-admin-key
 ```
 

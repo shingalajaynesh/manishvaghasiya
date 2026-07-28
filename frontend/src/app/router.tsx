@@ -1,19 +1,15 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { routePaths } from '../content/routes'
 import { AboutPage } from '../pages/about/AboutPage'
 import { ArticlePage } from '../pages/blog/ArticlePage'
 import { BlogPage } from '../pages/blog/BlogPage'
-import { BookManishPage } from '../pages/book/BookManishPage'
 import { ContactPage } from '../pages/contact/ContactPage'
 import { HomePage } from '../pages/home/HomePage'
 import { LegalPage } from '../pages/legal/LegalPage'
 import { PhotosPage } from '../pages/photos/PhotosPage'
-import { ProgramsPage } from '../pages/programs/ProgramsPage'
 import { ResourceLandingPage } from '../pages/resources/ResourceLandingPage'
 import { ResourceThankYouPage } from '../pages/resources/ResourceThankYouPage'
 import { ResourcesPage } from '../pages/resources/ResourcesPage'
-import { TopicHubPage } from '../pages/topics/TopicHubPage'
-import { TopicsPage } from '../pages/topics/TopicsPage'
 import { VideosPage } from '../pages/videos/VideosPage'
 import { SiteLayout } from '../shared/components/layout/SiteLayout'
 import { legalDrafts } from '../content/legal'
@@ -26,16 +22,16 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: routePaths.about.slice(1), element: <AboutPage /> },
       { path: routePaths.photos.slice(1), element: <PhotosPage /> },
-      { path: routePaths.topics.slice(1), element: <TopicsPage /> },
-      { path: `${routePaths.topics.slice(1)}/:slug`, element: <TopicHubPage /> },
+      { path: 'topics', element: <Navigate to={routePaths.blog} replace /> },
+      { path: 'topics/:slug', element: <Navigate to={routePaths.blog} replace /> },
       { path: routePaths.blog.slice(1), element: <BlogPage /> },
       { path: `${routePaths.blog.slice(1)}/:slug`, element: <ArticlePage /> },
       { path: routePaths.videos.slice(1), element: <VideosPage /> },
       { path: routePaths.resources.slice(1), element: <ResourcesPage /> },
       { path: routePaths.studentGuide.slice(1), element: <ResourceLandingPage /> },
       { path: routePaths.studentGuideThanks.slice(1), element: <ResourceThankYouPage /> },
-      { path: routePaths.programs.slice(1), element: <ProgramsPage /> },
-      { path: routePaths.book.slice(1), element: <BookManishPage /> },
+      { path: 'programs', element: <Navigate to={routePaths.resources} replace /> },
+      { path: 'book-manish', element: <Navigate to={routePaths.contact} replace /> },
       { path: routePaths.contact.slice(1), element: <ContactPage /> },
       {
         path: routePaths.privacy.slice(1),

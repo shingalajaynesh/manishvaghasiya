@@ -61,9 +61,9 @@ export function PhotosPage() {
               <img src={speakerMedia.heroStage} alt="Manish Vaghasiya addressing a large audience" className="h-full w-full object-cover" />
             </div>
 
-            <Card bordered={false} className="photo-gallery-highlight__card">
-              <Space direction="vertical" size={14} className="w-full">
-                <Tag bordered={false} color="volcano" className="!w-fit !rounded-full !px-3 !py-1 !text-xs !font-semibold !uppercase !tracking-[0.15em]">
+            <Card variant="borderless" className="photo-gallery-highlight__card">
+              <Space orientation="vertical" size={14} className="w-full">
+                <Tag variant="filled" color="volcano" className="!w-fit !rounded-full !px-3 !py-1 !text-xs !font-semibold !uppercase !tracking-[0.15em]">
                   Real event photography
                 </Tag>
                 <Title level={3} className="font-playfair !m-0 !text-2xl !leading-tight !text-[var(--text-strong)]">
@@ -72,9 +72,10 @@ export function PhotosPage() {
                 <Paragraph className="!mb-0 !text-base !leading-8 !text-[var(--text-soft)]">
                   The homepage now stays focused on clarity and conversion, while this gallery page carries the full photo story in a more elegant way.
                 </Paragraph>
-                <Button type="primary" onClick={() => navigate(routePaths.book)}>
-                  Book Manish
+                <Button type="primary" onClick={() => navigate(routePaths.contact)}>
+                  Contact Manish
                 </Button>
+
               </Space>
             </Card>
           </div>
@@ -86,7 +87,7 @@ export function PhotosPage() {
               key: group.key,
               label: group.label,
               children: (
-                <Space direction="vertical" size={20} className="w-full">
+                <Space orientation="vertical" size={20} className="w-full">
                   <Paragraph className="!mb-0 !max-w-3xl !text-base !leading-8 !text-[var(--text-soft)]">
                     {group.description}
                   </Paragraph>

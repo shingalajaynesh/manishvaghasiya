@@ -1,10 +1,13 @@
 import { MenuOutlined } from '@ant-design/icons'
+
 import { Button, Drawer, Layout, Menu, Select, Space, Typography } from 'antd'
 import { useMemo, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { primaryNavigation, routePaths } from '../../../content/routes'
 import { languageOptions, siteDictionary, translate } from '../../../content/i18n'
+import { speakerMedia } from '../../../content/speakerMedia'
 import { useLanguage } from '../../lib/language'
+
 
 const { Header } = Layout
 const { Text } = Typography
@@ -30,9 +33,12 @@ export function SiteHeader() {
     <Header className="sticky top-0 z-40 !h-auto !border-b !border-[var(--line-soft)] !px-0 !py-0 backdrop-blur" style={{ background: 'rgba(250,245,237,0.90)' }}>
       <div className="editorial-container flex items-center justify-between gap-3 px-1 py-3 sm:px-2">
         <Link to={routePaths.home} className="flex items-center gap-3 min-w-0">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-earth)] text-white text-sm font-bold leading-none">
-            M
+          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[var(--line-soft)] shadow-sm bg-[var(--panel-soft)]">
+            <img src={speakerMedia.heroStage} alt="Manish Vaghasiya portrait logo" className="h-full w-full object-cover" />
           </div>
+
+
+
           <div className="min-w-0 leading-none">
             <Text className="!block !font-semibold !text-[var(--text-strong)]" style={{ fontSize: 15 }}>
               Manish Vaghasiya
@@ -52,6 +58,13 @@ export function SiteHeader() {
         />
 
         <Space size={8} className="shrink-0">
+          <Button
+            type="primary"
+            onClick={() => window.location.href = routePaths.resources}
+            className="!hidden sm:!inline-flex !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+          >
+            Buy E-Book ₹199
+          </Button>
           <Select
             value={language}
             onChange={setLanguage}
@@ -69,6 +82,7 @@ export function SiteHeader() {
             style={{ borderColor: 'var(--line-soft)' }}
           />
         </Space>
+
       </div>
 
       <Drawer

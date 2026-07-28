@@ -30,7 +30,7 @@ export function VideosPage() {
           {featuredVideos.map((video) => (
             <Col xs={24} md={12} key={video.id}>
               <Card
-                bordered={false}
+                variant="borderless"
                 className="h-full rounded-2xl border border-[var(--line-soft)] bg-white p-2 shadow-editorial transition-all hover:shadow-editorial-lg"
               >
                 <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">

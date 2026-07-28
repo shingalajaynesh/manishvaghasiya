@@ -38,8 +38,8 @@ export function AboutPage() {
             <img src={speakerMedia.aboutPortrait} alt="Manish Vaghasiya delivering a live speaking session" className="h-full w-full object-cover rounded-2xl" />
           </div>
           <div className="speaker-about-summary flex flex-col justify-center">
-            <Space direction="vertical" size={16} className="w-full">
-              <Tag bordered={false} color="gold" className="!w-fit !rounded-full !px-3 !py-1 !text-xs !font-semibold !uppercase !tracking-[0.15em]">
+            <Space orientation="vertical" size={16} className="w-full">
+              <Tag variant="filled" color="gold" className="!w-fit !rounded-full !px-3 !py-1 !text-xs !font-semibold !uppercase !tracking-[0.15em]">
                 Transformational Speaker & Coach
               </Tag>
               <Title level={2} className="font-playfair !m-0 !text-3xl !leading-tight !text-[var(--text-strong)]">
@@ -51,9 +51,10 @@ export function AboutPage() {
               <Paragraph className="!mb-0 !text-base !leading-8 !text-[var(--text-soft)]">
                 Through live seminars, educational PDF resources, and digital video lectures, his work reaches millions of readers and attendees seeking practical, actionable life direction.
               </Paragraph>
-              <Button type="primary" size="large" onClick={() => navigate(routePaths.book)} className="!w-fit !mt-2">
-                Book Manish for an Event
+              <Button type="primary" size="large" onClick={() => navigate(routePaths.contact)} className="!w-fit !mt-2">
+                Contact Manish for an Event
               </Button>
+
             </Space>
           </div>
         </div>

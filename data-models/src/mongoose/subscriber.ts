@@ -16,5 +16,7 @@ export const subscriberSchema = new Schema<SubscriberDocument>({
   ip: { type: String },
 })
 
-export const SubscriberModel =
+export const Subscriber =
   models.Subscriber || model<SubscriberDocument>('Subscriber', subscriberSchema)
+export const SubscriberModel = Subscriber
+

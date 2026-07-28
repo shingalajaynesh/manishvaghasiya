@@ -1,4 +1,4 @@
-import { EnvironmentOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons'
+import { EnvironmentOutlined, MailOutlined } from '@ant-design/icons'
 import { Button, Input, Typography } from 'antd'
 import { useState } from 'react'
 import { siteDictionary, translate } from '../../content/i18n'
@@ -40,18 +40,12 @@ export function ContactPage() {
       />
 
       <PageSection title="Direct contact details" description="Reach out to our event coordination and audience support team directly.">
-        <div className="grid gap-6 md:grid-cols-3 mb-12">
+        <div className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto mb-12">
           <ContentCard
             title="Email Inquiry"
-            description="info@manishvaghasiya.com"
+            description="manishvaghasiya.tech@gmail.com"
             icon={<MailOutlined />}
             tone="warm"
-          />
-          <ContentCard
-            title="Phone Support"
-            description="+91 82003 02328"
-            icon={<PhoneOutlined />}
-            tone="forest"
           />
           <ContentCard
             title="Office Base"
@@ -60,6 +54,7 @@ export function ContactPage() {
             tone="warm"
           />
         </div>
+
 
         <div className="max-w-3xl mx-auto rounded-2xl border border-[var(--line-soft)] bg-white p-8 shadow-editorial">
           <Title level={3} className="font-playfair !mb-2">Send Us a Message</Title>
@@ -89,7 +84,7 @@ export function ContactPage() {
                   <Input
                     type="email"
                     required
-                    placeholder="name@example.com"
+                    placeholder="yourname@gmail.com"
                     value={contactData.email}
                     onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
                   />

@@ -18,7 +18,7 @@ export const legalDrafts = {
     },
     {
       heading: 'Data Subject Rights and Contact Details',
-      body: 'Under applicable privacy laws (including GDPR, CCPA, and Indian IT Regulations), you have the right to request access to, correction of, or deletion of your personal data stored by this platform. To exercise your rights, please submit a written request via email to info@manishvaghasiya.com.',
+      body: 'Under applicable privacy laws (including GDPR, CCPA, and Indian IT Regulations), you have the right to request access to, correction of, or deletion of your personal data stored by this platform. To exercise your rights, please submit a written request via email to manishvaghasiya.tech@gmail.com.',
     },
   ],
   terms: [
@@ -68,7 +68,7 @@ export const legalDrafts = {
     },
     {
       heading: 'Reporting a Correction',
-      body: 'Readers, educators, and event organizers who spot factual errors or broken information are encouraged to notify our editorial team by sending detailed feedback to info@manishvaghasiya.com with the subject line "Correction Request".',
+      body: 'Readers, educators, and event organizers who spot factual errors or broken information are encouraged to notify our editorial team by sending detailed feedback to manishvaghasiya.tech@gmail.com with the subject line "Correction Request".',
     },
     {
       heading: 'Correction Procedure',

@@ -33,7 +33,7 @@ export function ContentCard({
         </div>
       ) : null}
       {meta ? (
-        <Tag bordered={false} color={tagColor} className="mb-3 rounded-full px-3 py-1 font-semibold uppercase tracking-[0.15em] text-xs">
+        <Tag variant="filled" color={tagColor} className="mb-3 rounded-full px-3 py-1 font-semibold uppercase tracking-[0.15em] text-xs">
           {meta}
         </Tag>
       ) : null}

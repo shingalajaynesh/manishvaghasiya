@@ -1,5 +1,5 @@
 import { ArrowRightOutlined } from '@ant-design/icons'
-import { Button, Form, Input, Typography } from 'antd'
+import { Button, Form, Input, Space, Typography } from 'antd'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
@@ -63,7 +63,7 @@ export function EmailCaptureForm({
   if (submitted) {
     return (
       <div className="editorial-surface rounded-[24px] px-6 py-6">
-        <Space direction="vertical" size={10}>
+        <Space orientation="vertical" size={10}>
           <Text className="!text-sm !font-semibold !text-[var(--text-strong)]">
             Thank you for joining.
           </Text>

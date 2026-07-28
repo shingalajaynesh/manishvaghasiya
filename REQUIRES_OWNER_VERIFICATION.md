@@ -21,8 +21,7 @@ To ensure 100% compliance with Google AdSense policy Section 4 (Critical Policy 
 
 | Detail | Current Value in Repository | Verification Status | Action Required |
 | :--- | :--- | :--- | :--- |
-| **Official Email** | `info@manishvaghasiya.com` | Pending Owner Test | Confirm mailbox is active and actively monitored for reader & booking inquiries. |
-| **Official Phone** | `+91 82003 02328` | Pending Owner Test | Confirm phone number is operational and accepting business/event inquiries. |
+| **Official Email** | `manishvaghasiya.tech@gmail.com` | Confirmed | Official contact email monitored for reader & booking inquiries. |
 | **Physical Address** | Surat, Gujarat, India (Pincode: `395003`) | Pending Owner Check | Provide exact registered business street address if required for invoices or formal notices. |
 | **Domain Registrar / Host** | Vercel / Domain Registrar | Confirmed | Ensure domain WHOIS details match publisher entity name where applicable. |
 

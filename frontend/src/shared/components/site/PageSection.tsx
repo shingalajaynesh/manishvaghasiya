@@ -21,7 +21,7 @@ export function PageSection({
     <section className={`px-1 py-10 sm:px-2 sm:py-12 lg:py-16 ${tone === 'warm' ? 'bg-[var(--panel-soft)]' : tone === 'forest' ? 'bg-[#f4f8f6]' : 'bg-transparent'}`}>
       <div className="editorial-container">
         <MotionSection>
-          <Space direction="vertical" size={10} className="max-w-3xl">
+          <Space orientation="vertical" size={10} className="max-w-3xl">
             <Title level={2} className="font-playfair !m-0 !text-[1.8rem] !leading-tight !text-[var(--text-strong)] sm:!text-[2.15rem] lg:!text-[2.5rem]">
               {title}
             </Title>

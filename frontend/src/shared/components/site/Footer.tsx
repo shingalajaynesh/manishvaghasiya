@@ -14,16 +14,15 @@ const footerSections = {
     { label: 'Home', href: routePaths.home },
     { label: 'About', href: routePaths.about },
     { label: 'Photos', href: routePaths.photos },
-    { label: 'Topics', href: routePaths.topics },
     { label: 'Blog', href: routePaths.blog },
   ],
   resources: [
     { label: 'Videos', href: routePaths.videos },
     { label: 'Resources', href: routePaths.resources },
-    { label: 'Programs', href: routePaths.programs },
-    { label: 'Book Manish', href: routePaths.book },
     { label: 'Contact', href: routePaths.contact },
   ],
+
+
   legal: [
     { label: 'Privacy Policy', href: routePaths.privacy },
     { label: 'Terms', href: routePaths.terms },
@@ -33,6 +32,25 @@ const footerSections = {
     { label: 'Affiliate Disclosure', href: routePaths.affiliateDisclosure },
   ],
 } as const
+
+function getLegalLabel(label: string, language: any) {
+  switch (label) {
+    case 'Privacy Policy':
+      return translate(siteDictionary.footer.privacy, language)
+    case 'Terms':
+      return translate(siteDictionary.footer.terms, language)
+    case 'Editorial Policy':
+      return translate(siteDictionary.footer.editorial, language)
+    case 'Corrections':
+      return translate(siteDictionary.footer.corrections, language)
+    case 'Ad Disclosure':
+      return translate(siteDictionary.footer.adDisclosure, language)
+    case 'Affiliate Disclosure':
+      return translate(siteDictionary.footer.affiliateDisclosure, language)
+    default:
+      return label
+  }
+}
 
 export function Footer() {
   const { language } = useLanguage()
@@ -58,14 +76,12 @@ export function Footer() {
                 Explore trusted articles, helpful resources, speaking programs, and clear ways to connect with the Manish Vaghasiya team.
               </Paragraph>
               <Space wrap size={[8, 8]} className="!mt-6">
-                <TextLink href="mailto:info@manishvaghasiya.com" className="!rounded-full !border !border-[var(--line-soft)] !px-4 !py-2 !text-[var(--accent-earth)] hover:!text-[var(--accent-earth-deep)]">
-                  info@manishvaghasiya.com
-                </TextLink>
-                <TextLink href="tel:+918200302328" className="!rounded-full !border !border-[var(--line-soft)] !px-4 !py-2 !text-[var(--accent-earth)] hover:!text-[var(--accent-earth-deep)]">
-                  +91 82003 02328
+                <TextLink href="mailto:manishvaghasiya.tech@gmail.com" className="!rounded-full !border !border-[var(--line-soft)] !px-4 !py-2 !text-[var(--accent-earth)] hover:!text-[var(--accent-earth-deep)]">
+                  manishvaghasiya.tech@gmail.com
                 </TextLink>
                 <Text className="!rounded-full !border !border-[var(--line-soft)] !px-4 !py-2 !text-[var(--text-muted)]">Surat, Gujarat</Text>
               </Space>
+
               <Divider className="!my-6 !border-[var(--line-soft)]" />
               <SocialLinks />
             </div>
@@ -91,9 +107,10 @@ export function Footer() {
                 <div className="mt-4 flex flex-col gap-2">
                   {footerSections.resources.map((item) => (
                     <NavLink key={item.label} to={item.href} className="text-sm text-[var(--text-muted)] hover:!text-[var(--accent-earth)]">
-                      {item.label === 'Book Manish' ? 'Book Manish' : item.label}
+                      {item.label}
                     </NavLink>
                   ))}
+
                 </div>
               </div>
 
@@ -104,19 +121,7 @@ export function Footer() {
                 <div className="mt-4 flex flex-col gap-2">
                   {footerSections.legal.map((item) => (
                     <NavLink key={item.label} to={item.href} className="text-sm text-[var(--text-muted)] hover:!text-[var(--accent-earth)]">
-                      {item.label === 'Privacy Policy'
-                        ? translate(siteDictionary.footer.privacy, language)
-                        : item.label === 'Terms'
-                          ? translate(siteDictionary.footer.terms, language)
-                          : item.label === 'Editorial Policy'
-                            ? translate(siteDictionary.footer.editorial, language)
-                            : item.label === 'Corrections'
-                              ? translate(siteDictionary.footer.corrections, language)
-                              : item.label === 'Ad Disclosure'
-                                ? translate(siteDictionary.footer.adDisclosure, language)
-                                : item.label === 'Affiliate Disclosure'
-                                  ? translate(siteDictionary.footer.affiliateDisclosure, language)
-                                  : item.label}
+                      {getLegalLabel(item.label, language)}
                     </NavLink>
                   ))}
                 </div>
@@ -128,3 +133,4 @@ export function Footer() {
     </AntFooter>
   )
 }
+

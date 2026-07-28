@@ -51,8 +51,8 @@ export const featuredVideos: FeaturedVideo[] = [
     category: 'Parenting & Family',
     duration: '14:20',
     description: 'Manish Vaghasiya shares practical insights on breaking down communication barriers between parents and teenage children.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=0VYCKxHEqll',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/0VYCKxHEqll',
+    youtubeUrl: 'https://www.youtube.com/watch?v=1qqO-uouvSg',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/1qqO-uouvSg',
   },
   {
     id: 'talk-2',
@@ -60,8 +60,8 @@ export const featuredVideos: FeaturedVideo[] = [
     category: 'Student Guidance',
     duration: '18:45',
     description: 'A live seminar keynote on transforming academic setbacks and exam stress into daily self-discipline and mental strength.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=0VYCKxHEqll',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/0VYCKxHEqll',
+    youtubeUrl: 'https://www.youtube.com/watch?v=WGY-cvRR71U',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/WGY-cvRR71U',
   },
   {
     id: 'talk-3',
@@ -69,8 +69,8 @@ export const featuredVideos: FeaturedVideo[] = [
     category: 'Family Relationships',
     duration: '12:10',
     description: 'Key principles of calm communication, listening habits, and emotional repair for Gujarati households.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=0VYCKxHEqll',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/0VYCKxHEqll',
+    youtubeUrl: 'https://www.youtube.com/watch?v=iw1cys9NQYo',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/iw1cys9NQYo',
   },
   {
     id: 'talk-4',
@@ -78,10 +78,11 @@ export const featuredVideos: FeaturedVideo[] = [
     category: 'Career Guidance',
     duration: '22:05',
     description: 'Practical guidance for students and parents navigating early career choices and overcoming peer pressure.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=0VYCKxHEqll',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/0VYCKxHEqll',
+    youtubeUrl: 'https://www.youtube.com/watch?v=fhCA9kmyo9c',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/fhCA9kmyo9c',
   },
 ]
+
 
 export const speakerMedia = {
   heroStage: mainPortraits[8],

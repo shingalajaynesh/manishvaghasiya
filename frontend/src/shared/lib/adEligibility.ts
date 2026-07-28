@@ -8,11 +8,9 @@ export const ADS_ALLOWED_ROUTES: string[] = [
   routePaths.home,
   routePaths.about,
   routePaths.photos,
-  routePaths.topics,
   routePaths.blog,
   routePaths.videos,
   routePaths.resources,
-  routePaths.programs,
 ]
 
 /**
@@ -20,7 +18,6 @@ export const ADS_ALLOWED_ROUTES: string[] = [
  */
 export const ADS_ALLOWED_PREFIXES: string[] = [
   '/blog/',
-  '/topics/',
 ]
 
 /**
@@ -32,7 +29,6 @@ export const ADS_ALLOWED_PREFIXES: string[] = [
  */
 export const ADS_FORBIDDEN_ROUTES: string[] = [
   routePaths.contact,
-  routePaths.book,
   routePaths.studentGuide,
   routePaths.studentGuideThanks,
   routePaths.privacy,
@@ -56,7 +52,7 @@ export function isAdEligibleRoute(pathname: string): boolean {
     return true
   }
 
-  // Check allowed prefix rules (e.g. /blog/article-slug, /topics/topic-slug)
+  // Check allowed prefix rules (e.g. /blog/article-slug)
   if (ADS_ALLOWED_PREFIXES.some((prefix) => cleanPath.startsWith(prefix))) {
     return true
   }

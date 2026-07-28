@@ -25,7 +25,8 @@ export const siteDictionary = {
     topics: { en: 'Topics', hi: 'विषय', gu: 'વિષયો' },
     blog: { en: 'Blog', hi: 'ब्लॉग', gu: 'બ્લોગ' },
     videos: { en: 'Videos', hi: 'वीडियो', gu: 'વિડિયો' },
-    resources: { en: 'Resources', hi: 'संसाधन', gu: 'સાધનો' },
+    resources: { en: 'E-Book Store', hi: 'ई-बुक स्टोर', gu: 'ઈ-બુક સ્ટોર' },
+
     programs: { en: 'Programs', hi: 'प्रोग्राम', gu: 'પ્રોગ્રામ' },
     book: { en: 'Book Manish', hi: 'मनीष को बुक करें', gu: 'મનીષને બુક કરો' },
     contact: { en: 'Contact', hi: 'संपर्क', gu: 'સંપર્ક' },

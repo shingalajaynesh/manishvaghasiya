@@ -63,9 +63,10 @@ export function ResourceThankYouPage() {
           <Button type="primary" icon={<ArrowRightOutlined />} onClick={() => navigate('/blog/how-students-can-build-confidence-after-failure')}>
             Read: Building Confidence After Failure
           </Button>
-          <Button onClick={() => navigate(routePaths.book)} style={{ borderColor: 'var(--line-strong)' }}>
-            Explore Seminar & Workshop Options
+          <Button onClick={() => navigate(routePaths.contact)} style={{ borderColor: 'var(--line-strong)' }}>
+            Contact for Seminars & Workshops
           </Button>
+
         </div>
       </PageSection>
     </>
