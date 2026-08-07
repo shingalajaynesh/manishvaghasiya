@@ -6,11 +6,12 @@ import { API_URL } from '../../lib/api'
 interface RazorpayCheckoutProps {
   amountInRupees: number
   itemName: string
+  bookId?: string
   customerName: string
   customerEmail: string
   customerPhone?: string
   buttonText?: string
-  onSuccess: (data: { paymentId: string; orderId: string }) => void
+  onSuccess: (data: { paymentId: string; orderId: string; bookId?: string }) => void
 }
 
 declare global {
@@ -22,6 +23,7 @@ declare global {
 export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
   amountInRupees,
   itemName,
+  bookId = 'jivan-jitvu-che',
   customerName,
   customerEmail,
   customerPhone = '',
@@ -72,6 +74,8 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
           amountInRupees,
           buyerName: customerName,
           buyerEmail: customerEmail,
+          bookId,
+          itemName,
         }),
       })
 
@@ -125,6 +129,8 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
                 buyerEmail: customerEmail,
                 buyerPhone: customerPhone,
                 amount: amountInRupees,
+                bookId,
+                itemName,
               }),
             })
 
@@ -138,6 +144,7 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
               onSuccess({
                 paymentId: razorpayResponse.razorpay_payment_id,
                 orderId: razorpayResponse.razorpay_order_id,
+                bookId: bookId,
               })
             } else {
               message.error({ content: verifyData.error || 'Payment verification failed.', key: 'verify' })

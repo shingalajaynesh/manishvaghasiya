@@ -63,7 +63,7 @@ export function SiteHeader() {
             onClick={() => window.location.href = routePaths.resources}
             className="!hidden sm:!inline-flex !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
           >
-            Buy E-Book ₹199
+            Buy E-Books (₹199+)
           </Button>
           <Select
             value={language}

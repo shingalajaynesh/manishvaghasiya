@@ -19,7 +19,7 @@ function getRazorpayInstance() {
 
 // 1. Create Razorpay E-Book Order
 paymentRouter.post('/payment/create-ebook-order', async (req: Request, res: Response) => {
-  const { amountInRupees = 1, buyerEmail, buyerName } = req.body || {}
+  const { amountInRupees = 199, buyerEmail, buyerName, bookId = 'jivan-jitvu-che', itemName = '' } = req.body || {}
   const amountInPaise = Math.round(Number(amountInRupees) * 100)
 
   try {
@@ -31,6 +31,8 @@ paymentRouter.post('/payment/create-ebook-order', async (req: Request, res: Resp
       notes: {
         buyerEmail: buyerEmail || '',
         buyerName: buyerName || '',
+        bookId: bookId || 'jivan-jitvu-che',
+        itemName: itemName || '',
       },
     }
 
@@ -63,7 +65,9 @@ paymentRouter.post('/payment/verify-ebook-order', async (req: Request, res: Resp
       buyerName,
       buyerEmail,
       buyerPhone,
-      amount = 1,
+      amount = 199,
+      bookId = 'jivan-jitvu-che',
+      itemName = 'Manish Vaghasiya Gujarati E-Book',
     } = req.body
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -90,13 +94,14 @@ paymentRouter.post('/payment/verify-ebook-order', async (req: Request, res: Resp
         buyerName: buyerName || 'Valued Reader',
         buyerEmail: buyerEmail || 'customer@example.com',
         buyerPhone: buyerPhone || '',
+        bookId: bookId || 'jivan-jitvu-che',
         amount: Number(amount),
         razorpayOrderId: razorpay_order_id,
         razorpayPaymentId: razorpay_payment_id,
         razorpaySignature: razorpay_signature,
         status: 'paid',
       })
-      console.log(`✅ Saved EbookPurchase to MongoDB for ${buyerEmail}`)
+      console.log(`✅ Saved EbookPurchase to MongoDB for ${buyerEmail} (bookId: ${bookId})`)
     }
 
     // Send confirmation email via Nodemailer if configured
@@ -112,27 +117,28 @@ paymentRouter.post('/payment/verify-ebook-order', async (req: Request, res: Resp
         await mailer.sendMail({
           from: `"Manish Vaghasiya" <${user}>`,
           to: buyerEmail,
-          subject: '📘 Your E-Book Purchase Confirmation — Manish Vaghasiya',
+          subject: `📘 Purchase Confirmation: ${itemName} — Manish Vaghasiya`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; color: #222; border: 1px solid #eee; padding: 24px; border-radius: 12px;">
               <h2 style="color: #D4A017; margin-top: 0;">Thank you for your purchase! 🙏</h2>
               <p>Namaste <strong>${buyerName || 'Friend'}</strong>,</p>
-              <p>Your payment of <strong>₹${amount}</strong> for the <strong>Student Confidence & Life Guidance E-Book</strong> has been successfully processed.</p>
+              <p>Your payment of <strong>₹${amount}</strong> for <strong>${itemName}</strong> has been successfully processed.</p>
               
               <div style="background: #f9f8f6; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #D4A017;">
-                <p style="margin: 0; font-size: 14px;"><strong>Order ID:</strong> ${razorpay_order_id}</p>
+                <p style="margin: 0; font-size: 14px;"><strong>Item:</strong> ${itemName}</p>
+                <p style="margin: 4px 0 0 0; font-size: 14px;"><strong>Order ID:</strong> ${razorpay_order_id}</p>
                 <p style="margin: 4px 0 0 0; font-size: 14px;"><strong>Payment ID:</strong> ${razorpay_payment_id}</p>
               </div>
 
-              <p>Click the button below to download your complete E-Book PDF:</p>
+              <p>Click the button below to access & download your official PDF E-Book(s):</p>
               <p style="text-align: center; margin: 25px 0;">
                 <a href="https://manishvaghasiya.com/resources" style="background: #D4A017; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; display: inline-block;">
-                  📥 Download E-Book PDF
+                  📥 Download E-Book PDF Now
                 </a>
               </p>
               <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;" />
               <p style="color: #888; font-size: 11px; margin-bottom: 0;">
-                Manish Vaghasiya | Transformational Speaker & Coach<br />
+                Manish Vaghasiya | Transformational Speaker & Author<br />
                 Surat, Gujarat, India
               </p>
             </div>
@@ -148,6 +154,7 @@ paymentRouter.post('/payment/verify-ebook-order', async (req: Request, res: Resp
       message: 'Payment verified successfully! E-Book access granted.',
       orderId: razorpay_order_id,
       paymentId: razorpay_payment_id,
+      bookId,
     })
   } catch (error: any) {
     console.error('Error verifying Razorpay E-Book payment:', error)

@@ -4,6 +4,7 @@ export interface EbookPurchaseDocument {
   buyerName: string
   buyerEmail: string
   buyerPhone?: string
+  bookId?: string
   amount: number
   razorpayOrderId: string
   razorpayPaymentId: string
@@ -16,6 +17,7 @@ export const ebookPurchaseSchema = new Schema<EbookPurchaseDocument>({
   buyerName: { type: String, required: true, trim: true },
   buyerEmail: { type: String, required: true, lowercase: true, trim: true },
   buyerPhone: { type: String, trim: true },
+  bookId: { type: String, trim: true, default: 'jivan-jitvu-che' },
   amount: { type: Number, required: true },
   razorpayOrderId: { type: String, required: true },
   razorpayPaymentId: { type: String, required: true },

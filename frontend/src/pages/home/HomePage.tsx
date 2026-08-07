@@ -180,55 +180,122 @@ export function HomePage() {
 
 
 
-      <PageSection title="Featured Master E-Book" description="Get instant access to Manish Vaghasiya's official Gujarati life guidance handbook." tone="forest">
-        <div className="rounded-3xl border border-[var(--line-soft)] bg-white p-8 shadow-editorial lg:p-10">
-          <Row gutter={[40, 32]} align="middle">
-            <Col xs={24} lg={14}>
-              <Tag color="gold" className="!rounded-full !px-3 !py-1 !text-xs !font-bold !uppercase !tracking-wider">
-                Official E-Book Release • Gujarati Master Edition
-              </Tag>
-              <Title level={2} className="font-playfair !mb-1 !mt-3 !text-2xl !text-[var(--text-strong)] lg:!text-3xl">
-                જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો
-              </Title>
-              <div className="mb-3 text-sm font-semibold text-[var(--accent-earth)]">
-                Jivan Jitvu Che To Parivar Thi Sharu Karo • 276 Pages
+      <PageSection title="Official Master E-Books" description="Get instant access to Manish Vaghasiya's official life-changing Gujarati master handbooks." tone="forest">
+        <Row gutter={[24, 24]}>
+          {/* Book 1 Card */}
+          <Col xs={24} lg={12}>
+            <div className="flex h-full flex-col justify-between rounded-3xl border border-[var(--line-soft)] bg-white p-6 shadow-editorial transition-all hover:shadow-xl lg:p-8">
+              <div>
+                <Tag color="gold" className="!mb-3 !rounded-full !px-3 !py-1 !text-xs !font-bold !uppercase">
+                  PARIVAR & PARENTING BESTSELLER
+                </Tag>
+                <div className="flex gap-4">
+                  <div className="shrink-0 overflow-hidden rounded-xl shadow-md transition-transform duration-300 hover:scale-105" style={{ width: '110px' }}>
+                    <img
+                      src="/books/images/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati.png"
+                      alt="જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો Book Cover"
+                      className="h-auto w-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <Title level={3} className="font-playfair !mb-1 !text-xl !text-[var(--text-strong)]">
+                      જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો
+                    </Title>
+                    <div className="mb-2 text-xs font-bold text-[var(--accent-earth)]">
+                      276 Pages • Gujarati Master Edition
+                    </div>
+                    <Paragraph className="!mb-0 !text-xs !leading-6 !text-[var(--text-soft)]">
+                      વિદ્યાર્થી, માતા-પિતા અને દરેક પરિવાર માટે જીવન બદલતા ૧૨ પાઠ, સંસ્કાર, ડિજિટલ ડિટોક્સ અને ૨૧ દિવસનો પરિવાર પરિવર્તન પડકાર.
+                    </Paragraph>
+                  </div>
+                </div>
               </div>
-              <Paragraph className="!mb-6 !text-base !leading-8 !text-[var(--text-soft)]">
-                વિદ્યાર્થી, માતા-પિતા અને દરેક પરિવાર માટે જીવન બદલતા ૧૨ પાઠ. A 276-page life-changing master guide packed with practical wisdom on family bonding, child mindset, smartphone detox, and 21-day family transformation challenges.
-              </Paragraph>
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="mt-6 flex flex-wrap items-center justify-between border-t border-[var(--line-soft)] pt-4 gap-3">
+                <div className="text-xl font-extrabold text-[var(--accent-earth)]">
+                  ₹199 <span className="text-xs font-normal text-[var(--text-muted)] line-through">₹499</span>
+                  <span className="ml-2 rounded bg-green-100 px-1.5 py-0.5 text-[10px] font-bold text-green-700">60% OFF</span>
+                </div>
                 <Button
                   type="primary"
-                  size="large"
                   icon={<BookOutlined />}
-                  onClick={() => navigate(routePaths.resources)}
-                  className="!h-14 !rounded-xl !bg-[#D4A017] !px-8 !text-base !font-bold hover:!bg-[#b88910]"
+                  onClick={() => navigate(`${routePaths.resources}?book=jivan-jitvu-che`)}
+                  className="!rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
                 >
-                  Buy E-Book for ₹199
+                  Buy Book 1 PDF
                 </Button>
-                <div className="text-xs text-[var(--text-muted)] font-semibold">
-                  ⚡ Instant PDF Download + Email Copy
+              </div>
+            </div>
+          </Col>
+
+          {/* Book 2 Card */}
+          <Col xs={24} lg={12}>
+            <div className="flex h-full flex-col justify-between rounded-3xl border border-[var(--line-soft)] bg-white p-6 shadow-editorial transition-all hover:shadow-xl lg:p-8">
+              <div>
+                <Tag color="blue" className="!mb-3 !rounded-full !px-3 !py-1 !text-xs !font-bold !uppercase">
+                  NEW RELEASE • MINDSET MASTER
+                </Tag>
+                <div className="flex gap-4">
+                  <div className="shrink-0 overflow-hidden rounded-xl shadow-md transition-transform duration-300 hover:scale-105" style={{ width: '110px' }}>
+                    <img
+                      src="/books/images/Man-Haryu-To-Badhu-Haryu_Gujarati_Master.png"
+                      alt="મન હાર્યું તો બધું હાર્યું Book Cover"
+                      className="h-auto w-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <Title level={3} className="font-playfair !mb-1 !text-xl !text-[var(--text-strong)]">
+                      મન હાર્યું તો બધું હાર્યું
+                    </Title>
+                    <div className="mb-2 text-xs font-bold text-[var(--accent-earth)]">
+                      250+ Pages • Gujarati Master Edition
+                    </div>
+                    <Paragraph className="!mb-0 !text-xs !leading-6 !text-[var(--text-soft)]">
+                      માનસિક મજબૂતી, ઓવરથિંકિંગમાંથી મુક્તિ, આત્મવિશ્વાસનું પુનઃનિર્માણ અને પડકારો સામે હિંમત રાખવાનું શક્તિશાળી માર્ગદર્શન.
+                    </Paragraph>
+                  </div>
                 </div>
               </div>
-            </Col>
-            <Col xs={24} lg={10}>
-              <div className="rounded-2xl border border-[var(--line-soft)] bg-[var(--bg-warm)] p-6 text-center shadow-sm">
-                <div className="mx-auto mb-4 overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:scale-105" style={{ maxWidth: '200px' }}>
-                  <img
-                    src="/books/images/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati.png"
-                    alt="જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો Book Cover"
-                    className="h-auto w-full object-cover"
-                  />
+              <div className="mt-6 flex flex-wrap items-center justify-between border-t border-[var(--line-soft)] pt-4 gap-3">
+                <div className="text-xl font-extrabold text-[var(--accent-earth)]">
+                  ₹199 <span className="text-xs font-normal text-[var(--text-muted)] line-through">₹499</span>
+                  <span className="ml-2 rounded bg-green-100 px-1.5 py-0.5 text-[10px] font-bold text-green-700">60% OFF</span>
                 </div>
-                <div className="text-2xl font-extrabold text-[var(--accent-earth)]">₹199 <span className="text-sm font-normal text-[var(--text-muted)] line-through">₹499</span></div>
-                <p className="mt-1 text-xs text-green-700 font-bold">Includes Lifetime PDF Access (276 Pages)</p>
-                <div className="mt-4 border-t border-[var(--line-soft)] pt-3 text-xs text-[var(--text-soft)] space-y-1">
-                  <div>✔ 25,000+ Families Inspired Across Gujarat</div>
-                  <div>✔ Secure Razorpay Payments (UPI / GPay / Cards)</div>
-                </div>
+                <Button
+                  type="primary"
+                  icon={<BookOutlined />}
+                  onClick={() => navigate(`${routePaths.resources}?book=man-haryu-to-badhu-haryu`)}
+                  className="!rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+                >
+                  Buy Book 2 PDF
+                </Button>
               </div>
-            </Col>
-          </Row>
+            </div>
+          </Col>
+        </Row>
+
+        {/* Master Combo Banner */}
+        <div className="mt-6 rounded-3xl border border-amber-300 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-100 p-6 shadow-editorial text-center sm:p-8">
+          <div className="inline-block rounded-full bg-[#D4A017] px-4 py-1 text-xs font-extrabold uppercase tracking-wider text-white mb-2 shadow-sm">
+            🔥 SPECIAL COMBO BUNDLE OFFER
+          </div>
+          <Title level={3} className="font-playfair !mb-2 !text-2xl !text-[var(--text-strong)]">
+            બંને માસ્ટર પુસ્તકો બંડલ (Get Both E-Books & Save Extra ₹49)
+          </Title>
+          <p className="mx-auto max-w-2xl text-xs text-[var(--text-soft)] mb-4">
+            'જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો' + 'મન હાર્યું તો બધું હાર્યું' બંને માસ્ટર ઈ-બુક કમ્પ્લીટ લાઈબ્રેરી મેળવો માત્ર ₹349 માં!
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Button
+              type="primary"
+              size="large"
+              icon={<BookOutlined />}
+              onClick={() => navigate(`${routePaths.resources}?book=combo-bundle`)}
+              className="!h-13 !rounded-xl !bg-[#D4A017] !px-8 !text-base !font-bold hover:!bg-[#b88910] shadow-md"
+            >
+              Get Master Combo Pack for ₹349
+            </Button>
+            <span className="text-xs text-emerald-800 font-bold">⚡ Instant PDF Download + Email Access</span>
+          </div>
         </div>
       </PageSection>
 
