@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useUser, UserButton, SignInButton, SignedIn, SignedOut } from '@clerk/clerk-react'
+import { useUser, UserButton, SignedIn, SignedOut } from '@clerk/clerk-react'
+import { getUserPurchasedBooks, syncUserPurchasesFromBackend } from '../../shared/lib/userPurchases'
+
 
 import {
   BookOutlined,
@@ -21,24 +23,16 @@ import { siteDictionary, translate } from '../../content/i18n'
 export function DashboardPage() {
   const { user } = useUser()
   const { language } = useLanguage()
-  const [purchasedBookIds, setPurchasedBookIds] = useState<string[]>(['jivan-jitvu-che'])
+  const [purchasedBookIds, setPurchasedBookIds] = useState<string[]>(() => getUserPurchasedBooks(user?.id))
 
-  // Load existing purchase history from localStorage
   useEffect(() => {
-    try {
-      const savedPurchase = localStorage.getItem('mv_ebook_purchased')
-      if (savedPurchase) {
-        const parsed = JSON.parse(savedPurchase)
-        if (parsed?.bookId === 'combo-bundle') {
-          setPurchasedBookIds(['jivan-jitvu-che', 'man-haryu-to-badhu-haryu', 'combo-bundle'])
-        } else if (parsed?.bookId && !purchasedBookIds.includes(parsed.bookId)) {
-          setPurchasedBookIds((prev) => [...prev, parsed.bookId])
-        }
-      }
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+    const userEmail = user?.primaryEmailAddress?.emailAddress
+    setPurchasedBookIds(getUserPurchasedBooks(user?.id))
+    syncUserPurchasesFromBackend(user?.id, userEmail).then((updated) => {
+      setPurchasedBookIds(updated)
+    })
+  }, [user?.id, user?.primaryEmailAddress?.emailAddress])
+
 
   const handleBookPurchaseSuccess = (bookId: string, orderId: string, paymentId: string) => {
     if (bookId === 'combo-bundle') {
@@ -116,12 +110,13 @@ export function DashboardPage() {
 
             <div className="flex items-center gap-3">
               <SignedOut>
-                <SignInButton mode="modal">
+                <Link to="/sign-in">
                   <Button type="primary" className="!rounded-xl !bg-[#D4A017] !font-bold">
-                    Sign In / Register
+                    Sign In / Register Account
                   </Button>
-                </SignInButton>
+                </Link>
               </SignedOut>
+
               <SignedIn>
                 <Link to="/resources">
                   <Button type="default" icon={<ShoppingOutlined />} className="!rounded-xl !font-bold">

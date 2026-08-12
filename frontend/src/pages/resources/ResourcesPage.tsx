@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useLocation, Link } from 'react-router-dom'
-import { useUser, SignInButton } from '@clerk/clerk-react'
+import { useUser } from '@clerk/clerk-react'
+
 import {
   BookOutlined,
   CheckCircleOutlined,
@@ -426,12 +427,13 @@ export function ResourcesPage() {
                           Please sign in or register your free account to purchase e-books. All purchased books will be saved to your reader dashboard.
                         </p>
                         <div className="mt-4">
-                          <SignInButton mode="modal">
+                          <Link to="/sign-in">
                             <button className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#D4A017] py-3 text-sm font-bold text-white shadow-md hover:bg-[#b88910]">
                               Sign In / Register Account to Buy
                             </button>
-                          </SignInButton>
+                          </Link>
                         </div>
+
                       </div>
                     ) : (
                       <>

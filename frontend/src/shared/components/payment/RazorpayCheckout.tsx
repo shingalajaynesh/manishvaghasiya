@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { App, Button } from 'antd'
 import { ShoppingCartOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
-import { useUser, SignInButton } from '@clerk/clerk-react'
+import { useUser } from '@clerk/clerk-react'
+
+
 import { API_URL } from '../../lib/api'
 
 interface RazorpayCheckoutProps {
@@ -175,7 +178,7 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
   // If NOT signed in, clicking the checkout button prompts Clerk Sign-In modal
   if (!isSignedIn) {
     return (
-      <SignInButton mode="modal">
+      <Link to="/sign-in" className="inline-block">
         <Button
           type="primary"
           size="large"
@@ -185,9 +188,10 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
           <span>Sign In to Buy E-Book (₹{amountInRupees})</span>
           <LockOutlined className="text-xs opacity-75" />
         </Button>
-      </SignInButton>
+      </Link>
     )
   }
+
 
   return (
     <Button
