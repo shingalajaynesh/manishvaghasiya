@@ -3,7 +3,8 @@ import { ClerkProvider, SignedIn, SignedOut, UserButton, SignInButton, useUser, 
 
 export const CLERK_PUBLISHABLE_KEY =
   import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ||
-  'pk_test_ZGl2ZXJzZS1kYW5lLTQ5LmNsZXJrLmFjY291bnRzLmRldiQ'
+  'pk_live_Y2xlcmsubWFuaXNodmFnaGFzaXlhLmNvbSQ'
+
 
 interface AppClerkProviderProps {
   children: React.ReactNode
