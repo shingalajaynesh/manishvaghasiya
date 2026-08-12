@@ -12,4 +12,27 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('pdfjs-dist') || id.includes('react-pdf')) {
+              return 'pdf-vendor'
+            }
+            if (id.includes('@ant-design') || id.includes('antd')) {
+              return 'antd-vendor'
+            }
+            if (id.includes('@clerk')) {
+              return 'clerk-vendor'
+            }
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'react-vendor'
+            }
+          }
+        },
+      },
+    },
+  },
 })
