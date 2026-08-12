@@ -18,15 +18,18 @@ import { SiteLayout } from '../shared/components/layout/SiteLayout'
 import { legalDrafts } from '../content/legal'
 
 import { AdminPortalPage } from '../pages/admin/AdminPortalPage'
+import { NotFoundPage, AppErrorBoundary } from '../pages/error/NotFoundPage'
 
 export const router = createBrowserRouter([
   {
     path: '/reader/:bookId',
     element: <EbookReaderPage />,
+    errorElement: <AppErrorBoundary />,
   },
   {
     path: routePaths.home,
     element: <SiteLayout />,
+    errorElement: <AppErrorBoundary />,
     children: [
       { index: true, element: <HomePage /> },
       { path: routePaths.about.slice(1), element: <AboutPage /> },
@@ -40,6 +43,7 @@ export const router = createBrowserRouter([
       { path: routePaths.dashboard.slice(1), element: <DashboardPage /> },
       { path: 'sign-in/*', element: <SignInPage /> },
       { path: 'sign-up/*', element: <SignUpPage /> },
+      { path: 'sso-callback/*', element: <Navigate to={routePaths.dashboard} replace /> },
       { path: '1908/admin', element: <AdminPortalPage /> },
       { path: 'admin-portal-v1908', element: <AdminPortalPage /> },
       { path: 'admin-1908', element: <AdminPortalPage /> },
@@ -49,6 +53,8 @@ export const router = createBrowserRouter([
       { path: 'programs', element: <Navigate to={routePaths.resources} replace /> },
       { path: 'book-manish', element: <Navigate to={routePaths.contact} replace /> },
       { path: routePaths.contact.slice(1), element: <ContactPage /> },
+      { path: '*', element: <NotFoundPage /> },
+
 
       {
         path: routePaths.privacy.slice(1),
