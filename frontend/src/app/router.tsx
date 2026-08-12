@@ -1,5 +1,8 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react'
 import { routePaths } from '../content/routes'
+
+
 import { AboutPage } from '../pages/about/AboutPage'
 import { ArticlePage } from '../pages/blog/ArticlePage'
 import { BlogPage } from '../pages/blog/BlogPage'
@@ -43,7 +46,8 @@ export const router = createBrowserRouter([
       { path: routePaths.dashboard.slice(1), element: <DashboardPage /> },
       { path: 'sign-in/*', element: <SignInPage /> },
       { path: 'sign-up/*', element: <SignUpPage /> },
-      { path: 'sso-callback/*', element: <Navigate to={routePaths.dashboard} replace /> },
+      { path: 'sso-callback/*', element: <AuthenticateWithRedirectCallback signUpForceRedirectUrl="/dashboard" signInForceRedirectUrl="/dashboard" /> },
+
       { path: '1908/admin', element: <AdminPortalPage /> },
       { path: 'admin-portal-v1908', element: <AdminPortalPage /> },
       { path: 'admin-1908', element: <AdminPortalPage /> },

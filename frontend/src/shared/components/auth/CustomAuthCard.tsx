@@ -179,9 +179,11 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ redirectUrl = '/
   if (pendingVerification) {
     return (
       <div className="w-full max-w-md rounded-3xl border border-[var(--line-soft)] bg-white p-6 sm:p-8 shadow-xl text-center">
+        <div id="clerk-captcha" className="mb-2 flex justify-center" />
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-700">
           <SafetyCertificateOutlined className="text-2xl" />
         </div>
+
 
         <h3 className="font-playfair text-2xl font-bold text-[var(--text-strong)]">
           {language === 'gu' ? 'ઇમેઇલ વેરિફિકેશન' : 'Verify Email Address'}
@@ -234,7 +236,11 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ redirectUrl = '/
   // 2. UNIFIED ALL-IN-ONE AUTH CARD
   return (
     <div className="w-full max-w-md rounded-3xl border border-[var(--line-soft)] bg-white p-6 sm:p-8 shadow-xl">
+      {/* Clerk Bot Protection / Smart CAPTCHA container */}
+      <div id="clerk-captcha" className="mb-2 flex justify-center" />
+
       {/* Header */}
+
       <div className="text-center mb-6">
         <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-[var(--text-strong)]">
           {language === 'gu' ? 'લૉગ ઇન / નવું એકાઉન્ટ' : 'Sign In / Register Account'}
