@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
   SafetyCertificateOutlined,
-  DollarOutlined,
   ShoppingOutlined,
   UsergroupAddOutlined,
   BookOutlined,
@@ -9,11 +8,10 @@ import {
   GiftOutlined,
   KeyOutlined,
   CheckCircleOutlined,
-  FilePdfOutlined,
-  ArrowRightOutlined,
   ReloadOutlined,
 } from '@ant-design/icons'
-import { Button, Input, Table, Tag, Card, Modal, Select, Statistic, Alert } from 'antd'
+import { Button, Input, Table, Tag, Modal, Select, Statistic } from 'antd'
+
 import toast from 'react-hot-toast'
 import { SeoHead } from '../../shared/components/site/SeoHead'
 import { PageHero } from '../../shared/components/site/PageHero'
