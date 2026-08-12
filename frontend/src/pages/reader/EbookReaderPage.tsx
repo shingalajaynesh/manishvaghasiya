@@ -79,6 +79,151 @@ export function EbookReaderPage() {
     user?.primaryEmailAddress?.emailAddress || user?.fullName || 'Authorized Reader'
   const watermarkText = `LICENSED TO: ${userIdentifier} • DRM PROTECTED • DO NOT DISTRIBUTE`
 
+  const hasAccess = isBookOwned(user?.id, bookId || 'jivan-jitvu-che')
+
+  // 1. Load Original PDF Document (Only load when signed in and access granted)
+  useEffect(() => {
+    if (!isLoaded || !purchaseSynced || !isSignedIn || !hasAccess) return
+
+    let isMounted = true
+    setLoading(true)
+
+    pdfjsLib
+      .getDocument(bookInfo.path)
+      .promise.then((loadedPdf) => {
+        if (!isMounted) return
+        setPdfDoc(loadedPdf)
+        setNumPages(loadedPdf.numPages)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error('Error loading PDF document:', err)
+        setLoading(false)
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [bookInfo.path, isLoaded, purchaseSynced, isSignedIn, hasAccess])
+
+  // 2. Render Current PDF Page onto Protected HTML5 Canvas
+  useEffect(() => {
+    if (!pdfDoc || !canvasRef.current || !hasAccess) return
+
+    let cancelled = false
+
+    pdfDoc.getPage(pageNum).then((page) => {
+      if (cancelled) return
+
+      const canvas = canvasRef.current
+      if (!canvas) return
+      const context = canvas.getContext('2d')
+      if (!context) return
+
+      const viewport = page.getViewport({ scale })
+      canvas.height = viewport.height
+      canvas.width = viewport.width
+
+      // Cancel previous page rendering task if ongoing
+      if (renderTaskRef.current) {
+        renderTaskRef.current.cancel()
+      }
+
+      const renderContext = {
+        canvasContext: context,
+        viewport: viewport,
+      }
+
+      const renderTask = page.render(renderContext)
+      renderTaskRef.current = renderTask
+
+      renderTask.promise.catch((err) => {
+        if (err.name !== 'RenderingCancelledException') {
+          console.error('Error rendering page canvas:', err)
+        }
+      })
+    })
+
+    return () => {
+      cancelled = true
+      if (renderTaskRef.current) {
+        renderTaskRef.current.cancel()
+      }
+    }
+  }, [pdfDoc, pageNum, scale, hasAccess])
+
+  // 3. Anti-Screenshot, Anti-Print & Window Focus Protection Listeners
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'PrintScreen') {
+        e.preventDefault()
+        setIsScreenBlurred(true)
+        setSecurityNotice('Screenshots are disabled to prevent DRM copyright piracy.')
+        return false
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+        e.preventDefault()
+        setIsScreenBlurred(true)
+        setSecurityNotice('Printing is disabled for this protected e-book.')
+        return false
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault()
+        setSecurityNotice('Downloading raw PDF files is disabled.')
+        return false
+      }
+      if (
+        e.key === 'F12' ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'i') ||
+        ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u')
+      ) {
+        e.preventDefault()
+        setIsScreenBlurred(true)
+        setSecurityNotice('Developer tools are restricted on DRM protected content.')
+        return false
+      }
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        setIsScreenBlurred(true)
+      }
+    }
+    const handleBlur = () => setIsScreenBlurred(true)
+    const handleFocus = () => setIsScreenBlurred(false)
+
+    window.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('blur', handleBlur)
+    window.addEventListener('focus', handleFocus)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('blur', handleBlur)
+      window.removeEventListener('focus', handleFocus)
+    }
+  }, [])
+
+  // Restore bookmark status
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`mv_pdf_bookmark_${bookId}`)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed.pageNum === pageNum) {
+          setIsBookmarked(true)
+        } else {
+          setIsBookmarked(false)
+        }
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }, [pageNum, bookId])
+
+  // ==================== CONDITIONAL RENDER GUARDS (ALL HOOKS CALLED ABOVE) ====================
+
   // 0. Access Guard Checks
   if (!isLoaded || !purchaseSynced) {
     return (
@@ -120,8 +265,6 @@ export function EbookReaderPage() {
     )
   }
 
-  const hasAccess = isBookOwned(user?.id, bookId || 'jivan-jitvu-che')
-
   if (!hasAccess) {
     return (
       <>
@@ -158,29 +301,6 @@ export function EbookReaderPage() {
     )
   }
 
-  // 1. Load Original PDF Document
-
-  useEffect(() => {
-    let isMounted = true
-    setLoading(true)
-
-    pdfjsLib
-      .getDocument(bookInfo.path)
-      .promise.then((loadedPdf) => {
-        if (!isMounted) return
-        setPdfDoc(loadedPdf)
-        setNumPages(loadedPdf.numPages)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error('Error loading PDF document:', err)
-        setLoading(false)
-      })
-
-    return () => {
-      isMounted = false
-    }
-  }, [bookInfo.path])
 
   // 2. Render Current PDF Page onto Protected HTML5 Canvas
   useEffect(() => {
