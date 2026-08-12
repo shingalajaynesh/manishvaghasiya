@@ -11,10 +11,17 @@ import { ResourceLandingPage } from '../pages/resources/ResourceLandingPage'
 import { ResourceThankYouPage } from '../pages/resources/ResourceThankYouPage'
 import { ResourcesPage } from '../pages/resources/ResourcesPage'
 import { VideosPage } from '../pages/videos/VideosPage'
+import { DashboardPage } from '../pages/dashboard/DashboardPage'
+import { EbookReaderPage } from '../pages/reader/EbookReaderPage'
+import { SignInPage, SignUpPage } from '../pages/auth/AuthPages'
 import { SiteLayout } from '../shared/components/layout/SiteLayout'
 import { legalDrafts } from '../content/legal'
 
 export const router = createBrowserRouter([
+  {
+    path: '/reader/:bookId',
+    element: <EbookReaderPage />,
+  },
   {
     path: routePaths.home,
     element: <SiteLayout />,
@@ -28,11 +35,15 @@ export const router = createBrowserRouter([
       { path: `${routePaths.blog.slice(1)}/:slug`, element: <ArticlePage /> },
       { path: routePaths.videos.slice(1), element: <VideosPage /> },
       { path: routePaths.resources.slice(1), element: <ResourcesPage /> },
+      { path: routePaths.dashboard.slice(1), element: <DashboardPage /> },
+      { path: 'sign-in/*', element: <SignInPage /> },
+      { path: 'sign-up/*', element: <SignUpPage /> },
       { path: routePaths.studentGuide.slice(1), element: <ResourceLandingPage /> },
       { path: routePaths.studentGuideThanks.slice(1), element: <ResourceThankYouPage /> },
       { path: 'programs', element: <Navigate to={routePaths.resources} replace /> },
       { path: 'book-manish', element: <Navigate to={routePaths.contact} replace /> },
       { path: routePaths.contact.slice(1), element: <ContactPage /> },
+
       {
         path: routePaths.privacy.slice(1),
         element: (

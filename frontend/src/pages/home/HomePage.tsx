@@ -29,6 +29,8 @@ import { SocialLinks } from '../../shared/components/site/SocialLinks'
 import { useNavigate } from 'react-router-dom'
 import { SeoHead } from '../../shared/components/site/SeoHead'
 import { useLanguage } from '../../shared/lib/language'
+import { EventPhotoCarousel } from '../../features/home/components/EventPhotoCarousel'
+
 
 const { Paragraph, Text, Title } = Typography
 
@@ -156,25 +158,6 @@ export function HomePage() {
             </Col>
           ))}
         </Row>
-      </PageSection>
-
-      <PageSection
-        title="Photo highlights"
-        description="A quick visual preview from public events, with the full collection available on the dedicated gallery page."
-        tone="default"
-      >
-        <div className="speaker-preview-grid">
-          {speakerMedia.homePreview.map((image, index) => (
-            <div key={image} className={`speaker-preview-card ${index === 0 ? 'speaker-preview-card--large' : ''}`}>
-              <img src={image} alt={`Photo highlight ${index + 1} from a Manish Vaghasiya event`} className="h-full w-full object-cover" />
-            </div>
-          ))}
-        </div>
-        <div className="mt-8">
-          <Button type="primary" icon={<PictureOutlined />} onClick={() => navigate(routePaths.photos)}>
-            Open full photo gallery
-          </Button>
-        </div>
       </PageSection>
 
 
@@ -346,10 +329,20 @@ export function HomePage() {
 
 
       <PageSection
+        title="Photo highlights"
+        description="A quick visual preview from public events, with the full collection available on the dedicated gallery page."
+        tone="warm"
+      >
+        <EventPhotoCarousel />
+      </PageSection>
+
+
+      <PageSection
         title="Trusted guidance for students, parents, and families"
         description="What this platform is built on - clarity, respect, and practical next steps."
         tone="forest"
       >
+
         <Row gutter={[24, 24]}>
           <Col xs={24} lg={14}>
             <Row gutter={[24, 24]}>

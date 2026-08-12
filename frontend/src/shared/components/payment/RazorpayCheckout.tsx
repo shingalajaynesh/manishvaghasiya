@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { App, Button } from 'antd'
-import { ShoppingCartOutlined, LockOutlined } from '@ant-design/icons'
+import { ShoppingCartOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
+import { useUser, SignInButton } from '@clerk/clerk-react'
 import { API_URL } from '../../lib/api'
 
 interface RazorpayCheckoutProps {
   amountInRupees: number
   itemName: string
   bookId?: string
-  customerName: string
-  customerEmail: string
-  customerPhone?: string
+  customerName?: string
+  customerEmail?: string
   buttonText?: string
   onSuccess: (data: { paymentId: string; orderId: string; bookId?: string }) => void
 }
@@ -26,12 +26,17 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
   bookId = 'jivan-jitvu-che',
   customerName,
   customerEmail,
-  customerPhone = '',
-  buttonText = 'Buy E-Book Now',
+  buttonText = 'Pay & Unlock E-Book',
   onSuccess,
 }) => {
+
   const { message } = App.useApp()
+  const { user, isSignedIn } = useUser()
   const [loading, setLoading] = useState(false)
+
+  // Use Clerk user details if logged in
+  const activeName = customerName || user?.fullName || user?.firstName || 'Valued Reader'
+  const activeEmail = customerEmail || user?.primaryEmailAddress?.emailAddress || ''
 
   const loadRazorpayScript = (): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -51,8 +56,8 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
   }
 
   const handlePayment = async () => {
-    if (!customerEmail || !customerName) {
-      message.error('Please enter your Name and Email address first.')
+    if (!isSignedIn || !activeEmail) {
+      message.error('Please Sign In or Register your account first before purchasing books.')
       return
     }
 
@@ -72,8 +77,8 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amountInRupees,
-          buyerName: customerName,
-          buyerEmail: customerEmail,
+          buyerName: activeName,
+          buyerEmail: activeEmail,
           bookId,
           itemName,
         }),
@@ -84,9 +89,7 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
         try {
           const errData = await response.json()
           errorMsg = errData.error || errorMsg
-        } catch {
-          // Non-JSON response (e.g. 404 or 500 HTML page)
-        }
+        } catch { }
         throw new Error(errorMsg)
       }
 
@@ -107,9 +110,8 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
         description: itemName,
         order_id: orderData.orderId,
         prefill: {
-          name: customerName,
-          email: customerEmail,
-          contact: customerPhone,
+          name: activeName,
+          email: activeEmail,
         },
         theme: {
           color: '#D4A017',
@@ -125,14 +127,14 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
                 razorpay_order_id: razorpayResponse.razorpay_order_id,
                 razorpay_payment_id: razorpayResponse.razorpay_payment_id,
                 razorpay_signature: razorpayResponse.razorpay_signature,
-                buyerName: customerName,
-                buyerEmail: customerEmail,
-                buyerPhone: customerPhone,
+                buyerName: activeName,
+                buyerEmail: activeEmail,
                 amount: amountInRupees,
                 bookId,
                 itemName,
               }),
             })
+
 
             let verifyData: any = {}
             try {
@@ -140,7 +142,7 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
             } catch { }
 
             if (verifyRes.ok && verifyData.success) {
-              message.success({ content: 'Payment verified! E-Book unlocked.', key: 'verify' })
+              message.success({ content: 'Payment verified! E-Book unlocked in your library.', key: 'verify' })
               onSuccess({
                 paymentId: razorpayResponse.razorpay_payment_id,
                 orderId: razorpayResponse.razorpay_order_id,
@@ -168,6 +170,23 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
     } finally {
       setLoading(false)
     }
+  }
+
+  // If NOT signed in, clicking the checkout button prompts Clerk Sign-In modal
+  if (!isSignedIn) {
+    return (
+      <SignInButton mode="modal">
+        <Button
+          type="primary"
+          size="large"
+          icon={<UserOutlined />}
+          className="!h-14 !rounded-xl !bg-[#D4A017] !px-8 !text-base !font-bold hover:!bg-[#b88910] !shadow-lg flex items-center justify-center gap-2"
+        >
+          <span>Sign In to Buy E-Book (₹{amountInRupees})</span>
+          <LockOutlined className="text-xs opacity-75" />
+        </Button>
+      </SignInButton>
+    )
   }
 
   return (

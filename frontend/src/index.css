@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@400;500;600;700&family=Hind:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Anek+Gujarati:wght@400;500;600;700;800&family=Hind+Vadodara:wght@400;500;600;700&family=Noto+Serif+Gujarati:wght@500;600;700;800;900&family=Hind:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -24,9 +24,76 @@
     --text-muted: #8a7a6e;
     --line-soft: rgba(174, 88, 49, 0.12);
     --line-strong: rgba(174, 88, 49, 0.22);
-    --font-body: "Inter", "Segoe UI", sans-serif;
-    --font-heading: "Playfair Display", Georgia, serif;
+    --font-body: "Plus Jakarta Sans", "Inter", sans-serif;
+    --font-heading: "Outfit", "Plus Jakarta Sans", sans-serif;
   }
+
+  /* Language-specific Professional Typography Rules */
+  :root[data-lang="gu"] {
+    --font-body: 'Anek Gujarati', 'Hind Vadodara', sans-serif;
+    --font-heading: 'Noto Serif Gujarati', 'Anek Gujarati', serif;
+  }
+
+  :root[data-lang="hi"] {
+    --font-body: 'Hind', 'Noto Serif Devanagari', sans-serif;
+    --font-heading: 'Noto Serif Devanagari', 'Hind', serif;
+  }
+
+  :root[data-lang="en"] {
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-heading: 'Outfit', sans-serif;
+  }
+
+
+  /* Universal Global Typography Enforcer for Every Single Page */
+  body, #root, input, button, select, textarea, p, span, div, a, li, label,
+  .ant-btn, .ant-input, .ant-typography, .ant-card, .ant-menu, .ant-drawer {
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .font-playfair, .font-heading, .ant-typography-title, .editorial-heading {
+    font-family: var(--font-heading);
+  }
+
+
+
+  :root[data-lang="gu"] body,
+  :root[data-lang="gu"] input,
+  :root[data-lang="gu"] button,
+  :root[data-lang="gu"] select,
+  :root[data-lang="gu"] textarea {
+    font-family: 'Anek Gujarati', 'Hind Vadodara', sans-serif !important;
+  }
+
+  :root[data-lang="gu"] h1,
+  :root[data-lang="gu"] h2,
+  :root[data-lang="gu"] h3,
+  :root[data-lang="gu"] h4,
+  :root[data-lang="gu"] h5,
+  :root[data-lang="gu"] h6,
+  :root[data-lang="gu"] .font-playfair {
+    font-family: 'Noto Serif Gujarati', 'Anek Gujarati', serif !important;
+  }
+
+  :root[data-lang="hi"] body,
+  :root[data-lang="hi"] input,
+  :root[data-lang="hi"] button,
+  :root[data-lang="hi"] select,
+  :root[data-lang="hi"] textarea {
+    font-family: 'Hind', 'Noto Serif Devanagari', sans-serif !important;
+  }
+
+  :root[data-lang="hi"] h1,
+  :root[data-lang="hi"] h2,
+  :root[data-lang="hi"] h3,
+  :root[data-lang="hi"] h4,
+  :root[data-lang="hi"] h5,
+  :root[data-lang="hi"] h6,
+  :root[data-lang="hi"] .font-playfair {
+    font-family: 'Noto Serif Devanagari', 'Hind', serif !important;
+  }
+
 
   * {
     box-sizing: border-box;

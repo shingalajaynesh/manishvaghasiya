@@ -15,7 +15,8 @@ export const designTokens = {
   borderRadius: 12,
   borderRadiusLG: 20,
   borderRadiusSM: 8,
-  fontFamily: '"Inter", "Segoe UI", sans-serif',
+  fontFamily: '"Plus Jakarta Sans", "Inter", system-ui, sans-serif',
+
   fontFamilyCode: '"IBM Plex Mono", monospace',
   boxShadow:
     '0 8px 30px rgba(45, 36, 29, 0.08), 0 2px 8px rgba(45, 36, 29, 0.04)',

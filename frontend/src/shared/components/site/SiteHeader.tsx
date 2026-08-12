@@ -1,19 +1,38 @@
-import { MenuOutlined } from '@ant-design/icons'
-
-import { Button, Drawer, Layout, Menu, Select, Space, Typography } from 'antd'
-import { useMemo, useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import {
+  MenuOutlined,
+  UserOutlined,
+  BookOutlined,
+  HomeOutlined,
+  UserSwitchOutlined,
+  PictureOutlined,
+  ReadOutlined,
+  VideoCameraOutlined,
+  MailOutlined,
+  DashboardOutlined,
+  CloseOutlined,
+} from '@ant-design/icons'
+import { Drawer, Select } from 'antd'
 import { primaryNavigation, routePaths } from '../../../content/routes'
 import { languageOptions, siteDictionary, translate } from '../../../content/i18n'
 import { speakerMedia } from '../../../content/speakerMedia'
 import { useLanguage } from '../../lib/language'
+import { SignedIn, SignedOut, UserButton, SignInButton } from '../../lib/clerk'
 
-
-const { Header } = Layout
-const { Text } = Typography
+const NAV_ICONS: Record<string, React.ReactNode> = {
+  home: <HomeOutlined />,
+  about: <UserSwitchOutlined />,
+  photos: <PictureOutlined />,
+  blog: <ReadOutlined />,
+  videos: <VideoCameraOutlined />,
+  resources: <BookOutlined />,
+  dashboard: <DashboardOutlined />,
+  contact: <MailOutlined />,
+}
 
 export function SiteHeader() {
-  const [open, setOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = useLocation()
   const { language, setLanguage } = useLanguage()
 
@@ -24,85 +43,165 @@ export function SiteHeader() {
     return match?.to ?? routePaths.home
   }, [location.pathname])
 
-  const items = primaryNavigation.map((item) => ({
-    key: item.to,
-    label: <NavLink to={item.to}>{translate(siteDictionary.navigation[item.labelKey], language)}</NavLink>,
-  }))
-
   return (
-    <Header className="sticky top-0 z-40 !h-auto !border-b !border-[var(--line-soft)] !px-0 !py-0 backdrop-blur" style={{ background: 'rgba(250,245,237,0.90)' }}>
-      <div className="editorial-container flex items-center justify-between gap-3 px-1 py-3 sm:px-2">
-        <Link to={routePaths.home} className="flex items-center gap-3 min-w-0">
-          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[var(--line-soft)] shadow-sm bg-[var(--panel-soft)]">
-            <img src={speakerMedia.heroStage} alt="Manish Vaghasiya portrait logo" className="h-full w-full object-cover" />
+    <header className="sticky top-0 z-40 w-full border-b border-[var(--line-soft)] bg-[var(--bg-layout)]/95 backdrop-blur-md transition-all duration-300">
+      <div className="editorial-container flex h-16 flex-nowrap items-center justify-between gap-2 px-2 sm:px-4">
+
+        {/* Left: Brand Logo & Name */}
+        <Link to={routePaths.home} className="flex items-center gap-2.5 shrink-0 min-w-0">
+          <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border-2 border-[#D4A017] shadow-sm">
+            <img
+              src={speakerMedia.heroStage}
+              alt="Manish Vaghasiya"
+              className="h-full w-full object-cover"
+            />
           </div>
-
-
-
-          <div className="min-w-0 leading-none">
-            <Text className="!block !font-semibold !text-[var(--text-strong)]" style={{ fontSize: 15 }}>
-              Manish Vaghasiya
-            </Text>
-            <Text className="!hidden !text-xs !text-[var(--text-muted)] sm:!block" style={{ marginTop: 2 }}>
-              {translate(siteDictionary.brandTagline, language)}
-            </Text>
-          </div>
+          <span className="font-playfair text-sm sm:text-base font-bold tracking-tight text-[var(--text-strong)] whitespace-nowrap">
+            Manish Vaghasiya
+          </span>
         </Link>
 
-        <Menu
-          mode="horizontal"
-          selectedKeys={[selectedKey]}
-          items={items}
-          className="hidden min-w-0 flex-1 justify-end border-none bg-transparent lg:flex"
-          overflowedIndicator={null}
-        />
+        {/* Center: Desktop Nav Items (Single Line, Compact Spacing) */}
+        <nav className="hidden xl:flex items-center gap-1 shrink flex-nowrap overflow-x-auto no-scrollbar">
+          {primaryNavigation.map((item) => {
+            const isActive = selectedKey === item.to
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={`whitespace-nowrap rounded-lg px-2.5 py-1 text-xs font-semibold transition-all duration-200 ${isActive
+                    ? 'bg-[#D4A017] text-white shadow-sm font-bold'
+                    : 'text-[var(--text-soft)] hover:bg-[#D4A017]/10 hover:text-[var(--accent-earth)]'
+                  }`}
+              >
+                {translate(siteDictionary.navigation[item.labelKey], language)}
+              </NavLink>
+            )
+          })}
+        </nav>
 
-        <Space size={8} className="shrink-0">
-          <Button
-            type="primary"
-            onClick={() => window.location.href = routePaths.resources}
-            className="!hidden sm:!inline-flex !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
-          >
-            Buy E-Books (₹199+)
-          </Button>
+        {/* Right: Actions & Clerk Auth Controls */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 flex-nowrap">
+
+          {/* Language Selector */}
           <Select
             value={language}
             onChange={setLanguage}
             options={languageOptions}
-            className="w-[88px] sm:w-[110px]"
+            className="w-[82px] sm:w-[95px] !rounded-lg"
             size="small"
           />
-          <Button
-            type="default"
-            shape="circle"
-            icon={<MenuOutlined />}
-            onClick={() => setOpen(true)}
-            aria-label="Open navigation"
-            className="lg:hidden"
-            style={{ borderColor: 'var(--line-soft)' }}
-          />
-        </Space>
 
+          {/* Signed In State */}
+          <SignedIn>
+            <Link to={routePaths.dashboard} className="hidden sm:inline-block">
+              <button className="flex items-center gap-1 rounded-lg bg-amber-500/15 px-2.5 py-1 text-xs font-bold text-[#8e4527] border border-amber-500/30 hover:bg-amber-500/25 transition-all whitespace-nowrap">
+                <DashboardOutlined />
+                <span>Dashboard</span>
+              </button>
+            </Link>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+
+          {/* Signed Out State */}
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="flex items-center gap-1 rounded-lg border border-[var(--line-strong)] bg-white px-2.5 py-1 text-xs font-bold text-[var(--text-strong)] shadow-sm hover:bg-amber-50 transition-all whitespace-nowrap">
+                <UserOutlined />
+                <span>Sign In</span>
+              </button>
+            </SignInButton>
+
+            <Link to={routePaths.resources} className="hidden md:inline-block">
+              <button className="flex items-center gap-1 rounded-lg bg-gradient-to-r from-[#D4A017] to-[#b88910] px-3 py-1 text-xs font-bold text-white shadow-sm hover:shadow hover:scale-[1.01] active:scale-95 transition-all whitespace-nowrap">
+                <BookOutlined />
+                <span>Buy E-Books</span>
+              </button>
+            </Link>
+          </SignedOut>
+
+          {/* Mobile / Tablet Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--line-soft)] bg-white text-[var(--text-strong)] shadow-sm hover:bg-amber-50 xl:hidden"
+            aria-label="Toggle Menu"
+          >
+            <MenuOutlined className="text-sm" />
+          </button>
+        </div>
       </div>
 
+      {/* Mobile Slide-Over Navigation Drawer */}
       <Drawer
         placement="right"
-        open={open}
-        onClose={() => setOpen(false)}
-        title={translate({ en: 'Navigate', hi: 'नेविगेट करें', gu: 'નેવિગેટ કરો' }, language)}
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        closeIcon={<CloseOutlined className="text-base text-[var(--text-strong)]" />}
+        title={
+          <div className="flex items-center gap-2">
+            <span className="font-playfair text-base font-bold text-[var(--text-strong)]">
+              {translate({ en: 'Navigation Menu', hi: 'नेविगेशन मेनू', gu: 'નેવિગેશન મેનૂ' }, language)}
+            </span>
+          </div>
+        }
         styles={{
-          body: { background: '#faf5ed' },
-          header: { background: '#faf5ed', borderBottom: '1px solid var(--line-soft)' },
+          body: { background: '#FAF5ED', padding: '16px' },
+          header: { background: '#FAF5ED', borderBottom: '1px solid var(--line-soft)' },
         }}
       >
-        <Menu
-          mode="inline"
-          selectedKeys={[selectedKey]}
-          items={items}
-          onClick={() => setOpen(false)}
-          className="border-none bg-transparent"
-        />
+        <div className="flex flex-col gap-2">
+          {primaryNavigation.map((item) => {
+            const isActive = selectedKey === item.to
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${isActive
+                    ? 'bg-[#D4A017] text-white shadow-md font-bold'
+                    : 'bg-white text-[var(--text-strong)] border border-[var(--line-soft)] hover:bg-amber-50'
+                  }`}
+              >
+                <span className="text-base">{NAV_ICONS[item.labelKey]}</span>
+                <span>{translate(siteDictionary.navigation[item.labelKey], language)}</span>
+              </Link>
+            )
+          })}
+
+          <div className="mt-4 pt-4 border-t border-[var(--line-soft)] space-y-3">
+            <SignedIn>
+              <Link
+                to={routePaths.dashboard}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#D4A017] p-2.5 text-sm font-bold text-white shadow-md"
+              >
+                <DashboardOutlined />
+                <span>Go to User Dashboard</span>
+              </Link>
+            </SignedIn>
+
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-[var(--line-strong)] bg-white p-2.5 text-sm font-bold text-[var(--text-strong)] shadow-sm"
+                >
+                  <UserOutlined />
+                  <span>Sign In / Register Account</span>
+                </button>
+              </SignInButton>
+              <Link
+                to={routePaths.resources}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#D4A017] to-[#b88910] p-2.5 text-sm font-bold text-white shadow-md"
+              >
+                <BookOutlined />
+                <span>Buy E-Books (₹199+)</span>
+              </Link>
+            </SignedOut>
+          </div>
+        </div>
       </Drawer>
-    </Header>
+    </header>
   )
 }

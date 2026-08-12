@@ -6,6 +6,10 @@ export const routePaths = {
   blog: '/blog',
   videos: '/videos',
   resources: '/resources',
+  dashboard: '/dashboard',
+  reader: '/reader/:bookId',
+  signIn: '/sign-in',
+  signUp: '/sign-up',
   programs: '/resources',
   book: '/contact',
   contact: '/contact',
@@ -26,8 +30,10 @@ export const primaryNavigation = [
   { label: 'Blog', labelKey: 'blog', to: routePaths.blog },
   { label: 'Videos', labelKey: 'videos', to: routePaths.videos },
   { label: 'Resources', labelKey: 'resources', to: routePaths.resources },
+  { label: 'Dashboard', labelKey: 'dashboard', to: routePaths.dashboard },
   { label: 'Contact', labelKey: 'contact', to: routePaths.contact },
 ] as const
+
 
 export const footerNavigation = {
   Product: primaryNavigation.map((item) => item.label),
