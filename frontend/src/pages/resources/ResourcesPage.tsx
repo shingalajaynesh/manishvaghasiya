@@ -17,8 +17,11 @@ import { PageHero } from '../../shared/components/site/PageHero'
 import { PageSection } from '../../shared/components/site/PageSection'
 import { SeoHead } from '../../shared/components/site/SeoHead'
 import { RazorpayCheckout } from '../../shared/components/payment/RazorpayCheckout'
+import { syncUserPurchasesFromBackend, isBookOwned as checkIsBookOwned } from '../../shared/lib/userPurchases'
+
 
 const { Paragraph, Title } = Typography
+
 
 export interface EbookDetail {
   id: string
@@ -111,35 +114,18 @@ export function ResourcesPage() {
       setSelectedBookId(bookParam)
     }
 
-    try {
-      const savedPurchase = localStorage.getItem('mv_ebook_purchased')
-      if (savedPurchase) {
-        const parsed = JSON.parse(savedPurchase)
-        if (parsed?.orderId && parsed?.paymentId) {
-          setPurchased(parsed)
-          if (parsed.name) setCustomerName(parsed.name)
-          if (parsed.email) setCustomerEmail(parsed.email)
-          if (parsed.bookId === 'combo-bundle') {
-            setPurchasedBookIds(['jivan-jitvu-che', 'man-haryu-to-badhu-haryu', 'combo-bundle'])
-          } else if (parsed.bookId && !purchasedBookIds.includes(parsed.bookId)) {
-            setPurchasedBookIds((prev) => [...prev, parsed.bookId])
-          }
-        }
-      }
-    } catch (e) {
-      console.error('Failed restoring purchase state from localStorage:', e)
+    if (user?.id && user?.primaryEmailAddress?.emailAddress) {
+      syncUserPurchasesFromBackend(user.id, user.primaryEmailAddress.emailAddress).then((owned) => {
+        setPurchasedBookIds(owned)
+      })
     }
-  }, [location.search])
+  }, [location.search, user?.id, user?.primaryEmailAddress?.emailAddress])
 
   const isBookOwned = (id: string) => {
-    if (purchasedBookIds.includes('combo-bundle') || purchased?.bookId === 'combo-bundle') {
-      return true
-    }
-    if (purchasedBookIds.includes(id) || purchased?.bookId === id) {
-      return true
-    }
-    return false
+    if (!isSignedIn || !user?.id) return false
+    return checkIsBookOwned(user.id, id) || purchasedBookIds.includes(id) || purchased?.bookId === id
   }
+
 
   const hasPurchasedBook1 = isBookOwned('jivan-jitvu-che')
   const hasPurchasedBook2 = isBookOwned('man-haryu-to-badhu-haryu')
@@ -148,6 +134,7 @@ export function ResourcesPage() {
 
   // Smart Combo Upgrade calculation: If user already paid ₹199 for 1 book, upgrade cost is ₹150 (₹349 - ₹199 = ₹150)
   const effectiveComboPrice = hasPurchasedOneBook ? 150 : 349
+
 
   const selectedBook = BOOKS[selectedBookId] || BOOKS['jivan-jitvu-che']
   const activeCheckoutPrice = selectedBookId === 'combo-bundle' ? effectiveComboPrice : selectedBook.price

@@ -22,6 +22,7 @@ import { siteDictionary, translate } from '../../content/i18n'
 
 export function DashboardPage() {
   const { user } = useUser()
+
   const { language } = useLanguage()
   const [purchasedBookIds, setPurchasedBookIds] = useState<string[]>(() => getUserPurchasedBooks(user?.id))
 
@@ -32,6 +33,7 @@ export function DashboardPage() {
       setPurchasedBookIds(updated)
     })
   }, [user?.id, user?.primaryEmailAddress?.emailAddress])
+
 
 
   const handleBookPurchaseSuccess = (bookId: string, orderId: string, paymentId: string) => {

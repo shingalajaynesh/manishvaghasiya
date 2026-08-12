@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 import { useSignIn, useSignUp } from '../../lib/clerk'
 import {
   MailOutlined,
@@ -24,8 +25,8 @@ interface CustomAuthCardProps {
 export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUrl = '/dashboard' }) => {
   const { isLoaded: isSignInLoaded, signIn, setActive: setSignInActive } = useSignIn()
   const { isLoaded: isSignUpLoaded, signUp, setActive: setSignUpActive } = useSignUp()
-  const navigate = useNavigate()
   const { language } = useLanguage()
+
 
   // Form State
   const [email, setEmail] = useState('')
@@ -101,20 +102,55 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
             ? 'સફળતાપૂર્વક લોગ ઇન થયા!'
             : 'Welcome back! Signed in successfully.'
         )
-        navigate(redirectUrl)
+        window.location.href = redirectUrl
       } else {
         console.log('Sign in status:', result)
         toast.error('Additional verification required')
       }
     } catch (err: any) {
       console.error('Sign In Error:', err)
-      const msg = err?.errors?.[0]?.message || 'Invalid email or password. Please check your credentials.'
-      setErrorMsg(msg)
-      toast.error(msg)
+      const errCode = err?.errors?.[0]?.code
+      const msg = err?.errors?.[0]?.message || ''
+
+      // AUTO-CREATE ACCOUNT IF FIRST TIME USER
+      if (
+        isSignUpLoaded &&
+        signUp &&
+        (errCode === 'form_identifier_not_found' ||
+          msg.toLowerCase().includes('not found') ||
+          msg.toLowerCase().includes('identifier') ||
+          msg.toLowerCase().includes('account'))
+      ) {
+        try {
+          toast.loading('First-time user detected. Auto-creating your account...', { duration: 2500 })
+          await signUp.create({
+            emailAddress: email.trim(),
+            password,
+          })
+          await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
+          setPendingVerification(true)
+          toast.success(
+            language === 'gu'
+              ? 'નવું એકાઉન્ટ બન્યું! તમારા ઇમેઇલ પર ૬-અંકનો વેરિફિકેશન કોડ મોકલ્યો છે.'
+              : 'New account created! 6-digit verification code sent to your email.'
+          )
+          return
+        } catch (signUpErr: any) {
+          console.error('Auto Sign-Up Error:', signUpErr)
+          const signUpMsg = signUpErr?.errors?.[0]?.message || 'Failed to register new account.'
+          setErrorMsg(signUpMsg)
+          toast.error(signUpMsg)
+          return
+        }
+      }
+
+      setErrorMsg(msg || 'Invalid email or password. Please check your credentials.')
+      toast.error(msg || 'Invalid email or password. Please check your credentials.')
     } finally {
       setLoading(false)
     }
   }
+
 
   // Handle Custom Email/Password Sign Up
   const handleSignUpSubmit = async (e: React.FormEvent) => {
@@ -168,7 +204,8 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
             ? 'એકાઉન્ટ સફળતાપૂર્વક વેરીફાઈ થયું! તમારું સ્વાગત છે.'
             : 'Account verified successfully! Welcome.'
         )
-        navigate(redirectUrl)
+        window.location.href = redirectUrl
+
       } else {
         console.log('Sign up status:', completeSignUp)
         setErrorMsg('Verification failed. Please check the code and try again.')
