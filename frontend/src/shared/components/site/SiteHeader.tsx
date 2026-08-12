@@ -18,7 +18,8 @@ import { primaryNavigation, routePaths } from '../../../content/routes'
 import { languageOptions, siteDictionary, translate } from '../../../content/i18n'
 import { speakerMedia } from '../../../content/speakerMedia'
 import { useLanguage } from '../../lib/language'
-import { SignedIn, SignedOut, UserButton, SignInButton } from '../../lib/clerk'
+import { SignedIn, SignedOut, useUser } from '../../lib/clerk'
+import { CustomUserProfile } from '../auth/CustomUserProfile'
 
 const NAV_ICONS: Record<string, React.ReactNode> = {
   home: <HomeOutlined />,
@@ -33,8 +34,10 @@ const NAV_ICONS: Record<string, React.ReactNode> = {
 
 export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [profileModalOpen, setProfileModalOpen] = useState(false)
   const location = useLocation()
   const { language, setLanguage } = useLanguage()
+  const { user } = useUser()
 
   const selectedKey = useMemo(() => {
     const match = [...primaryNavigation]
@@ -45,6 +48,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[var(--line-soft)] bg-[var(--bg-layout)]/95 backdrop-blur-md transition-all duration-300">
+      <CustomUserProfile open={profileModalOpen} onClose={() => setProfileModalOpen(false)} />
       <div className="editorial-container flex h-16 flex-nowrap items-center justify-between gap-2 px-2 sm:px-4">
 
         {/* Left: Brand Logo & Name */}
@@ -100,17 +104,32 @@ export function SiteHeader() {
                 <span>Dashboard</span>
               </button>
             </Link>
-            <UserButton afterSignOutUrl="/" />
+
+            {/* Custom User Avatar Profile Trigger */}
+            <button
+              onClick={() => setProfileModalOpen(true)}
+              className="flex items-center gap-1.5 rounded-full border border-amber-400 bg-amber-50 p-1 pr-2.5 text-xs font-bold text-slate-800 shadow-sm hover:bg-amber-100 transition-all"
+              title="Open My Profile"
+            >
+              {user?.imageUrl ? (
+                <img src={user.imageUrl} alt="Profile" className="h-6 w-6 rounded-full object-cover border border-amber-500" />
+              ) : (
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D4A017] text-white text-xs font-bold">
+                  {user?.firstName ? user.firstName[0] : 'U'}
+                </div>
+              )}
+              <span className="max-w-[70px] truncate">{user?.firstName || 'Account'}</span>
+            </button>
           </SignedIn>
 
           {/* Signed Out State */}
           <SignedOut>
-            <SignInButton mode="modal">
+            <Link to="/sign-in">
               <button className="flex items-center gap-1 rounded-lg border border-[var(--line-strong)] bg-white px-2.5 py-1 text-xs font-bold text-[var(--text-strong)] shadow-sm hover:bg-amber-50 transition-all whitespace-nowrap">
                 <UserOutlined />
                 <span>Sign In</span>
               </button>
-            </SignInButton>
+            </Link>
 
             <Link to={routePaths.resources} className="hidden md:inline-block">
               <button className="flex items-center gap-1 rounded-lg bg-gradient-to-r from-[#D4A017] to-[#b88910] px-3 py-1 text-xs font-bold text-white shadow-sm hover:shadow hover:scale-[1.01] active:scale-95 transition-all whitespace-nowrap">
@@ -181,15 +200,15 @@ export function SiteHeader() {
             </SignedIn>
 
             <SignedOut>
-              <SignInButton mode="modal">
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-[var(--line-strong)] bg-white p-2.5 text-sm font-bold text-[var(--text-strong)] shadow-sm"
-                >
-                  <UserOutlined />
-                  <span>Sign In / Register Account</span>
-                </button>
-              </SignInButton>
+              <Link
+                to="/sign-in"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 rounded-xl border border-[var(--line-strong)] bg-white p-2.5 text-sm font-bold text-[var(--text-strong)] shadow-sm"
+              >
+                <UserOutlined />
+                <span>Sign In / Register Account</span>
+              </Link>
+
               <Link
                 to={routePaths.resources}
                 onClick={() => setMobileMenuOpen(false)}

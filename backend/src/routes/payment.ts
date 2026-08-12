@@ -161,3 +161,43 @@ paymentRouter.post('/payment/verify-ebook-order', async (req: Request, res: Resp
     return res.status(500).json({ error: error.message || 'Payment verification failed' })
   }
 })
+
+// 3. Fetch User Purchased E-Books by Email
+paymentRouter.get('/payment/my-purchased-books', async (req: Request, res: Response) => {
+  try {
+    const email = req.query.email as string
+    if (!email) {
+      return res.status(200).json({ purchasedBooks: [] })
+    }
+
+    const isMongoConnected = mongoose.connection.readyState === 1
+    if (!isMongoConnected) {
+      return res.status(200).json({ purchasedBooks: [] })
+    }
+
+    const purchases = await EbookPurchase.find({
+      buyerEmail: { $regex: new RegExp(`^${email.trim()}$`, 'i') },
+      status: 'paid',
+    })
+
+    const bookIds = new Set<string>()
+    purchases.forEach((p) => {
+      if (p.bookId === 'combo-bundle') {
+        bookIds.add('jivan-jitvu-che')
+        bookIds.add('man-haryu-to-badhu-haryu')
+        bookIds.add('combo-bundle')
+      } else if (p.bookId) {
+        bookIds.add(p.bookId)
+      }
+    })
+
+    return res.status(200).json({
+      success: true,
+      purchasedBooks: Array.from(bookIds),
+    })
+  } catch (err: any) {
+    console.error('Error fetching purchased books:', err)
+    return res.status(500).json({ error: err.message })
+  }
+})
+

@@ -177,11 +177,10 @@ export function ResourcesPage() {
             {/* Option 1: Book 1 */}
             <div
               onClick={() => setSelectedBookId('jivan-jitvu-che')}
-              className={`cursor-pointer rounded-2xl border p-5 transition-all duration-300 ${
-                selectedBookId === 'jivan-jitvu-che'
-                  ? 'border-[#D4A017] bg-amber-50/50 shadow-md ring-2 ring-[#D4A017]'
-                  : 'border-[var(--line-soft)] bg-white hover:border-amber-300'
-              }`}
+              className={`cursor-pointer rounded-2xl border p-5 transition-all duration-300 ${selectedBookId === 'jivan-jitvu-che'
+                ? 'border-[#D4A017] bg-amber-50/50 shadow-md ring-2 ring-[#D4A017]'
+                : 'border-[var(--line-soft)] bg-white hover:border-amber-300'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <img
@@ -214,11 +213,10 @@ export function ResourcesPage() {
             {/* Option 2: Book 2 */}
             <div
               onClick={() => setSelectedBookId('man-haryu-to-badhu-haryu')}
-              className={`cursor-pointer rounded-2xl border p-5 transition-all duration-300 ${
-                selectedBookId === 'man-haryu-to-badhu-haryu'
-                  ? 'border-[#D4A017] bg-amber-50/50 shadow-md ring-2 ring-[#D4A017]'
-                  : 'border-[var(--line-soft)] bg-white hover:border-amber-300'
-              }`}
+              className={`cursor-pointer rounded-2xl border p-5 transition-all duration-300 ${selectedBookId === 'man-haryu-to-badhu-haryu'
+                ? 'border-[#D4A017] bg-amber-50/50 shadow-md ring-2 ring-[#D4A017]'
+                : 'border-[var(--line-soft)] bg-white hover:border-amber-300'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <img
@@ -251,11 +249,10 @@ export function ResourcesPage() {
             {/* Option 3: Combo Pack */}
             <div
               onClick={() => setSelectedBookId('combo-bundle')}
-              className={`relative cursor-pointer overflow-hidden rounded-2xl border p-5 transition-all duration-300 ${
-                selectedBookId === 'combo-bundle'
-                  ? 'border-[#D4A017] bg-amber-50/80 shadow-lg ring-2 ring-[#D4A017]'
-                  : 'border-amber-200 bg-gradient-to-br from-amber-50/30 to-orange-50/30 hover:border-amber-400'
-              }`}
+              className={`relative cursor-pointer overflow-hidden rounded-2xl border p-5 transition-all duration-300 ${selectedBookId === 'combo-bundle'
+                ? 'border-[#D4A017] bg-amber-50/80 shadow-lg ring-2 ring-[#D4A017]'
+                : 'border-amber-200 bg-gradient-to-br from-amber-50/30 to-orange-50/30 hover:border-amber-400'
+                }`}
             >
               <span className="absolute top-0 right-0 rounded-bl-xl bg-[#D4A017] px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white shadow-sm">
                 BEST VALUE

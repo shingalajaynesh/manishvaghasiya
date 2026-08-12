@@ -86,7 +86,8 @@ export const EventPhotoCarousel: React.FC = () => {
           </div>
 
           <Link to={routePaths.photos}>
-            <Button type="default" icon={<ArrowRightOutlined />} iconPosition="end" className="!rounded-xl !font-bold">
+            <Button type="default" icon={<ArrowRightOutlined />} iconPlacement="end" className="!rounded-xl !font-bold">
+
               Full Gallery ({speakerMedia.allPhotos.length} Photos)
             </Button>
           </Link>

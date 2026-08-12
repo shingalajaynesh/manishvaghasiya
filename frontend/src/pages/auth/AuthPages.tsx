@@ -1,4 +1,4 @@
-import { SignIn, SignUp } from '@clerk/clerk-react'
+import { CustomAuthCard } from '../../shared/components/auth/CustomAuthCard'
 import { PageHero } from '../../shared/components/site/PageHero'
 import { SeoHead } from '../../shared/components/site/SeoHead'
 
@@ -15,10 +15,8 @@ export function SignInPage() {
         title="તમારા એકાઉન્ટમાં લૉગ ઇન કરો"
         description="તમારા ખરીદેલા માસ્ટર ઈ-બુક્સ વાંચવા અને રીડિંગ ડેશબોર્ડ એક્સેસ કરવા માટે સાઇન ઇન કરો."
       />
-      <div className="editorial-container flex justify-center py-12">
-        <div className="w-full max-w-md rounded-3xl border border-[var(--line-soft)] bg-white p-4 shadow-editorial-lg">
-          <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" forceRedirectUrl="/dashboard" />
-        </div>
+      <div className="editorial-container flex justify-center py-10 px-4">
+        <CustomAuthCard mode="sign-in" redirectUrl="/dashboard" />
       </div>
     </>
   )
@@ -37,11 +35,10 @@ export function SignUpPage() {
         title="નવું રીડર એકાઉન્ટ બનાવો"
         description="માત્ર ૩૦ સેકન્ડમાં નવું એકાઉન્ટ રજીસ્ટર કરો અને તમારા ઈ-બુક લાઈબ્રેરીનો આનંદ માણો."
       />
-      <div className="editorial-container flex justify-center py-12">
-        <div className="w-full max-w-md rounded-3xl border border-[var(--line-soft)] bg-white p-4 shadow-editorial-lg">
-          <SignUp routing="path" path="/sign-up" signInUrl="/sign-in" forceRedirectUrl="/dashboard" />
-        </div>
+      <div className="editorial-container flex justify-center py-10 px-4">
+        <CustomAuthCard mode="sign-up" redirectUrl="/dashboard" />
       </div>
     </>
   )
 }
+
