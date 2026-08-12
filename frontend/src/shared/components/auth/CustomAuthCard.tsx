@@ -44,20 +44,40 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
 
   // Google OAuth Handler
   const handleGoogleSignIn = async () => {
-    if (!isSignInLoaded || !signIn) return
+    setLoading(true)
     try {
-      setLoading(true)
-      await signIn.authenticateWithRedirect({
-        strategy: 'oauth_google',
-        redirectUrl: `${window.location.origin}/sso-callback`,
-        redirectUrlComplete: redirectUrl,
-      })
+      if (mode === 'sign-up' && signUp) {
+        await signUp.authenticateWithRedirect({
+          strategy: 'oauth_google',
+          redirectUrl: `${window.location.origin}/sso-callback`,
+          redirectUrlComplete: redirectUrl,
+        })
+      } else if (signIn) {
+        await signIn.authenticateWithRedirect({
+          strategy: 'oauth_google',
+          redirectUrl: `${window.location.origin}/sso-callback`,
+          redirectUrlComplete: redirectUrl,
+        })
+      }
     } catch (err: any) {
       console.error('Google OAuth Error:', err)
-      toast.error(err?.errors?.[0]?.message || 'Failed to initialize Google Sign In')
+      if (signUp) {
+        try {
+          await signUp.authenticateWithRedirect({
+            strategy: 'oauth_google',
+            redirectUrl: `${window.location.origin}/sso-callback`,
+            redirectUrlComplete: redirectUrl,
+          })
+          return
+        } catch (e) {
+          console.error('Fallback Google Sign-Up error:', e)
+        }
+      }
+      toast.error('Google Sign In failed. Please enter your Email & Password below.')
       setLoading(false)
     }
   }
+
 
   // Handle Custom Email/Password Sign In
   const handleSignInSubmit = async (e: React.FormEvent) => {

@@ -77,35 +77,48 @@ export function DashboardPage() {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
               <SignedIn>
-                <div className="relative">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: 'w-16 h-16 rounded-full border-2 border-[#D4A017] shadow-md',
-                      },
-                    }}
-                  />
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          avatarBox: 'w-16 h-16 rounded-full border-2 border-[#D4A017] shadow-md',
+                        },
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="font-playfair text-xl font-bold text-[var(--text-strong)] sm:text-2xl">
+                        {user?.fullName || user?.firstName || 'Valued Reader'}
+                      </h2>
+                      <Tag color="gold" className="!rounded-md !text-[10px] !font-bold">
+                        {translate(siteDictionary.dashboard.premiumBadge, language)}
+                      </Tag>
+                    </div>
+                    <p className="text-xs text-[var(--text-soft)] font-mono">
+                      {user?.primaryEmailAddress?.emailAddress}
+                    </p>
+                  </div>
                 </div>
               </SignedIn>
+
               <SignedOut>
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-[#D4A017]">
-                  <UserOutlined className="text-2xl" />
+                <div className="flex items-center gap-4">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-[#D4A017]">
+                    <UserOutlined className="text-2xl" />
+                  </div>
+                  <div>
+                    <h2 className="font-playfair text-xl font-bold text-[var(--text-strong)] sm:text-2xl">
+                      {language === 'hi' ? 'माननीय पाठक' : language === 'gu' ? 'માનનીય વાચક' : 'Valued Reader'}
+                    </h2>
+                    <p className="text-xs text-[var(--text-soft)]">
+                      Log in to access your library & sync across devices
+                    </p>
+                  </div>
                 </div>
               </SignedOut>
-
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-playfair text-xl font-bold text-[var(--text-strong)] sm:text-2xl">
-                    {user?.fullName || user?.firstName || (language === 'hi' ? 'माननीय पाठक' : language === 'gu' ? 'માનનીય વાચક' : 'Valued Reader')}
-                  </h2>
-                  <Tag color="gold" className="!rounded-md !text-[10px] !font-bold">
-                    {translate(siteDictionary.dashboard.premiumBadge, language)}
-                  </Tag>
-                </div>
-                <p className="text-xs text-[var(--text-soft)]">
-                  {user?.primaryEmailAddress?.emailAddress || 'Log in to sync your library across devices'}
-                </p>
-              </div>
             </div>
 
             <div className="flex items-center gap-3">
@@ -159,7 +172,11 @@ export function DashboardPage() {
                     <Col xs={24} md={12} lg={8}>
                       <Card
                         hoverable
-                        className="h-full overflow-hidden rounded-3xl border border-[var(--line-soft)] shadow-editorial"
+                        className={`h-full overflow-hidden rounded-3xl border ${
+                          purchasedBookIds.includes('jivan-jitvu-che') || purchasedBookIds.includes('combo-bundle')
+                            ? 'border-[var(--line-soft)] shadow-editorial'
+                            : 'border-amber-200 bg-amber-50/20'
+                        }`}
                       >
                         <div className="relative bg-amber-50/50 p-4 text-center">
                           <img
@@ -167,9 +184,15 @@ export function DashboardPage() {
                             alt="Jivan Jitvu Che"
                             className="mx-auto h-48 rounded-xl object-cover shadow-lg transition-transform hover:scale-105"
                           />
-                          <Tag color="gold" className="!absolute top-3 left-3 !rounded-md !text-[10px] !font-bold">
-                            {translate(siteDictionary.dashboard.unlockedBadge, language)}
-                          </Tag>
+                          {purchasedBookIds.includes('jivan-jitvu-che') || purchasedBookIds.includes('combo-bundle') ? (
+                            <Tag color="gold" className="!absolute top-3 left-3 !rounded-md !text-[10px] !font-bold">
+                              {translate(siteDictionary.dashboard.unlockedBadge, language)}
+                            </Tag>
+                          ) : (
+                            <Tag color="red" className="!absolute top-3 left-3 !rounded-md !text-[10px] !font-bold">
+                              LOCKED (₹199)
+                            </Tag>
+                          )}
                         </div>
                         <div className="p-5">
                           <h4 className="font-playfair text-base font-bold text-[var(--text-strong)] leading-snug">
@@ -190,26 +213,41 @@ export function DashboardPage() {
                           </p>
 
                           <div className="mt-5 pt-4 border-t border-[var(--line-soft)] flex items-center justify-between">
-                            <Link to="/reader/jivan-jitvu-che" className="w-full">
-                              <Button
-                                type="primary"
-                                icon={<ReadOutlined />}
-                                className="!w-full !h-11 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
-                              >
-                                {translate(
-                                  {
-                                    en: 'Read Online Now (DRM Reader)',
-                                    hi: 'अभी ऑनलाइन पढ़ें (DRM रीडर)',
-                                    gu: 'ઓનલાઈન વાંચો (DRM રીડર)',
-                                  },
-                                  language
-                                )}
-                              </Button>
-                            </Link>
+                            {purchasedBookIds.includes('jivan-jitvu-che') || purchasedBookIds.includes('combo-bundle') ? (
+                              <Link to="/reader/jivan-jitvu-che" className="w-full">
+                                <Button
+                                  type="primary"
+                                  icon={<ReadOutlined />}
+                                  className="!w-full !h-11 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+                                >
+                                  {translate(
+                                    {
+                                      en: 'Read Online Now (DRM Reader)',
+                                      hi: 'अभी ऑनलाइन पढ़ें (DRM रीडर)',
+                                      gu: 'ઓનલાઈન વાંચો (DRM રીડર)',
+                                    },
+                                    language
+                                  )}
+                                </Button>
+                              </Link>
+                            ) : (
+                              <RazorpayCheckout
+                                amountInRupees={199}
+                                itemName="જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો (E-Book)"
+                                bookId="jivan-jitvu-che"
+                                customerName={user?.fullName || ''}
+                                customerEmail={user?.primaryEmailAddress?.emailAddress || ''}
+                                buttonText="Unlock & Read (Pay ₹199)"
+                                onSuccess={(res) =>
+                                  handleBookPurchaseSuccess('jivan-jitvu-che', res.orderId, res.paymentId)
+                                }
+                              />
+                            )}
                           </div>
                         </div>
                       </Card>
                     </Col>
+
 
                     {/* Book 2: Man Haryu To Badhu Haryu */}
                     <Col xs={24} md={12} lg={8}>
