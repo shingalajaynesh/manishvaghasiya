@@ -17,6 +17,8 @@ import { SignInPage, SignUpPage } from '../pages/auth/AuthPages'
 import { SiteLayout } from '../shared/components/layout/SiteLayout'
 import { legalDrafts } from '../content/legal'
 
+import { AdminPortalPage } from '../pages/admin/AdminPortalPage'
+
 export const router = createBrowserRouter([
   {
     path: '/reader/:bookId',
@@ -38,6 +40,10 @@ export const router = createBrowserRouter([
       { path: routePaths.dashboard.slice(1), element: <DashboardPage /> },
       { path: 'sign-in/*', element: <SignInPage /> },
       { path: 'sign-up/*', element: <SignUpPage /> },
+      { path: '1908/admin', element: <AdminPortalPage /> },
+      { path: 'admin-portal-v1908', element: <AdminPortalPage /> },
+      { path: 'admin-1908', element: <AdminPortalPage /> },
+
       { path: routePaths.studentGuide.slice(1), element: <ResourceLandingPage /> },
       { path: routePaths.studentGuideThanks.slice(1), element: <ResourceThankYouPage /> },
       { path: 'programs', element: <Navigate to={routePaths.resources} replace /> },

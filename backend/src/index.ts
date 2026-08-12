@@ -5,8 +5,10 @@ import dns from 'dns'
 import dotenv from 'dotenv'
 import { subscribeRouter } from './routes/subscribe'
 import { paymentRouter } from './routes/payment'
+import { adminRouter } from './routes/admin'
 
 import { rateLimiter } from './middleware/rateLimiter'
+
 
 
 dotenv.config()
@@ -37,6 +39,8 @@ app.use(express.json())
 app.use('/api', rateLimiter)
 app.use('/api', subscribeRouter)
 app.use('/api', paymentRouter)
+app.use('/api', adminRouter)
+
 
 
 
