@@ -108,36 +108,49 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
         toast.error('Additional verification required')
       }
     } catch (err: any) {
-      console.error('Sign In Error:', err)
+      console.log('Sign In fallback check:', err)
       const errCode = err?.errors?.[0]?.code
       const msg = err?.errors?.[0]?.message || ''
 
-      // AUTO-CREATE ACCOUNT IF FIRST TIME USER
+      // AUTO-CREATE ACCOUNT SMOOTHLY FOR FIRST-TIME USERS
       if (
         isSignUpLoaded &&
         signUp &&
         (errCode === 'form_identifier_not_found' ||
+          errCode === 'user_not_found' ||
           msg.toLowerCase().includes('not found') ||
           msg.toLowerCase().includes('identifier') ||
           msg.toLowerCase().includes('account'))
       ) {
         try {
-          toast.loading('First-time user detected. Auto-creating your account...', { duration: 2500 })
-          await signUp.create({
+          const signUpResult = await signUp.create({
             emailAddress: email.trim(),
             password,
           })
+
+          if (signUpResult.status === 'complete') {
+            await setSignUpActive({ session: signUpResult.createdSessionId })
+            toast.success(
+              language === 'gu'
+                ? 'નવું એકાઉન્ટ બન્યું! સ્વાગત છે.'
+                : 'Account created! Welcome to your dashboard.'
+            )
+            window.location.href = redirectUrl
+            return
+          }
+
+          // If email verification code is required:
           await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
           setPendingVerification(true)
           toast.success(
             language === 'gu'
-              ? 'નવું એકાઉન્ટ બન્યું! તમારા ઇમેઇલ પર ૬-અંકનો વેરિફિકેશન કોડ મોકલ્યો છે.'
-              : 'New account created! 6-digit verification code sent to your email.'
+              ? 'નવું એકાઉન્ટ બન્યું! તમારા ઇમેઇલ પર ૬-અંકનો કોડ મોકલ્યો છે.'
+              : 'Account created! 6-digit code sent to your email.'
           )
           return
         } catch (signUpErr: any) {
           console.error('Auto Sign-Up Error:', signUpErr)
-          const signUpMsg = signUpErr?.errors?.[0]?.message || 'Failed to register new account.'
+          const signUpMsg = signUpErr?.errors?.[0]?.message || 'Please check your email and password.'
           setErrorMsg(signUpMsg)
           toast.error(signUpMsg)
           return
@@ -150,6 +163,7 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
       setLoading(false)
     }
   }
+
 
 
   // Handle Custom Email/Password Sign Up
