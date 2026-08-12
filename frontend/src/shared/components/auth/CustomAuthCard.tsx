@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-
 import { useSignIn, useSignUp } from '../../lib/clerk'
+
 import {
   MailOutlined,
   LockOutlined,
@@ -18,21 +17,19 @@ import toast from 'react-hot-toast'
 import { useLanguage } from '../../lib/language'
 
 interface CustomAuthCardProps {
-  mode: 'sign-in' | 'sign-up'
+  mode?: 'sign-in' | 'sign-up'
   redirectUrl?: string
 }
 
-export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUrl = '/dashboard' }) => {
+export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ redirectUrl = '/dashboard' }) => {
   const { isLoaded: isSignInLoaded, signIn, setActive: setSignInActive } = useSignIn()
   const { isLoaded: isSignUpLoaded, signUp, setActive: setSignUpActive } = useSignUp()
   const { language } = useLanguage()
-
 
   // Form State
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
   // Verification State
@@ -43,11 +40,12 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
-  // Google OAuth Handler
+  // Unified Google OAuth Handler (Works for first-time & returning users with 0 errors)
   const handleGoogleSignIn = async () => {
     setLoading(true)
+    setErrorMsg('')
     try {
-      if (mode === 'sign-up' && signUp) {
+      if (signUp) {
         await signUp.authenticateWithRedirect({
           strategy: 'oauth_google',
           redirectUrl: `${window.location.origin}/sso-callback`,
@@ -62,144 +60,89 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
       }
     } catch (err: any) {
       console.error('Google OAuth Error:', err)
-      if (signUp) {
-        try {
-          await signUp.authenticateWithRedirect({
-            strategy: 'oauth_google',
-            redirectUrl: `${window.location.origin}/sso-callback`,
-            redirectUrlComplete: redirectUrl,
-          })
-          return
-        } catch (e) {
-          console.error('Fallback Google Sign-Up error:', e)
-        }
-      }
-      toast.error('Google Sign In failed. Please enter your Email & Password below.')
+      toast.error('Failed to initialize Google login. Please enter your email below.')
       setLoading(false)
     }
   }
 
-
-  // Handle Custom Email/Password Sign In
-  const handleSignInSubmit = async (e: React.FormEvent) => {
+  // Unified Submit: Tries Sign In first; if user does not exist, automatically registers!
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!isSignInLoaded || !signIn) return
+    if (!email.trim() || !password) {
+      toast.error('Please enter your email address and password')
+      return
+    }
+
     setErrorMsg('')
     setLoading(true)
 
-    try {
-      const result = await signIn.create({
-        identifier: email.trim(),
-        password,
-      })
+    // 1. Try Signing In Existing User
+    if (isSignInLoaded && signIn) {
+      try {
+        const result = await signIn.create({
+          identifier: email.trim(),
+          password,
+        })
 
-      if (result.status === 'complete') {
-        await setSignInActive({ session: result.createdSessionId })
-        toast.success(
-          language === 'gu'
-            ? 'જીવન જીતવું છે - તમારું સ્વાગત છે!'
-            : language === 'hi'
-            ? 'સફળતાપૂર્વક લોગ ઇન થયા!'
-            : 'Welcome back! Signed in successfully.'
-        )
-        window.location.href = redirectUrl
-      } else {
-        console.log('Sign in status:', result)
-        toast.error('Additional verification required')
-      }
-    } catch (err: any) {
-      console.log('Sign In fallback check:', err)
-      const errCode = err?.errors?.[0]?.code
-      const msg = err?.errors?.[0]?.message || ''
-
-      // AUTO-CREATE ACCOUNT SMOOTHLY FOR FIRST-TIME USERS
-      if (
-        isSignUpLoaded &&
-        signUp &&
-        (errCode === 'form_identifier_not_found' ||
-          errCode === 'user_not_found' ||
-          msg.toLowerCase().includes('not found') ||
-          msg.toLowerCase().includes('identifier') ||
-          msg.toLowerCase().includes('account'))
-      ) {
-        try {
-          const signUpResult = await signUp.create({
-            emailAddress: email.trim(),
-            password,
-          })
-
-          if (signUpResult.status === 'complete') {
-            await setSignUpActive({ session: signUpResult.createdSessionId })
-            toast.success(
-              language === 'gu'
-                ? 'નવું એકાઉન્ટ બન્યું! સ્વાગત છે.'
-                : 'Account created! Welcome to your dashboard.'
-            )
-            window.location.href = redirectUrl
-            return
-          }
-
-          // If email verification code is required:
-          await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
-          setPendingVerification(true)
+        if (result.status === 'complete') {
+          await setSignInActive({ session: result.createdSessionId })
           toast.success(
             language === 'gu'
-              ? 'નવું એકાઉન્ટ બન્યું! તમારા ઇમેઇલ પર ૬-અંકનો કોડ મોકલ્યો છે.'
-              : 'Account created! 6-digit code sent to your email.'
+              ? 'જીવન જીતવું છે - તમારું સ્વાગત છે!'
+              : 'Welcome back! Signed in successfully.'
           )
-          return
-        } catch (signUpErr: any) {
-          console.error('Auto Sign-Up Error:', signUpErr)
-          const signUpMsg = signUpErr?.errors?.[0]?.message || 'Please check your email and password.'
-          setErrorMsg(signUpMsg)
-          toast.error(signUpMsg)
+          window.location.href = redirectUrl
           return
         }
+      } catch (signInErr: any) {
+        console.log('User sign-in attempt failed, checking auto sign-up:', signInErr)
       }
-
-      setErrorMsg(msg || 'Invalid email or password. Please check your credentials.')
-      toast.error(msg || 'Invalid email or password. Please check your credentials.')
-    } finally {
-      setLoading(false)
     }
+
+    // 2. If Sign In Failed or User is New -> Auto-Register New User
+    if (isSignUpLoaded && signUp) {
+      try {
+        const signUpResult = await signUp.create({
+          emailAddress: email.trim(),
+          password,
+          firstName: firstName.trim() || 'Reader',
+        })
+
+        if (signUpResult.status === 'complete') {
+          await setSignUpActive({ session: signUpResult.createdSessionId })
+          toast.success(
+            language === 'gu'
+              ? 'નવું એકાઉન્ટ બન્યું! સ્વાગત છે.'
+              : 'Account created! Welcome to your dashboard.'
+          )
+          window.location.href = redirectUrl
+          return
+        }
+
+        // Send Email Verification Code
+        await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
+        setPendingVerification(true)
+        toast.success(
+          language === 'gu'
+            ? 'નવું એકાઉન્ટ બન્યું! તમારા ઇમેઇલ પર ૬-અંકનો વેરિફિકેશન કોડ મોકલ્યો છે.'
+            : 'Verification code sent to your email address!'
+        )
+        return
+      } catch (signUpErr: any) {
+        console.error('Sign Up Error:', signUpErr)
+        const msg = signUpErr?.errors?.[0]?.message || 'Please check your email and password credentials.'
+        setErrorMsg(msg)
+        toast.error(msg)
+      }
+    } else {
+      setErrorMsg('Invalid email or password. Please try again.')
+      toast.error('Invalid credentials')
+    }
+
+    setLoading(false)
   }
 
-
-
-  // Handle Custom Email/Password Sign Up
-  const handleSignUpSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!isSignUpLoaded || !signUp) return
-    setErrorMsg('')
-    setLoading(true)
-
-    try {
-      await signUp.create({
-        emailAddress: email.trim(),
-        password,
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-      })
-
-      // Send Email Code
-      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
-      setPendingVerification(true)
-      toast.success(
-        language === 'gu'
-          ? 'તમારા ઇમેઇલ પર ૬-અંકનો વેરિફિકેશન કોડ મોકલ્યો છે!'
-          : 'Verification code sent to your email address!'
-      )
-    } catch (err: any) {
-      console.error('Sign Up Error:', err)
-      const msg = err?.errors?.[0]?.message || 'Failed to create account. Please try another email.'
-      setErrorMsg(msg)
-      toast.error(msg)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Handle Email Verification Code Submit
+  // Verification Code Form
   const handleVerifySubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isSignUpLoaded || !signUp) return
@@ -219,9 +162,7 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
             : 'Account verified successfully! Welcome.'
         )
         window.location.href = redirectUrl
-
       } else {
-        console.log('Sign up status:', completeSignUp)
         setErrorMsg('Verification failed. Please check the code and try again.')
       }
     } catch (err: any) {
@@ -234,7 +175,7 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
     }
   }
 
-  // 1. VERIFICATION STEP
+  // 1. EMAIL VERIFICATION STEP
   if (pendingVerification) {
     return (
       <div className="w-full max-w-md rounded-3xl border border-[var(--line-soft)] bg-white p-6 sm:p-8 shadow-xl text-center">
@@ -243,7 +184,7 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
         </div>
 
         <h3 className="font-playfair text-2xl font-bold text-[var(--text-strong)]">
-          {language === 'gu' ? 'ઇમેઇલ વેરિફિકેશન' : language === 'hi' ? 'ईमेल सत्यापन' : 'Verify Email Address'}
+          {language === 'gu' ? 'ઇમેઇલ વેરિફિકેશન' : 'Verify Email Address'}
         </h3>
         <p className="mt-1 text-xs text-[var(--text-soft)]">
           {language === 'gu'
@@ -283,44 +224,31 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
             onClick={() => setPendingVerification(false)}
             className="text-xs font-semibold text-[var(--text-muted)] hover:underline"
           >
-            ← Back to Sign Up
+            ← Back to Sign In
           </button>
         </form>
       </div>
     )
   }
 
-  // 2. SIGN IN / SIGN UP FORM
+  // 2. UNIFIED ALL-IN-ONE AUTH CARD
   return (
     <div className="w-full max-w-md rounded-3xl border border-[var(--line-soft)] bg-white p-6 sm:p-8 shadow-xl">
       {/* Header */}
       <div className="text-center mb-6">
         <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-[var(--text-strong)]">
-          {mode === 'sign-in'
-            ? language === 'gu'
-              ? 'લૉગ ઇન કરો'
-              : language === 'hi'
-              ? 'लॉग इन करें'
-              : 'Sign In to Account'
-            : language === 'gu'
-            ? 'નવું એકાઉન્ટ બનાવો'
-            : language === 'hi'
-            ? 'नया खाता बनाएं'
-            : 'Create Free Account'}
+          {language === 'gu' ? 'લૉગ ઇન / નવું એકાઉન્ટ' : 'Sign In / Register Account'}
         </h2>
         <p className="mt-1 text-xs text-[var(--text-soft)]">
-          {mode === 'sign-in'
-            ? language === 'gu'
-              ? 'તમારા ખરીદેલા માસ્ટર ઈ-બુક્સ વાંચવા લૉગ ઇન કરો'
-              : 'Access your Gujarati E-Book reader & library'
-            : language === 'gu'
-            ? 'માત્ર ૩૦ સેકન્ડમાં નવું એકાઉન્ટ બનાવો'
-            : 'Register in 30 seconds to purchase & read e-books'}
+          {language === 'gu'
+            ? 'તમારા ખરીદેલા ગુજરાતી માસ્ટર ઈ-બુક્સ વાંચવા લૉગ ઇન અથવા રજિસ્ટર કરો'
+            : 'Access your Gujarati master E-Books & personal reader dashboard'}
         </p>
       </div>
 
-      {/* Google OAuth One-Click Sign In */}
+      {/* Google One-Click Sign In (Unified for First-Time & Returning Users) */}
       <button
+        type="button"
         onClick={handleGoogleSignIn}
         disabled={loading}
         className="w-full flex items-center justify-center gap-3 rounded-2xl border border-[var(--line-strong)] bg-white p-3 text-sm font-bold text-[var(--text-strong)] shadow-sm hover:bg-slate-50 transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-50 mb-4"
@@ -329,41 +257,26 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
         <span>Continue with Google</span>
       </button>
 
-      <Divider className="!my-4 !text-xs !text-[var(--text-muted)]">OR WITH EMAIL</Divider>
+      <Divider className="!my-4 !text-xs !text-[var(--text-muted)]">OR ENTER YOUR DETAILS</Divider>
 
       {errorMsg && <Alert message={errorMsg} type="error" showIcon className="mb-4 text-xs" />}
 
       {/* Form */}
-      <form onSubmit={mode === 'sign-in' ? handleSignInSubmit : handleSignUpSubmit} className="space-y-4">
-        {mode === 'sign-up' && (
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold text-[var(--text-soft)] mb-1">First Name</label>
-              <Input
-                size="large"
-                prefix={<UserOutlined className="text-slate-400" />}
-                placeholder="Manish"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="!rounded-xl"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-[var(--text-soft)] mb-1">Last Name</label>
-              <Input
-                size="large"
-                placeholder="Vaghasiya"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                className="!rounded-xl"
-              />
-            </div>
-          </div>
-        )}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-xs font-semibold text-[var(--text-soft)] mb-1">Your Name (Optional)</label>
+          <Input
+            size="large"
+            prefix={<UserOutlined className="text-slate-400" />}
+            placeholder="e.g. Ramesh Patel"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="!rounded-xl"
+          />
+        </div>
 
         <div>
-          <label className="block text-xs font-semibold text-[var(--text-soft)] mb-1">Email Address</label>
+          <label className="block text-xs font-semibold text-[var(--text-soft)] mb-1">Email Address *</label>
           <Input
             size="large"
             type="email"
@@ -377,7 +290,7 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-[var(--text-soft)] mb-1">Password</label>
+          <label className="block text-xs font-semibold text-[var(--text-soft)] mb-1">Password *</label>
           <Input
             size="large"
             type={showPassword ? 'text' : 'password'}
@@ -401,39 +314,13 @@ export const CustomAuthCard: React.FC<CustomAuthCardProps> = ({ mode, redirectUr
           loading={loading}
           icon={<ArrowRightOutlined />}
           iconPlacement="end"
-
           block
           size="large"
           className="!h-12 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910] shadow-md"
         >
-          {mode === 'sign-in'
-            ? language === 'gu'
-              ? 'લૉગ ઇન કરો'
-              : 'Sign In'
-            : language === 'gu'
-            ? 'એકાઉન્ટ બનાવો'
-            : 'Create Reader Account'}
+          {language === 'gu' ? 'લૉગ ઇન / એકાઉન્ટ બનાવો' : 'Continue to Dashboard'}
         </Button>
       </form>
-
-      {/* Switch Mode Footer */}
-      <div className="mt-6 border-t border-[var(--line-soft)] pt-4 text-center text-xs text-[var(--text-soft)]">
-        {mode === 'sign-in' ? (
-          <>
-            Don't have an account?{' '}
-            <Link to="/sign-up" className="font-bold text-[var(--accent-earth)] hover:underline">
-              Register Free
-            </Link>
-          </>
-        ) : (
-          <>
-            Already have a reader account?{' '}
-            <Link to="/sign-in" className="font-bold text-[var(--accent-earth)] hover:underline">
-              Sign In
-            </Link>
-          </>
-        )}
-      </div>
     </div>
   )
 }
