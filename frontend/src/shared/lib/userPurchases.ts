@@ -3,7 +3,7 @@ import { API_URL } from './api'
 export function getUserPurchasedBooks(userId?: string): string[] {
   const booksSet = new Set<string>()
 
-  // 1. Check user-specific storage
+  // 1. Check user-specific storage (requires logged-in userId)
   if (userId) {
     try {
       const raw = localStorage.getItem(`purchased_books_${userId}`)
@@ -16,31 +16,32 @@ export function getUserPurchasedBooks(userId?: string): string[] {
     } catch (err) {
       console.error('Failed to parse user purchased books:', err)
     }
-  }
 
-  // 2. Check session purchase key mv_ebook_purchased
-  try {
-    const globalRaw = localStorage.getItem('mv_ebook_purchased')
-    if (globalRaw) {
-      const parsedGlobal = JSON.parse(globalRaw)
-      if (parsedGlobal?.bookId) {
-        if (parsedGlobal.bookId === 'combo-bundle') {
-          booksSet.add('jivan-jitvu-che')
-          booksSet.add('man-haryu-to-badhu-haryu')
-          booksSet.add('combo-bundle')
-        } else {
-          booksSet.add(parsedGlobal.bookId)
+    // 2. Check session purchase key mv_ebook_purchased if logged in
+    try {
+      const globalRaw = localStorage.getItem('mv_ebook_purchased')
+      if (globalRaw) {
+        const parsedGlobal = JSON.parse(globalRaw)
+        if (parsedGlobal?.bookId) {
+          if (parsedGlobal.bookId === 'combo-bundle') {
+            booksSet.add('jivan-jitvu-che')
+            booksSet.add('man-haryu-to-badhu-haryu')
+            booksSet.add('combo-bundle')
+          } else {
+            booksSet.add(parsedGlobal.bookId)
+          }
         }
       }
+    } catch (err) {
+      console.error('Failed to parse global purchased books:', err)
     }
-  } catch (err) {
-    console.error('Failed to parse global purchased books:', err)
   }
 
   return Array.from(booksSet)
 }
 
 export function isBookOwned(userId: string | undefined, bookId: string): boolean {
+  if (!userId) return false // STRICT ACCESS CONTROL: Must be signed in!
   const owned = getUserPurchasedBooks(userId)
   if (owned.includes('combo-bundle')) return true
   if (owned.includes(bookId)) return true
@@ -75,7 +76,7 @@ export function addPurchasedBook(userId: string | undefined, bookId: string): st
 }
 
 export async function syncUserPurchasesFromBackend(userId?: string, userEmail?: string): Promise<string[]> {
-  if (!userEmail) return getUserPurchasedBooks(userId)
+  if (!userId || !userEmail) return getUserPurchasedBooks(userId)
   try {
     const res = await fetch(`${API_URL}/api/payment/my-purchased-books?email=${encodeURIComponent(userEmail.trim())}`)
     if (res.ok) {

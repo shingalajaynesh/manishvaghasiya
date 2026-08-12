@@ -12,10 +12,10 @@ import {
   FilePdfOutlined,
   LoadingOutlined,
 } from '@ant-design/icons'
-import { Button, Drawer, Tooltip, notification, Spin } from 'antd'
+import { Button, Drawer, Tooltip, notification, Spin, Tag } from 'antd'
 import * as pdfjsLib from 'pdfjs-dist'
 import { SeoHead } from '../../shared/components/site/SeoHead'
-
+import { isBookOwned, syncUserPurchasesFromBackend } from '../../shared/lib/userPurchases'
 
 // Set worker source for pdfjs-dist from cdn.jsdelivr.net to render original PDF pages securely
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
@@ -40,7 +40,20 @@ const PDF_FILES: Record<string, { title: string; path: string }> = {
 export function EbookReaderPage() {
   const { bookId } = useParams<{ bookId: string }>()
   const navigate = useNavigate()
-  const { user } = useUser()
+  const { user, isSignedIn, isLoaded } = useUser()
+
+  const [purchaseSynced, setPurchaseSynced] = useState(false)
+
+  useEffect(() => {
+    if (user?.id && user?.primaryEmailAddress?.emailAddress) {
+      syncUserPurchasesFromBackend(user.id, user.primaryEmailAddress.emailAddress).then(() => {
+        setPurchaseSynced(true)
+      })
+    } else {
+      setPurchaseSynced(true)
+    }
+  }, [user?.id, user?.primaryEmailAddress?.emailAddress])
+
 
   const bookInfo = PDF_FILES[bookId || 'jivan-jitvu-che'] || PDF_FILES['jivan-jitvu-che']
 
@@ -66,7 +79,87 @@ export function EbookReaderPage() {
     user?.primaryEmailAddress?.emailAddress || user?.fullName || 'Authorized Reader'
   const watermarkText = `LICENSED TO: ${userIdentifier} • DRM PROTECTED • DO NOT DISTRIBUTE`
 
+  // 0. Access Guard Checks
+  if (!isLoaded || !purchaseSynced) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 40, color: '#D4A017' }} spin />} />
+        <p className="mt-4 text-xs font-bold text-slate-700">Verifying account access & e-book license...</p>
+      </div>
+    )
+  }
+
+  if (!isSignedIn) {
+    return (
+      <>
+        <SeoHead title="Sign In Required | Manish Vaghasiya DRM Reader" description="Account authentication required" />
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
+          <div className="w-full max-w-md rounded-3xl border border-amber-200 bg-white p-8 shadow-xl">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-800">
+              <LockOutlined className="text-2xl" />
+            </div>
+            <Tag color="volcano" className="!mb-3 !rounded-full !px-3 !py-0.5 !text-xs !font-bold">
+              🔒 AUTHENTICATION REQUIRED
+            </Tag>
+            <h2 className="font-playfair text-2xl font-bold text-slate-900 mb-2">Sign In to Read E-Book</h2>
+            <p className="text-xs text-slate-600 mb-6">
+              You must be logged into your account to read your purchased e-books.
+            </p>
+            <Button
+              type="primary"
+              size="large"
+              block
+              onClick={() => navigate('/sign-in')}
+              className="!h-12 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+            >
+              Sign In to Your Account
+            </Button>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  const hasAccess = isBookOwned(user?.id, bookId || 'jivan-jitvu-che')
+
+  if (!hasAccess) {
+    return (
+      <>
+        <SeoHead title="E-Book Access Locked | Manish Vaghasiya DRM Reader" description="E-book purchase required" />
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
+          <div className="w-full max-w-md rounded-3xl border border-amber-200 bg-white p-8 shadow-xl">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-800">
+              <LockOutlined className="text-2xl" />
+            </div>
+            <Tag color="gold" className="!mb-3 !rounded-full !px-3 !py-0.5 !text-xs !font-bold">
+              🔒 PURCHASE REQUIRED
+            </Tag>
+            <h2 className="font-playfair text-2xl font-bold text-slate-900 mb-2">E-Book Not Unlocked</h2>
+            <p className="text-xs text-slate-600 mb-6">
+              You have not unlocked this master e-book on your account yet. Visit our store to unlock instant access.
+            </p>
+            <div className="flex flex-col gap-3">
+              <Button
+                type="primary"
+                size="large"
+                block
+                onClick={() => navigate('/resources')}
+                className="!h-12 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+              >
+                Buy & Unlock E-Book (₹199)
+              </Button>
+              <Button size="large" block onClick={() => navigate('/dashboard')} className="!rounded-xl !font-bold">
+                Go to My Dashboard
+              </Button>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
+
   // 1. Load Original PDF Document
+
   useEffect(() => {
     let isMounted = true
     setLoading(true)
