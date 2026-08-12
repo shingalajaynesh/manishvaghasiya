@@ -17,8 +17,10 @@ import * as pdfjsLib from 'pdfjs-dist'
 import { SeoHead } from '../../shared/components/site/SeoHead'
 import { isBookOwned, syncUserPurchasesFromBackend } from '../../shared/lib/userPurchases'
 
-// Set worker source for pdfjs-dist from cdn.jsdelivr.net to render original PDF pages securely
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+// Set worker source for pdfjs-dist from jsdelivr CDN safely
+if (typeof window !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version || '3.11.174'}/build/pdf.worker.min.js`
+}
 
 type ReaderTheme = 'parchment' | 'dark' | 'sepia'
 
@@ -54,7 +56,6 @@ export function EbookReaderPage() {
     }
   }, [user?.id, user?.primaryEmailAddress?.emailAddress])
 
-
   const bookInfo = PDF_FILES[bookId || 'jivan-jitvu-che'] || PDF_FILES['jivan-jitvu-che']
 
   // PDF render state
@@ -62,6 +63,7 @@ export function EbookReaderPage() {
   const [numPages, setNumPages] = useState<number>(0)
   const [pageNum, setPageNum] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(true)
+  const [pdfError, setPdfError] = useState<string | null>(null)
 
   // Reader customization state
   const [theme, setTheme] = useState<ReaderTheme>('parchment')
@@ -87,24 +89,37 @@ export function EbookReaderPage() {
 
     let isMounted = true
     setLoading(true)
+    setPdfError(null)
 
-    pdfjsLib
-      .getDocument(bookInfo.path)
-      .promise.then((loadedPdf) => {
-        if (!isMounted) return
-        setPdfDoc(loadedPdf)
-        setNumPages(loadedPdf.numPages)
+    try {
+      pdfjsLib
+        .getDocument(bookInfo.path)
+        .promise.then((loadedPdf) => {
+          if (!isMounted) return
+          setPdfDoc(loadedPdf)
+          setNumPages(loadedPdf.numPages)
+          setLoading(false)
+        })
+        .catch((err) => {
+          console.error('Error loading PDF document:', err)
+          if (isMounted) {
+            setPdfError('Unable to load e-book document. Please try refreshing the page.')
+            setLoading(false)
+          }
+        })
+    } catch (e) {
+      console.error('PDF initialization error:', e)
+      if (isMounted) {
+        setPdfError('Reader initialization error.')
         setLoading(false)
-      })
-      .catch((err) => {
-        console.error('Error loading PDF document:', err)
-        setLoading(false)
-      })
+      }
+    }
 
     return () => {
       isMounted = false
     }
   }, [bookInfo.path, isLoaded, purchaseSynced, isSignedIn, hasAccess])
+
 
   // 2. Render Current PDF Page onto Protected HTML5 Canvas
   useEffect(() => {
@@ -225,7 +240,25 @@ export function EbookReaderPage() {
   // ==================== CONDITIONAL RENDER GUARDS (ALL HOOKS CALLED ABOVE) ====================
 
   // 0. Access Guard Checks
+  if (pdfError) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
+        <div className="w-full max-w-md rounded-3xl border border-red-200 bg-white p-8 shadow-xl">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-100 text-red-700">
+            <FilePdfOutlined className="text-2xl" />
+          </div>
+          <h2 className="font-playfair text-xl font-bold text-slate-900 mb-2">E-Book Loading Error</h2>
+          <p className="text-xs text-slate-600 mb-6">{pdfError}</p>
+          <Button type="primary" onClick={() => window.location.reload()} className="!rounded-xl !bg-[#D4A017] !font-bold">
+            Refresh Page
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   if (!isLoaded || !purchaseSynced) {
+
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
         <Spin indicator={<LoadingOutlined style={{ fontSize: 40, color: '#D4A017' }} spin />} />
