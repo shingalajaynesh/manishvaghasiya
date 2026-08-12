@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
-import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react'
 import { routePaths } from '../content/routes'
+
 
 
 import { AboutPage } from '../pages/about/AboutPage'
@@ -17,7 +17,9 @@ import { VideosPage } from '../pages/videos/VideosPage'
 import { DashboardPage } from '../pages/dashboard/DashboardPage'
 import { EbookReaderPage } from '../pages/reader/EbookReaderPage'
 import { SignInPage, SignUpPage } from '../pages/auth/AuthPages'
+import { SSOCallbackPage } from '../pages/auth/SSOCallbackPage'
 import { SiteLayout } from '../shared/components/layout/SiteLayout'
+
 import { legalDrafts } from '../content/legal'
 
 import { AdminPortalPage } from '../pages/admin/AdminPortalPage'
@@ -46,7 +48,8 @@ export const router = createBrowserRouter([
       { path: routePaths.dashboard.slice(1), element: <DashboardPage /> },
       { path: 'sign-in/*', element: <SignInPage /> },
       { path: 'sign-up/*', element: <SignUpPage /> },
-      { path: 'sso-callback/*', element: <AuthenticateWithRedirectCallback signUpForceRedirectUrl="/dashboard" signInForceRedirectUrl="/dashboard" /> },
+      { path: 'sso-callback/*', element: <SSOCallbackPage /> },
+
 
       { path: '1908/admin', element: <AdminPortalPage /> },
       { path: 'admin-portal-v1908', element: <AdminPortalPage /> },
