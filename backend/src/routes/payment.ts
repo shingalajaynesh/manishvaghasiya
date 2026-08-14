@@ -117,10 +117,10 @@ paymentRouter.post('/payment/verify-ebook-order', async (req: Request, res: Resp
         await mailer.sendMail({
           from: `"Manish Vaghasiya" <${user}>`,
           to: buyerEmail,
-          subject: `📘 Purchase Confirmation: ${itemName} — Manish Vaghasiya`,
+          subject: `Purchase Confirmation: ${itemName} — Manish Vaghasiya`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; color: #222; border: 1px solid #eee; padding: 24px; border-radius: 12px;">
-              <h2 style="color: #D4A017; margin-top: 0;">Thank you for your purchase! 🙏</h2>
+              <h2 style="color: #D4A017; margin-top: 0;">Thank you for your purchase</h2>
               <p>Namaste <strong>${buyerName || 'Friend'}</strong>,</p>
               <p>Your payment of <strong>₹${amount}</strong> for <strong>${itemName}</strong> has been successfully processed.</p>
               
@@ -133,7 +133,7 @@ paymentRouter.post('/payment/verify-ebook-order', async (req: Request, res: Resp
               <p>Click the button below to access & download your official PDF E-Book(s):</p>
               <p style="text-align: center; margin: 25px 0;">
                 <a href="https://manishvaghasiya.com/resources" style="background: #D4A017; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; display: inline-block;">
-                  📥 Download E-Book PDF Now
+                  Download E-Book PDF Now
                 </a>
               </p>
               <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;" />

@@ -127,7 +127,7 @@ export function AdminPortalPage() {
 
       const data = await res.json()
       if (res.ok && data.success) {
-        toast.success(`🎁 Free access granted to ${grantEmail}!`)
+        toast.success(`Free access granted to ${grantEmail}!`)
         setGrantEmail('')
         setGrantName('')
         fetchAdminData()
@@ -343,7 +343,7 @@ export function AdminPortalPage() {
                 options={[
                   { value: 'jivan-jitvu-che', label: 'જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો' },
                   { value: 'man-haryu-to-badhu-haryu', label: 'મન હાર્યું તો બધું હાર્યું' },
-                  { value: 'combo-bundle', label: '🔥 બંને માસ્ટર પુસ્તકો બંડલ (Combo)' },
+                  { value: 'combo-bundle', label: 'બંને માસ્ટર પુસ્તકો બંડલ (Combo Bundle)' },
                 ]}
               />
             </div>
@@ -384,7 +384,7 @@ export function AdminPortalPage() {
         open={addBookModalOpen}
         onCancel={() => setAddBookModalOpen(false)}
         footer={null}
-        title="➕ Publish & Add New E-Book"
+        title="Publish & Add New E-Book"
         centered
         width={550}
       >

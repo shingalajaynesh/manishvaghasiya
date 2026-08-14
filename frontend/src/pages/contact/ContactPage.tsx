@@ -40,17 +40,23 @@ export function ContactPage() {
       />
 
       <PageSection title="Direct contact details" description="Reach out to our event coordination and audience support team directly.">
-        <div className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto mb-12">
+        <div className="grid gap-6 md:grid-cols-3 max-w-4xl mx-auto mb-12">
           <ContentCard
-            title="Email Inquiry"
-            description="manishvaghasiya.tech@gmail.com"
+            title="Email Support"
+            description="manishvaghasiya.tech@gmail.com (Average reply time: within 24 hours)"
             icon={<MailOutlined />}
             tone="warm"
           />
           <ContentCard
-            title="Office Base"
-            description="Surat, Gujarat, India"
+            title="Official Office Base"
+            description="Surat, Gujarat 395006, India"
             icon={<EnvironmentOutlined />}
+            tone="warm"
+          />
+          <ContentCard
+            title="Working Hours"
+            description="Monday – Saturday: 9:30 AM to 6:30 PM IST (Closed Sundays)"
+            icon={<MailOutlined />}
             tone="warm"
           />
         </div>

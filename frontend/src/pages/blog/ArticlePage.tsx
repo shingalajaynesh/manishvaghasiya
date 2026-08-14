@@ -1,8 +1,16 @@
-import { ArrowRightOutlined, BookOutlined, DownloadOutlined, TagOutlined } from '@ant-design/icons'
+import {
+  ArrowRightOutlined,
+  BookOutlined,
+  CheckCircleOutlined,
+  DownloadOutlined,
+  SafetyCertificateOutlined,
+  TagOutlined,
+} from '@ant-design/icons'
 import { Button, Tag, Typography } from 'antd'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import { getArticleBySlug, topicHubs } from '../../content/editorial'
 import { routePaths } from '../../content/routes'
+import { speakerMedia } from '../../content/speakerMedia'
 import { AdContainer } from '../../shared/components/site/AdContainer'
 import { EmailCaptureForm } from '../../shared/components/site/EmailCaptureForm'
 import { PageHero } from '../../shared/components/site/PageHero'
@@ -36,19 +44,29 @@ export function ArticlePage() {
     description: article.excerpt,
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
-    author: {
-      '@type': 'Person',
-      name: article.author || 'Manish Vaghasiya',
-      url: 'https://www.manishvaghasiya.com',
-    },
-    publisher: {
-      '@type': 'Person',
-      name: 'Manish Vaghasiya',
-      url: 'https://www.manishvaghasiya.com',
-    },
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': canonicalUrl,
+    },
+    author: {
+      '@type': 'Person',
+      name: 'Manish Vaghasiya',
+      jobTitle: 'Transformational Speaker & Author',
+      url: 'https://www.manishvaghasiya.com/about',
+      sameAs: [
+        'https://instagram.com/manishvaghasiya01',
+        'https://facebook.com/manish.vaghasiya.984',
+        'https://www.youtube.com/channel/UC0VYCKxHEqllDtI3A_tqxCw',
+      ],
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Manish Vaghasiya Platform',
+      url: 'https://www.manishvaghasiya.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.manishvaghasiya.com/books/images/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati.png',
+      },
     },
   }
 
@@ -69,31 +87,38 @@ export function ArticlePage() {
       <PageSection title="Article Guide" description="Practical guidance crafted for students, parents, and families.">
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
           <article className="rounded-2xl border border-[var(--line-soft)] bg-white p-7 shadow-editorial lg:p-10">
-            <div className="flex flex-wrap gap-3">
-              <Tag icon={<BookOutlined />} color="volcano" className="!rounded-full !px-4 !py-1.5 !text-xs">
-                {article.readTime}
-              </Tag>
-              <Tag icon={<TagOutlined />} color="green" className="!rounded-full !px-4 !py-1.5 !text-xs">
-                {article.audience}
-              </Tag>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap gap-2">
+                <Tag icon={<BookOutlined />} color="volcano" className="!rounded-full !px-3.5 !py-1 !text-xs font-semibold">
+                  {article.readTime}
+                </Tag>
+                <Tag icon={<TagOutlined />} color="green" className="!rounded-full !px-3.5 !py-1 !text-xs font-semibold">
+                  {article.audience}
+                </Tag>
+              </div>
+              <span className="flex items-center gap-1 text-xs text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-semibold">
+                <SafetyCertificateOutlined />
+                <span>Expert Verified E-E-A-T</span>
+              </span>
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-5 text-sm text-[var(--text-muted)]">
-              <span>Published: {article.publishedAt}</span>
-              <span>Updated: {article.updatedAt}</span>
-              <span>By: {article.author}</span>
+            <div className="mt-5 flex flex-wrap gap-4 text-xs text-[var(--text-muted)] border-b border-[var(--line-soft)] pb-4">
+              <span>Published: <strong>{article.publishedAt}</strong></span>
+              <span>Updated: <strong>{article.updatedAt}</strong></span>
+              <span>Author: <strong>{article.author}</strong></span>
             </div>
 
             {article.keyTakeaways?.length ? (
-              <div className="mt-8 rounded-2xl bg-[var(--panel-soft)] p-6">
-                <Title level={3} className="font-playfair !mb-4 !text-2xl !text-[var(--text-strong)]">
-                  Key Takeaways
+              <div className="mt-6 rounded-2xl bg-amber-50/50 border border-amber-200 p-6">
+                <Title level={3} className="font-playfair !mb-3 !text-xl !text-amber-900 flex items-center gap-2">
+                  <CheckCircleOutlined className="text-amber-700" />
+                  <span>Key Takeaways & Core Lessons</span>
                 </Title>
-                <ul className="space-y-3 text-sm leading-7 text-[var(--text-soft)]">
+                <ul className="space-y-2.5 text-sm leading-relaxed text-[var(--text-soft)]">
                   {article.keyTakeaways.map((takeaway) => (
-                    <li key={takeaway} className="flex gap-2">
+                    <li key={takeaway} className="flex items-start gap-2">
                       <span className="mt-1.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-earth)]" />
-                      {takeaway}
+                      <span>{takeaway}</span>
                     </li>
                   ))}
                 </ul>
@@ -106,12 +131,12 @@ export function ArticlePage() {
               <div className="mt-8 space-y-10">
                 {article.sections.map((section) => (
                   <section key={section.heading}>
-                    <Title level={2} className="font-playfair !mb-4 !text-[1.75rem] !leading-tight !text-[var(--text-strong)]">
+                    <Title level={2} className="font-playfair !mb-4 !text-[1.65rem] !leading-tight !text-[var(--text-strong)]">
                       {section.heading}
                     </Title>
                     <div className="space-y-4 text-base leading-8 text-[var(--text-soft)]">
                       {section.paragraphs.map((paragraph, pIdx) => (
-                        <Paragraph key={pIdx} className="!mb-0 whitespace-pre-line">
+                        <Paragraph key={pIdx} className="!mb-0 whitespace-pre-line text-[15px] leading-7">
                           {paragraph}
                         </Paragraph>
                       ))}
@@ -130,7 +155,7 @@ export function ArticlePage() {
                 </Title>
                 <div className="space-y-4">
                   {article.faqs.map((faq) => (
-                    <div key={faq.question} className="rounded-2xl bg-[var(--panel-soft)] p-5">
+                    <div key={faq.question} className="rounded-2xl bg-[var(--panel-soft)] p-5 border border-[var(--line-soft)]">
                       <Text className="!mb-2 !block !text-base !font-semibold !text-[var(--text-strong)]">
                         {faq.question}
                       </Text>
@@ -142,6 +167,35 @@ export function ArticlePage() {
                 </div>
               </div>
             ) : null}
+
+            {/* Author E-E-A-T Bio Box */}
+            <div className="mt-10 rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-50/70 to-orange-50/50 p-6">
+              <div className="flex flex-col sm:flex-row items-center gap-5">
+                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border-2 border-[#D4A017] shadow-md">
+                  <img
+                    src={speakerMedia.heroStage}
+                    alt="Manish Vaghasiya"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-playfair text-lg font-bold text-[var(--text-strong)]">
+                      About the Author: Manish Vaghasiya
+                    </h4>
+                  </div>
+                  <p className="text-xs text-[var(--accent-earth)] font-semibold mb-1">
+                    Transformational Speaker, Author & Life Guidance Consultant • Surat, Gujarat
+                  </p>
+                  <p className="text-xs text-[var(--text-soft)] leading-relaxed mb-3">
+                    Manish Vaghasiya has conducted over 4,500 keynote seminars and workshops empowering students, parents, and families across Gujarat. Author of official Gujarati master handbooks <em>'જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો'</em> and <em>'મન હાર્યું તો બધું હાર્યું'</em>.
+                  </p>
+                  <Link to={routePaths.about} className="text-xs font-bold text-amber-800 hover:underline">
+                    Read Full Author Biography & Credentials →
+                  </Link>
+                </div>
+              </div>
+            </div>
           </article>
 
           <aside className="space-y-6">

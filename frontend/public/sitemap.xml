@@ -153,40 +153,51 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Legal & Policy Pages -->
+  <url>
+    <loc>https://www.manishvaghasiya.com/refund-policy</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.manishvaghasiya.com/cookie-policy</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
   <url>
     <loc>https://www.manishvaghasiya.com/privacy-policy</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.manishvaghasiya.com/terms-and-conditions</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.manishvaghasiya.com/editorial-policy</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.manishvaghasiya.com/corrections-policy</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.manishvaghasiya.com/ad-disclosure</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.manishvaghasiya.com/affiliate-disclosure</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

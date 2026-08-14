@@ -12,6 +12,7 @@ import {
   CheckCircleOutlined,
   SafetyCertificateOutlined,
   UserOutlined,
+  DownloadOutlined,
 } from '@ant-design/icons'
 import { Button, Card, Col, Row, Tabs, Tag } from 'antd'
 import { RazorpayCheckout } from '../../shared/components/payment/RazorpayCheckout'
@@ -214,24 +215,32 @@ export function DashboardPage() {
                             )}
                           </p>
 
-                          <div className="mt-5 pt-4 border-t border-[var(--line-soft)] flex items-center justify-between">
+                          <div className="mt-5 pt-4 border-t border-[var(--line-soft)] flex flex-col gap-2">
                             {purchasedBookIds.includes('jivan-jitvu-che') || purchasedBookIds.includes('combo-bundle') ? (
-                              <Link to="/reader/jivan-jitvu-che" className="w-full">
-                                <Button
-                                  type="primary"
-                                  icon={<ReadOutlined />}
-                                  className="!w-full !h-11 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+                              <>
+                                <a
+                                  href="/books/pdf/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati_Master.pdf"
+                                  download="Jivan-Jitvu-Che-Manish-Vaghasiya-Master-Edition.pdf"
+                                  className="w-full"
                                 >
-                                  {translate(
-                                    {
-                                      en: 'Read Online Now (DRM Reader)',
-                                      hi: 'अभी ऑनलाइन पढ़ें (DRM रीडर)',
-                                      gu: 'ઓનલાઈન વાંચો (DRM રીડર)',
-                                    },
-                                    language
-                                  )}
-                                </Button>
-                              </Link>
+                                  <Button
+                                    type="primary"
+                                    icon={<DownloadOutlined />}
+                                    className="!w-full !h-10 !rounded-xl !bg-emerald-600 !font-bold hover:!bg-emerald-700 text-xs"
+                                  >
+                                    Download Master PDF (Offline)
+                                  </Button>
+                                </a>
+                                <Link to="/reader/jivan-jitvu-che" className="w-full">
+                                  <Button
+                                    type="default"
+                                    icon={<ReadOutlined />}
+                                    className="!w-full !h-10 !rounded-xl !border-amber-300 !bg-amber-50/60 !font-bold text-amber-900 hover:!bg-amber-100 text-xs"
+                                  >
+                                    Read Online in Web Reader
+                                  </Button>
+                                </Link>
+                              </>
                             ) : (
                               <RazorpayCheckout
                                 amountInRupees={199}
@@ -295,24 +304,32 @@ export function DashboardPage() {
                             )}
                           </p>
 
-                          <div className="mt-5 pt-4 border-t border-[var(--line-soft)]">
+                          <div className="mt-5 pt-4 border-t border-[var(--line-soft)] flex flex-col gap-2">
                             {purchasedBookIds.includes('man-haryu-to-badhu-haryu') || purchasedBookIds.includes('combo-bundle') ? (
-                              <Link to="/reader/man-haryu-to-badhu-haryu" className="w-full">
-                                <Button
-                                  type="primary"
-                                  icon={<ReadOutlined />}
-                                  className="!w-full !h-11 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+                              <>
+                                <a
+                                  href="/books/pdf/Man-Haryu-To-Badhu-Haryu_Gujarati_Master.pdf"
+                                  download="Man-Haryu-To-Badhu-Haryu-Manish-Vaghasiya-Master-Edition.pdf"
+                                  className="w-full"
                                 >
-                                  {translate(
-                                    {
-                                      en: 'Read Online Now (DRM Reader)',
-                                      hi: 'अभी ऑनलाइन पढ़ें (DRM रीडर)',
-                                      gu: 'ઓનલાઈન વાંચો (DRM રીડર)',
-                                    },
-                                    language
-                                  )}
-                                </Button>
-                              </Link>
+                                  <Button
+                                    type="primary"
+                                    icon={<DownloadOutlined />}
+                                    className="!w-full !h-10 !rounded-xl !bg-emerald-600 !font-bold hover:!bg-emerald-700 text-xs"
+                                  >
+                                    Download Master PDF (Offline)
+                                  </Button>
+                                </a>
+                                <Link to="/reader/man-haryu-to-badhu-haryu" className="w-full">
+                                  <Button
+                                    type="default"
+                                    icon={<ReadOutlined />}
+                                    className="!w-full !h-10 !rounded-xl !border-amber-300 !bg-amber-50/60 !font-bold text-amber-900 hover:!bg-amber-100 text-xs"
+                                  >
+                                    Read Online in Web Reader
+                                  </Button>
+                                </Link>
+                              </>
                             ) : (
                               <RazorpayCheckout
                                 amountInRupees={199}

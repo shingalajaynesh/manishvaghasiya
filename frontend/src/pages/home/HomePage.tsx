@@ -8,6 +8,9 @@ import {
   UserOutlined,
   HeartOutlined,
   PictureOutlined,
+  ShoppingOutlined,
+  FireOutlined,
+  ThunderboltOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Row, Space, Statistic, Tag, Typography } from 'antd'
 import { articles } from '../../content/editorial'
@@ -163,7 +166,7 @@ export function HomePage() {
 
 
 
-      <PageSection title="Official Master E-Books" description="Get instant access to Manish Vaghasiya's official life-changing Gujarati master handbooks." tone="forest">
+      <PageSection title="Official Master Gujarati E-Books" description="Get instant access to Manish Vaghasiya's official life-changing Gujarati master handbooks. Read online or download PDF." tone="forest">
         <Row gutter={[24, 24]}>
           {/* Book 1 Card */}
           <Col xs={24} lg={12}>
@@ -185,7 +188,7 @@ export function HomePage() {
                       જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો
                     </Title>
                     <div className="mb-2 text-xs font-bold text-[var(--accent-earth)]">
-                      276 Pages • Gujarati Master Edition
+                      276 Pages • Master Edition PDF
                     </div>
                     <Paragraph className="!mb-0 !text-xs !leading-6 !text-[var(--text-soft)]">
                       વિદ્યાર્થી, માતા-પિતા અને દરેક પરિવાર માટે જીવન બદલતા ૧૨ પાઠ, સંસ્કાર, ડિજિટલ ડિટોક્સ અને ૨૧ દિવસનો પરિવાર પરિવર્તન પડકાર.
@@ -193,19 +196,28 @@ export function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 flex flex-wrap items-center justify-between border-t border-[var(--line-soft)] pt-4 gap-3">
+              <div className="mt-6 flex flex-wrap items-center justify-between border-t border-[var(--line-soft)] pt-4 gap-2">
                 <div className="text-xl font-extrabold text-[var(--accent-earth)]">
                   ₹199 <span className="text-xs font-normal text-[var(--text-muted)] line-through">₹499</span>
                   <span className="ml-2 rounded bg-green-100 px-1.5 py-0.5 text-[10px] font-bold text-green-700">60% OFF</span>
                 </div>
-                <Button
-                  type="primary"
-                  icon={<BookOutlined />}
-                  onClick={() => navigate(`${routePaths.resources}?book=jivan-jitvu-che`)}
-                  className="!rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
-                >
-                  Buy Book 1 PDF
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    icon={<BookOutlined />}
+                    onClick={() => navigate('/reader/jivan-jitvu-che')}
+                    className="!rounded-xl border-amber-300 !text-xs !font-semibold text-amber-900 hover:!bg-amber-50"
+                  >
+                    Look Inside (Free)
+                  </Button>
+                  <Button
+                    type="primary"
+                    icon={<ShoppingOutlined />}
+                    onClick={() => navigate(`${routePaths.resources}?book=jivan-jitvu-che`)}
+                    className="!rounded-xl !bg-[#D4A017] !text-xs !font-bold hover:!bg-[#b88910]"
+                  >
+                    Buy (₹199)
+                  </Button>
+                </div>
               </div>
             </div>
           </Col>
@@ -230,7 +242,7 @@ export function HomePage() {
                       મન હાર્યું તો બધું હાર્યું
                     </Title>
                     <div className="mb-2 text-xs font-bold text-[var(--accent-earth)]">
-                      250+ Pages • Gujarati Master Edition
+                      250+ Pages • Master Edition PDF
                     </div>
                     <Paragraph className="!mb-0 !text-xs !leading-6 !text-[var(--text-soft)]">
                       માનસિક મજબૂતી, ઓવરથિંકિંગમાંથી મુક્તિ, આત્મવિશ્વાસનું પુનઃનિર્માણ અને પડકારો સામે હિંમત રાખવાનું શક્તિશાળી માર્ગદર્શન.
@@ -238,19 +250,28 @@ export function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 flex flex-wrap items-center justify-between border-t border-[var(--line-soft)] pt-4 gap-3">
+              <div className="mt-6 flex flex-wrap items-center justify-between border-t border-[var(--line-soft)] pt-4 gap-2">
                 <div className="text-xl font-extrabold text-[var(--accent-earth)]">
                   ₹199 <span className="text-xs font-normal text-[var(--text-muted)] line-through">₹499</span>
                   <span className="ml-2 rounded bg-green-100 px-1.5 py-0.5 text-[10px] font-bold text-green-700">60% OFF</span>
                 </div>
-                <Button
-                  type="primary"
-                  icon={<BookOutlined />}
-                  onClick={() => navigate(`${routePaths.resources}?book=man-haryu-to-badhu-haryu`)}
-                  className="!rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
-                >
-                  Buy Book 2 PDF
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    icon={<BookOutlined />}
+                    onClick={() => navigate('/reader/man-haryu-to-badhu-haryu')}
+                    className="!rounded-xl border-amber-300 !text-xs !font-semibold text-amber-900 hover:!bg-amber-50"
+                  >
+                    Look Inside (Free)
+                  </Button>
+                  <Button
+                    type="primary"
+                    icon={<ShoppingOutlined />}
+                    onClick={() => navigate(`${routePaths.resources}?book=man-haryu-to-badhu-haryu`)}
+                    className="!rounded-xl !bg-[#D4A017] !text-xs !font-bold hover:!bg-[#b88910]"
+                  >
+                    Buy (₹199)
+                  </Button>
+                </div>
               </div>
             </div>
           </Col>
@@ -258,11 +279,12 @@ export function HomePage() {
 
         {/* Master Combo Banner */}
         <div className="mt-6 rounded-3xl border border-amber-300 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-100 p-6 shadow-editorial text-center sm:p-8">
-          <div className="inline-block rounded-full bg-[#D4A017] px-4 py-1 text-xs font-extrabold uppercase tracking-wider text-white mb-2 shadow-sm">
-            🔥 SPECIAL COMBO BUNDLE OFFER
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#D4A017] px-4 py-1 text-xs font-extrabold uppercase tracking-wider text-white mb-2 shadow-sm">
+            <FireOutlined />
+            <span>SPECIAL COMBO BUNDLE OFFER • SAVE 65%</span>
           </div>
           <Title level={3} className="font-playfair !mb-2 !text-2xl !text-[var(--text-strong)]">
-            બંને માસ્ટર પુસ્તકો બંડલ (Get Both E-Books & Save Extra ₹49)
+            બંને માસ્ટર પુસ્તકો બંડલ (Get Both Master E-Books)
           </Title>
           <p className="mx-auto max-w-2xl text-xs text-[var(--text-soft)] mb-4">
             'જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો' + 'મન હાર્યું તો બધું હાર્યું' બંને માસ્ટર ઈ-બુક કમ્પ્લીટ લાઈબ્રેરી મેળવો માત્ર ₹349 માં!
@@ -271,13 +293,16 @@ export function HomePage() {
             <Button
               type="primary"
               size="large"
-              icon={<BookOutlined />}
+              icon={<ThunderboltOutlined />}
               onClick={() => navigate(`${routePaths.resources}?book=combo-bundle`)}
               className="!h-13 !rounded-xl !bg-[#D4A017] !px-8 !text-base !font-bold hover:!bg-[#b88910] shadow-md"
             >
               Get Master Combo Pack for ₹349
             </Button>
-            <span className="text-xs text-emerald-800 font-bold">⚡ Instant PDF Download + Email Access</span>
+            <span className="flex items-center gap-1 text-xs text-emerald-800 font-bold">
+              <DownloadOutlined />
+              <span>Instant PDF Download + Email Access</span>
+            </span>
           </div>
         </div>
       </PageSection>
@@ -327,6 +352,66 @@ export function HomePage() {
 
 
 
+
+      {/* About Manish Vaghasiya Section */}
+      <PageSection
+        title="Meet Manish Vaghasiya"
+        description="Author, Transformational Speaker & Life Guidance Consultant based in Surat, Gujarat."
+        tone="forest"
+      >
+        <div className="rounded-3xl border border-[var(--line-soft)] bg-white p-6 shadow-editorial lg:p-10">
+          <Row gutter={[40, 32]} align="middle">
+            <Col xs={24} lg={10}>
+              <div className="relative overflow-hidden rounded-2xl shadow-md border-2 border-amber-200">
+                <img
+                  src={speakerMedia.aboutPortrait}
+                  alt="Manish Vaghasiya Author and Speaker"
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 text-white">
+                  <div className="font-playfair text-lg font-bold">Manish Vaghasiya</div>
+                  <div className="text-xs text-amber-300 font-semibold">20+ Years Experience • 4,500+ Seminars</div>
+                </div>
+              </div>
+            </Col>
+
+            <Col xs={24} lg={14}>
+              <Space direction="vertical" size={16} className="w-full orientation-vertical">
+                <Tag color="gold" className="!w-fit !rounded-full !px-3.5 !py-1 !text-xs !font-bold !uppercase !tracking-wider">
+                  AUTHOR & TRANSFORMATIONAL SPEAKER
+                </Tag>
+                <Title level={2} className="font-playfair !m-0 !text-2xl !leading-tight !text-[var(--text-strong)] sm:!text-3xl">
+                  Dedicated to Empowering Youth & Rebuilding Family Trust
+                </Title>
+                <Paragraph className="!mb-0 !text-sm !leading-7 !text-[var(--text-soft)] sm:!text-base sm:!leading-8">
+                  For over two decades, Manish Vaghasiya has traveled across Gujarat and India delivering life-altering seminars in schools, universities, and community auditoriums. His unique, compassionate Gujarati-first approach equips students to bounce back from failure and empowers parents to communicate with deep emotional empathy.
+                </Paragraph>
+                <Paragraph className="!mb-0 !text-sm !leading-7 !text-[var(--text-soft)]">
+                  Author of two official master handbooks—<em>'જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો'</em> and <em>'મન હાર્યું તો બધું હાર્યું'</em>—Manish Vaghasiya combines psychological clarity with practical, everyday action steps that any family can adopt immediately.
+                </Paragraph>
+                <div className="pt-2 flex flex-wrap gap-3">
+                  <Button
+                    type="primary"
+                    size="large"
+                    icon={<ArrowRightOutlined />}
+                    onClick={() => navigate(routePaths.about)}
+                    className="!rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+                  >
+                    Read Full Biography & Mission
+                  </Button>
+                  <Button
+                    size="large"
+                    onClick={() => navigate(routePaths.contact)}
+                    className="!rounded-xl !font-semibold"
+                  >
+                    Book Manish for an Event
+                  </Button>
+                </div>
+              </Space>
+            </Col>
+          </Row>
+        </div>
+      </PageSection>
 
       <PageSection
         title="Photo highlights"

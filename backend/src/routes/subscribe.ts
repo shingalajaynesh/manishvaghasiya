@@ -67,15 +67,15 @@ subscribeRouter.post('/subscribe', async (req, res) => {
         await mailer.sendMail({
           from: `"Manish Vaghasiya" <${smtpUser}>`,
           to:   email,
-          subject: '🙏 You\'re on the list — Manish Vaghasiya',
+          subject: 'You are on the list — Manish Vaghasiya',
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; color: #222; border: 1px solid #eee; padding: 20px; border-radius: 8px;">
-              <h2 style="color: #D4A017; margin-top: 0;">Namaste ${name ?? 'Friend'}! 🙏</h2>
+              <h2 style="color: #D4A017; margin-top: 0;">Namaste ${name ?? 'Friend'}</h2>
               <p>Thank you for signing up. I'll personally let you know the moment my new website goes live.</p>
               <p>Until then, follow me for daily inspiration:</p>
               <p style="margin: 20px 0;">
-                📸 <a href="https://instagram.com/manishvaghasiya01" style="color: #D4A017; text-decoration: none; font-weight: bold; margin-right: 15px;">Instagram</a>
-                📘 <a href="https://facebook.com/manish.vaghasiya.984" style="color: #D4A017; text-decoration: none; font-weight: bold;">Facebook</a>
+                <a href="https://instagram.com/manishvaghasiya01" style="color: #D4A017; text-decoration: none; font-weight: bold; margin-right: 15px;">Instagram</a>
+                <a href="https://facebook.com/manish.vaghasiya.984" style="color: #D4A017; text-decoration: none; font-weight: bold;">Facebook</a>
               </p>
               <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
               <p style="color: #888; font-size: 11px; margin-bottom: 0; line-height: 1.4;">
@@ -90,7 +90,7 @@ subscribeRouter.post('/subscribe', async (req, res) => {
         await mailer.sendMail({
           from: smtpUser,
           to:   adminEmail,
-          subject: `🚀 New subscriber: ${email}`,
+          subject: `New subscriber: ${email}`,
           text: `Name: ${name ?? '-'}\nEmail: ${email}\nIP: ${ip}\nDate: ${subscriber.createdAt}`,
         })
       } catch (emailErr) {
@@ -99,7 +99,7 @@ subscribeRouter.post('/subscribe', async (req, res) => {
     }
 
     const successMessage = isMongoConnected 
-      ? `You're on the list! See you soon, ${name ?? 'friend'}! 🎉`
+      ? `You're on the list! See you soon, ${name ?? 'friend'}!`
       : `[Offline Preview] Registered ${email} successfully! (No MongoDB connection)`
 
     return res.status(201).json({ message: successMessage })

@@ -1,62 +1,96 @@
 import { useState, useEffect, useRef } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
 import {
   LeftOutlined,
   RightOutlined,
   MenuOutlined,
   LockOutlined,
+  BookOutlined,
   StarOutlined,
   StarFilled,
   ArrowLeftOutlined,
   FilePdfOutlined,
   LoadingOutlined,
+  DownloadOutlined,
+  ThunderboltOutlined,
+  CheckCircleOutlined,
+  SafetyCertificateOutlined,
+  ZoomInOutlined,
+  ZoomOutOutlined,
 } from '@ant-design/icons'
-import { Button, Drawer, Tooltip, notification, Spin, Tag } from 'antd'
+import { Button, Drawer, Tooltip, notification, Spin, Tag, Modal, Input } from 'antd'
 import * as pdfjsLib from 'pdfjs-dist'
 import { SeoHead } from '../../shared/components/site/SeoHead'
 import { isBookOwned, syncUserPurchasesFromBackend } from '../../shared/lib/userPurchases'
+import { RazorpayCheckout } from '../../shared/components/payment/RazorpayCheckout'
 
 // Set worker source for pdfjs-dist from jsdelivr CDN safely
 if (typeof window !== 'undefined') {
   pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version || '3.11.174'}/build/pdf.worker.min.js`
 }
 
-type ReaderTheme = 'parchment' | 'dark' | 'sepia'
+type ReaderTheme = 'parchment' | 'dark' | 'sepia' | 'light'
 
-const PDF_FILES: Record<string, { title: string; path: string }> = {
+const PREVIEW_LIMIT = 15
+
+const PDF_FILES: Record<
+  string,
+  {
+    id: string
+    title: string
+    subtitle: string
+    price: number
+    totalPages: number
+    path: string
+    coverImage: string
+    description: string
+  }
+> = {
   'jivan-jitvu-che': {
+    id: 'jivan-jitvu-che',
     title: 'જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો',
+    subtitle: 'Jivan Jitvu Che To Parivar Thi Sharu Karo',
+    price: 199,
+    totalPages: 276,
     path: '/books/pdf/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati_Master.pdf',
+    coverImage: '/books/images/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati.png',
+    description: 'વિદ્યાર્થી, માતા-પિતા અને દરેક પરિવાર માટે જીવન બદલતા ૧૨ પાઠ. A 276-page master handbook.',
   },
   'man-haryu-to-badhu-haryu': {
+    id: 'man-haryu-to-badhu-haryu',
     title: 'મન હાર્યું તો બધું હાર્યું',
+    subtitle: 'Man Haryu To Badhu Haryu',
+    price: 199,
+    totalPages: 250,
     path: '/books/pdf/Man-Haryu-To-Badhu-Haryu_Gujarati_Master.pdf',
+    coverImage: '/books/images/Man-Haryu-To-Badhu-Haryu_Gujarati_Master.png',
+    description: 'માનસિક મજબૂતી, આત્મવિશ્વાસ અને પડકારો સામે હિંમત રાખવાનું માસ્ટર ગાઇડ.',
   },
   'combo-bundle': {
+    id: 'combo-bundle',
     title: 'જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો',
+    subtitle: 'Master Gujarati E-Book Edition',
+    price: 349,
+    totalPages: 276,
     path: '/books/pdf/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati_Master.pdf',
+    coverImage: '/books/images/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati.png',
+    description: 'Complete family and mindset master e-book collection by Manish Vaghasiya.',
   },
 }
 
 export function EbookReaderPage() {
   const { bookId } = useParams<{ bookId: string }>()
   const navigate = useNavigate()
-  const { user, isSignedIn, isLoaded } = useUser()
+  const { user, isSignedIn } = useUser()
 
   const [purchaseSynced, setPurchaseSynced] = useState(false)
+  const [paywallModalOpen, setPaywallModalOpen] = useState(false)
+  const [buyerName, setBuyerName] = useState('')
+  const [buyerEmail, setBuyerEmail] = useState('')
 
-  useEffect(() => {
-    if (user?.id && user?.primaryEmailAddress?.emailAddress) {
-      syncUserPurchasesFromBackend(user.id, user.primaryEmailAddress.emailAddress).then(() => {
-        setPurchaseSynced(true)
-      })
-    } else {
-      setPurchaseSynced(true)
-    }
-  }, [user?.id, user?.primaryEmailAddress?.emailAddress])
-
-  const bookInfo = PDF_FILES[bookId || 'jivan-jitvu-che'] || PDF_FILES['jivan-jitvu-che']
+  const activeBookId = bookId || 'jivan-jitvu-che'
+  const bookInfo = PDF_FILES[activeBookId] || PDF_FILES['jivan-jitvu-che']
 
   // PDF render state
   const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null)
@@ -76,17 +110,33 @@ export function EbookReaderPage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const renderTaskRef = useRef<any>(null)
 
-  // Identification watermark details
-  const userIdentifier =
-    user?.primaryEmailAddress?.emailAddress || user?.fullName || 'Authorized Reader'
-  const watermarkText = `LICENSED TO: ${userIdentifier} • DRM PROTECTED • DO NOT DISTRIBUTE`
-
-  const hasAccess = isBookOwned(user?.id, bookId || 'jivan-jitvu-che')
-
-  // 1. Load Original PDF Document (Only load when signed in and access granted)
+  // Sync purchases from backend if signed in
   useEffect(() => {
-    if (!isLoaded || !purchaseSynced || !isSignedIn || !hasAccess) return
+    if (user?.id && user?.primaryEmailAddress?.emailAddress) {
+      setBuyerName(user.fullName || user.firstName || '')
+      setBuyerEmail(user.primaryEmailAddress.emailAddress)
+      syncUserPurchasesFromBackend(user.id, user.primaryEmailAddress.emailAddress).then(() => {
+        setPurchaseSynced(true)
+      })
+    } else {
+      setPurchaseSynced(true)
+    }
+  }, [user?.id, user?.primaryEmailAddress?.emailAddress])
 
+  // Access status (re-evaluates when user or purchaseSynced changes)
+  const hasAccess = purchaseSynced ? isBookOwned(user?.id, activeBookId) : false
+  const maxAccessiblePage = hasAccess ? numPages : Math.min(numPages || PREVIEW_LIMIT, PREVIEW_LIMIT)
+
+  // Identification watermark
+  const userIdentifier =
+    user?.primaryEmailAddress?.emailAddress || user?.fullName || 'Free Preview Reader'
+  const watermarkText = hasAccess
+    ? `LICENSED TO: ${userIdentifier} • DRM PROTECTED`
+    : `FREE SAMPLE PREVIEW • MANISH VAGHASIYA OFFICIAL`
+
+  // 1. Load PDF Document (Always load so sample preview works for all visitors!)
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     let isMounted = true
     setLoading(true)
     setPdfError(null)
@@ -118,12 +168,11 @@ export function EbookReaderPage() {
     return () => {
       isMounted = false
     }
-  }, [bookInfo.path, isLoaded, purchaseSynced, isSignedIn, hasAccess])
+  }, [bookInfo.path])
 
-
-  // 2. Render Current PDF Page onto Protected HTML5 Canvas
+  // 2. Render Current PDF Page onto HTML5 Canvas
   useEffect(() => {
-    if (!pdfDoc || !canvasRef.current || !hasAccess) return
+    if (!pdfDoc || !canvasRef.current) return
 
     let cancelled = false
 
@@ -139,7 +188,6 @@ export function EbookReaderPage() {
       canvas.height = viewport.height
       canvas.width = viewport.width
 
-      // Cancel previous page rendering task if ongoing
       if (renderTaskRef.current) {
         renderTaskRef.current.cancel()
       }
@@ -165,36 +213,30 @@ export function EbookReaderPage() {
         renderTaskRef.current.cancel()
       }
     }
-  }, [pdfDoc, pageNum, scale, hasAccess])
+  }, [pdfDoc, pageNum, scale])
 
-  // 3. Anti-Screenshot, Anti-Print & Window Focus Protection Listeners
+  // 3. Screen focus protection listeners
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'PrintScreen') {
         e.preventDefault()
         setIsScreenBlurred(true)
-        setSecurityNotice('Screenshots are disabled to prevent DRM copyright piracy.')
+        setSecurityNotice('Screenshots are disabled to prevent copyright piracy.')
         return false
       }
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
         e.preventDefault()
         setIsScreenBlurred(true)
-        setSecurityNotice('Printing is disabled for this protected e-book.')
-        return false
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
-        e.preventDefault()
-        setSecurityNotice('Downloading raw PDF files is disabled.')
+        setSecurityNotice('Printing is restricted in this interactive viewer.')
         return false
       }
       if (
         e.key === 'F12' ||
-        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'i') ||
-        ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u')
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'i')
       ) {
         e.preventDefault()
         setIsScreenBlurred(true)
-        setSecurityNotice('Developer tools are restricted on DRM protected content.')
+        setSecurityNotice('Developer inspection is restricted.')
         return false
       }
     }
@@ -223,7 +265,7 @@ export function EbookReaderPage() {
   // Restore bookmark status
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(`mv_pdf_bookmark_${bookId}`)
+      const saved = localStorage.getItem(`mv_pdf_bookmark_${activeBookId}`)
       if (saved) {
         const parsed = JSON.parse(saved)
         if (parsed.pageNum === pageNum) {
@@ -235,120 +277,58 @@ export function EbookReaderPage() {
     } catch (e) {
       console.error(e)
     }
-  }, [pageNum, bookId])
+  }, [pageNum, activeBookId])
 
-  // ==================== CONDITIONAL RENDER GUARDS (ALL HOOKS CALLED ABOVE) ====================
-
-  // 0. Access Guard Checks
-  if (pdfError) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
-        <div className="w-full max-w-md rounded-3xl border border-red-200 bg-white p-8 shadow-xl">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-100 text-red-700">
-            <FilePdfOutlined className="text-2xl" />
-          </div>
-          <h2 className="font-playfair text-xl font-bold text-slate-900 mb-2">E-Book Loading Error</h2>
-          <p className="text-xs text-slate-600 mb-6">{pdfError}</p>
-          <Button type="primary" onClick={() => window.location.reload()} className="!rounded-xl !bg-[#D4A017] !font-bold">
-            Refresh Page
-          </Button>
-        </div>
-      </div>
-    )
+  const handleNextPage = () => {
+    if (hasAccess) {
+      if (pageNum < numPages) setPageNum(pageNum + 1)
+    } else {
+      if (pageNum < PREVIEW_LIMIT) {
+        setPageNum(pageNum + 1)
+      } else {
+        setPaywallModalOpen(true)
+      }
+    }
   }
 
-  if (!isLoaded || !purchaseSynced) {
-
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 40, color: '#D4A017' }} spin />} />
-        <p className="mt-4 text-xs font-bold text-slate-700">Verifying account access & e-book license...</p>
-      </div>
-    )
+  const handlePrevPage = () => {
+    if (pageNum > 1) {
+      setPageNum(pageNum - 1)
+    }
   }
-
-  if (!isSignedIn) {
-    return (
-      <>
-        <SeoHead title="Sign In Required | Manish Vaghasiya DRM Reader" description="Account authentication required" />
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
-          <div className="w-full max-w-md rounded-3xl border border-amber-200 bg-white p-8 shadow-xl">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-800">
-              <LockOutlined className="text-2xl" />
-            </div>
-            <Tag color="volcano" className="!mb-3 !rounded-full !px-3 !py-0.5 !text-xs !font-bold">
-              🔒 AUTHENTICATION REQUIRED
-            </Tag>
-            <h2 className="font-playfair text-2xl font-bold text-slate-900 mb-2">Sign In to Read E-Book</h2>
-            <p className="text-xs text-slate-600 mb-6">
-              You must be logged into your account to read your purchased e-books.
-            </p>
-            <Button
-              type="primary"
-              size="large"
-              block
-              onClick={() => navigate('/sign-in')}
-              className="!h-12 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
-            >
-              Sign In to Your Account
-            </Button>
-          </div>
-        </div>
-      </>
-    )
-  }
-
-  if (!hasAccess) {
-    return (
-      <>
-        <SeoHead title="E-Book Access Locked | Manish Vaghasiya DRM Reader" description="E-book purchase required" />
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
-          <div className="w-full max-w-md rounded-3xl border border-amber-200 bg-white p-8 shadow-xl">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-800">
-              <LockOutlined className="text-2xl" />
-            </div>
-            <Tag color="gold" className="!mb-3 !rounded-full !px-3 !py-0.5 !text-xs !font-bold">
-              🔒 PURCHASE REQUIRED
-            </Tag>
-            <h2 className="font-playfair text-2xl font-bold text-slate-900 mb-2">E-Book Not Unlocked</h2>
-            <p className="text-xs text-slate-600 mb-6">
-              You have not unlocked this master e-book on your account yet. Visit our store to unlock instant access.
-            </p>
-            <div className="flex flex-col gap-3">
-              <Button
-                type="primary"
-                size="large"
-                block
-                onClick={() => navigate('/resources')}
-                className="!h-12 !rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
-              >
-                Buy & Unlock E-Book (₹199)
-              </Button>
-              <Button size="large" block onClick={() => navigate('/dashboard')} className="!rounded-xl !font-bold">
-                Go to My Dashboard
-              </Button>
-            </div>
-          </div>
-        </div>
-      </>
-    )
-  }
-
 
   const toggleBookmark = () => {
-
     if (isBookmarked) {
-      localStorage.removeItem(`mv_pdf_bookmark_${bookId}`)
+      localStorage.removeItem(`mv_pdf_bookmark_${activeBookId}`)
       setIsBookmarked(false)
-      notification.info({ message: 'Bookmark Removed', description: `Page ${pageNum} bookmark removed.` })
+      notification.info({
+        message: 'Bookmark Removed',
+        description: `Page ${pageNum} bookmark removed.`,
+      })
     } else {
       localStorage.setItem(
-        `mv_pdf_bookmark_${bookId}`,
-        JSON.stringify({ bookId, pageNum, timestamp: new Date().toISOString() })
+        `mv_pdf_bookmark_${activeBookId}`,
+        JSON.stringify({ bookId: activeBookId, pageNum, timestamp: new Date().toISOString() })
       )
       setIsBookmarked(true)
-      notification.success({ message: 'Page Bookmarked!', description: `Page ${pageNum} saved.` })
+      notification.success({
+        message: 'Page Bookmarked!',
+        description: `Page ${pageNum} saved.`,
+      })
     }
+  }
+
+  const handleDownloadMasterPdf = () => {
+    const link = document.createElement('a')
+    link.href = bookInfo.path
+    link.download = `${bookInfo.id}-Manish-Vaghasiya-Master-Edition.pdf`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    notification.success({
+      message: 'Master PDF Download Started',
+      description: 'Your complete high-resolution PDF e-book is saving to your device for offline reading.',
+    })
   }
 
   const themeStyles = {
@@ -373,14 +353,42 @@ export function EbookReaderPage() {
       cardBg: 'bg-[#FAF6EA]',
       borderColor: 'border-[#DACBA0]',
     },
+    light: {
+      bg: 'bg-[#FFFFFF]',
+      text: 'text-[#1F2937]',
+      headerBg: 'bg-[#F9FAFB]',
+      cardBg: 'bg-[#FFFFFF]',
+      borderColor: 'border-[#E5E7EB]',
+    },
   }[theme]
+
+  if (pdfError) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF5ED] p-6 text-center">
+        <div className="w-full max-w-md rounded-3xl border border-red-200 bg-white p-8 shadow-xl">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-100 text-red-700">
+            <FilePdfOutlined className="text-2xl" />
+          </div>
+          <h2 className="font-playfair text-xl font-bold text-slate-900 mb-2">E-Book Loading Error</h2>
+          <p className="text-xs text-slate-600 mb-6">{pdfError}</p>
+          <Button
+            type="primary"
+            onClick={() => window.location.reload()}
+            className="!rounded-xl !bg-[#D4A017] !font-bold"
+          >
+            Refresh Page
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
       <SeoHead
-        title={`Original Reader: ${bookInfo.title} | Manish Vaghasiya DRM PDF Reader`}
-        description={`Secure online PDF reader for ${bookInfo.title} by Manish Vaghasiya.`}
-        canonicalUrl={`https://www.manishvaghasiya.com/reader/${bookId}`}
+        title={`${bookInfo.title} | Official E-Book Reader & Preview`}
+        description={`Read official Gujarati master e-book '${bookInfo.title}' by Manish Vaghasiya in our high-performance interactive reader.`}
+        canonicalUrl={`https://www.manishvaghasiya.com/reader/${activeBookId}`}
       />
 
       <style>{`
@@ -405,9 +413,12 @@ export function EbookReaderPage() {
         onDragStart={(e) => e.preventDefault()}
       >
         {/* Dynamic Watermark Overlay */}
-        <div className="pointer-events-none absolute inset-0 z-10 flex flex-wrap items-center justify-around opacity-[0.06] select-none overflow-hidden p-6">
+        <div className="pointer-events-none absolute inset-0 z-10 flex flex-wrap items-center justify-around opacity-[0.05] select-none overflow-hidden p-6">
           {Array.from({ length: 16 }).map((_, idx) => (
-            <div key={idx} className="rotate-[-25deg] text-xs font-mono font-bold tracking-widest text-current whitespace-nowrap m-12">
+            <div
+              key={idx}
+              className="rotate-[-25deg] text-xs font-mono font-bold tracking-widest text-current whitespace-nowrap m-12"
+            >
               {watermarkText}
             </div>
           ))}
@@ -420,59 +431,123 @@ export function EbookReaderPage() {
               <LockOutlined className="text-3xl" />
             </div>
             <h2 className="font-playfair text-2xl font-bold text-white mb-2">
-              🔒 Protected DRM E-Book Reader
+              Protected E-Book Reader
             </h2>
             <p className="max-w-md text-sm text-gray-300 mb-6">
-              {securityNotice || 'Screen focus lost. Original book content is hidden to prevent unauthorized screen capture.'}
+              {securityNotice ||
+                'Screen focus lost. Content is hidden to protect author copyright.'}
             </p>
             <Button
               type="primary"
               onClick={() => setIsScreenBlurred(false)}
               className="!h-11 !rounded-xl !bg-[#D4A017] !font-bold"
             >
-              Resume Reading Original Book
+              Resume Reading
             </Button>
           </div>
         )}
 
-        {/* Reader Top Bar */}
-        <header className={`sticky top-0 z-20 border-b ${themeStyles.borderColor} ${themeStyles.headerBg} px-4 py-3 shadow-sm`}>
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
-            <div className="flex items-center gap-3 min-w-0">
+        {/* Free Sample Notice Banner (Visible for Guests / Unlocked previewers) */}
+        {!hasAccess && (
+          <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 text-xs font-medium flex flex-wrap items-center justify-between gap-2 shadow-sm z-30">
+            <div className="flex items-center gap-2">
+              <span className="flex items-center gap-1 rounded bg-white/20 px-2 py-0.5 font-bold uppercase tracking-wider text-[10px]">
+                <BookOutlined />
+                <span>FREE PREVIEW</span>
+              </span>
+              <span>
+                You are previewing pages 1–{PREVIEW_LIMIT} of <strong>{bookInfo.title}</strong> (Total {bookInfo.totalPages} Pages).
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
               <button
-                onClick={() => navigate('/dashboard')}
-                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold hover:bg-black/5"
+                onClick={() => setPaywallModalOpen(true)}
+                className="flex items-center gap-1 rounded-lg bg-white px-3 py-1 text-xs font-bold text-amber-900 shadow hover:bg-amber-50"
+              >
+                <ThunderboltOutlined />
+                <span>Unlock Full Book (₹{bookInfo.price})</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Reader Top Bar */}
+        <header
+          className={`sticky top-0 z-20 border-b ${themeStyles.borderColor} ${themeStyles.headerBg} px-3 sm:px-6 py-2.5 shadow-sm`}
+        >
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-2">
+            {/* Left: Back & Title */}
+            <div className="flex items-center gap-2.5 min-w-0">
+              <button
+                onClick={() => navigate('/resources')}
+                className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold hover:bg-black/5"
+                title="Back to E-Book Store"
               >
                 <ArrowLeftOutlined />
-                <span className="hidden sm:inline">Dashboard</span>
+                <span className="hidden sm:inline">Bookstore</span>
               </button>
               <div className="h-4 w-[1px] bg-current opacity-20 hidden sm:block" />
               <div className="min-w-0">
-                <h1 className="font-playfair text-sm font-bold truncate leading-tight flex items-center gap-2">
+                <h1 className="font-playfair text-xs sm:text-sm font-bold truncate leading-tight flex items-center gap-2">
                   <FilePdfOutlined className="text-red-500" />
-                  <span>{bookInfo.title}</span>
+                  <span className="truncate">{bookInfo.title}</span>
                 </h1>
-                <p className="text-[11px] opacity-70 truncate">
-                  Original Published Edition • Page {pageNum} of {numPages || '...'}
+                <p className="text-[10px] sm:text-[11px] opacity-70 truncate">
+                  {hasAccess ? (
+                    <span className="flex items-center gap-1 text-green-700 font-semibold">
+                      <CheckCircleOutlined />
+                      <span>Full Master Edition Unlocked • Page {pageNum} of {numPages}</span>
+                    </span>
+                  ) : (
+                    <span>Sample Preview • Page {pageNum} of {PREVIEW_LIMIT}</span>
+                  )}
                 </p>
               </div>
             </div>
 
-            {/* Controls */}
-            <div className="flex items-center gap-2 shrink-0">
-              <Tooltip title="Page Index">
+            {/* Right: Controls & Download / Buy Buttons */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* If Owned: Direct Master PDF Download Button */}
+              {hasAccess ? (
+                <Tooltip title="Download original high-res PDF to read offline in your favorite app">
+                  <Button
+                    type="primary"
+                    size="small"
+                    icon={<DownloadOutlined />}
+                    onClick={handleDownloadMasterPdf}
+                    className="!bg-emerald-600 !font-bold !border-none hover:!bg-emerald-700 !rounded-lg text-xs"
+                  >
+                    <span className="hidden md:inline">Download PDF</span>
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Button
+                  type="primary"
+                  size="small"
+                  icon={<ThunderboltOutlined />}
+                  onClick={() => setPaywallModalOpen(true)}
+                  className="!bg-[#D4A017] !font-bold !border-none hover:!bg-[#b88910] !rounded-lg text-xs"
+                >
+                  <span className="hidden md:inline">Buy Full E-Book (₹{bookInfo.price})</span>
+                  <span className="md:hidden">Buy ₹{bookInfo.price}</span>
+                </Button>
+              )}
+
+              {/* Table of Contents */}
+              <Tooltip title="Table of Pages">
                 <button
                   onClick={() => setTocOpen(true)}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-current/10 hover:bg-black/5"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-current/10 hover:bg-black/5 text-xs"
                 >
                   <MenuOutlined />
                 </button>
               </Tooltip>
 
+              {/* Bookmark */}
               <Tooltip title={isBookmarked ? 'Remove Bookmark' : 'Bookmark Page'}>
                 <button
                   onClick={toggleBookmark}
-                  className={`flex h-9 w-9 items-center justify-center rounded-xl border border-current/10 ${
+                  className={`flex h-8 w-8 items-center justify-center rounded-lg border border-current/10 text-xs ${
                     isBookmarked ? 'text-amber-500 bg-amber-500/10' : 'hover:bg-black/5'
                   }`}
                 >
@@ -480,105 +555,114 @@ export function EbookReaderPage() {
                 </button>
               </Tooltip>
 
-              {/* Theme Switcher */}
-              <div className="hidden md:flex items-center rounded-xl border border-current/10 p-0.5">
-                <button
-                  onClick={() => setTheme('parchment')}
-                  className={`px-2 py-1 text-xs font-semibold rounded-lg ${theme === 'parchment' ? 'bg-[#FAF5ED] text-[#2D241D] shadow-sm' : 'opacity-60'}`}
-                >
-                  Light
-                </button>
-                <button
-                  onClick={() => setTheme('sepia')}
-                  className={`px-2 py-1 text-xs font-semibold rounded-lg ${theme === 'sepia' ? 'bg-[#E9DFB8] text-[#432C1C] shadow-sm' : 'opacity-60'}`}
-                >
-                  Sepia
-                </button>
-                <button
-                  onClick={() => setTheme('dark')}
-                  className={`px-2 py-1 text-xs font-semibold rounded-lg ${theme === 'dark' ? 'bg-[#1E2229] text-white shadow-sm' : 'opacity-60'}`}
-                >
-                  Dark
-                </button>
+              {/* Theme Selector */}
+              <div className="hidden lg:flex items-center rounded-lg border border-current/10 p-0.5 text-xs">
+                {(['parchment', 'light', 'sepia', 'dark'] as ReaderTheme[]).map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setTheme(t)}
+                    className={`px-2 py-0.5 rounded font-medium capitalize ${
+                      theme === t ? 'bg-[#D4A017] text-white shadow-sm font-bold' : 'opacity-60'
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
               </div>
 
-              {/* Scale Zoom Adjuster */}
-              <div className="flex items-center gap-1 border-l border-current/10 pl-2">
-
+              {/* Zoom Controls */}
+              <div className="hidden sm:flex items-center gap-1 border-l border-current/10 pl-2">
                 <button
                   onClick={() => setScale((prev) => Math.max(0.8, prev - 0.15))}
-                  className="px-2 py-1 text-xs font-bold rounded hover:bg-black/5"
+                  className="p-1 text-xs rounded hover:bg-black/5"
                   title="Zoom Out"
                 >
-                  -
+                  <ZoomOutOutlined />
                 </button>
-                <span className="text-[10px] opacity-60 font-mono">{Math.round(scale * 100)}%</span>
+                <span className="text-[10px] opacity-60 font-mono">
+                  {Math.round(scale * 100)}%
+                </span>
                 <button
-                  onClick={() => setScale((prev) => Math.min(2.0, prev + 0.15))}
-                  className="px-2 py-1 text-xs font-bold rounded hover:bg-black/5"
+                  onClick={() => setScale((prev) => Math.min(2.2, prev + 0.15))}
+                  className="p-1 text-xs rounded hover:bg-black/5"
                   title="Zoom In"
                 >
-                  +
+                  <ZoomInOutlined />
                 </button>
               </div>
             </div>
           </div>
         </header>
 
-        {/* Canvas Display View */}
-        <main className="flex-1 flex justify-center items-center p-4 sm:p-8 overflow-auto">
+        {/* Main Canvas Document Viewer */}
+        <main className="flex-1 flex flex-col justify-center items-center p-3 sm:p-6 overflow-auto">
           {loading ? (
-            <div className="py-20 text-center">
+            <div className="py-24 text-center">
               <Spin indicator={<LoadingOutlined style={{ fontSize: 36, color: '#D4A017' }} spin />} />
               <p className="mt-4 text-xs font-semibold opacity-70">
-                Loading Original Master PDF Pages...
+                Loading Original Master Pages...
               </p>
             </div>
           ) : (
-            <div className={`relative shadow-2xl rounded-xl border ${themeStyles.borderColor} overflow-hidden bg-white p-2 my-auto`}>
+            <div
+              className={`relative shadow-2xl rounded-xl border ${themeStyles.borderColor} overflow-hidden bg-white p-2 my-auto transition-all`}
+            >
               <canvas ref={canvasRef} className="mx-auto block h-auto max-w-full rounded shadow-sm" />
             </div>
           )}
         </main>
 
-        {/* Footer Navigation */}
-        <footer className={`sticky bottom-0 z-20 border-t ${themeStyles.borderColor} ${themeStyles.headerBg} px-4 py-3`}>
-          <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
+        {/* Bottom Pagination & Navigation Controls */}
+        <footer
+          className={`sticky bottom-0 z-20 border-t ${themeStyles.borderColor} ${themeStyles.headerBg} px-3 sm:px-6 py-2.5 shadow-md`}
+        >
+          <div className="mx-auto flex max-w-4xl items-center justify-between gap-3">
             <Button
               type="default"
-              onClick={() => setPageNum((prev) => Math.max(1, prev - 1))}
+              onClick={handlePrevPage}
               disabled={pageNum <= 1}
               icon={<LeftOutlined />}
-              className="!rounded-xl !font-bold"
+              className="!rounded-xl !font-bold text-xs"
             >
-              Previous Page
+              <span className="hidden sm:inline">Previous Page</span>
             </Button>
 
-            <div className="text-center font-mono text-xs font-bold opacity-80">
-              Page {pageNum} of {numPages}
+            <div className="text-center font-mono text-xs font-bold opacity-90 flex items-center gap-2">
+              <span>
+                Page {pageNum} of {hasAccess ? numPages : `${PREVIEW_LIMIT} (Preview)`}
+              </span>
+              {!hasAccess && pageNum === PREVIEW_LIMIT && (
+                <Tag color="orange" className="!text-[10px] !font-bold !rounded-md">
+                  Preview End
+                </Tag>
+              )}
             </div>
 
             <Button
               type="primary"
-              onClick={() => setPageNum((prev) => Math.min(numPages, prev + 1))}
-              disabled={pageNum >= numPages}
-              className="!rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910]"
+              onClick={handleNextPage}
+              className="!rounded-xl !bg-[#D4A017] !font-bold hover:!bg-[#b88910] text-xs"
             >
-              <span>Next Page</span>
+              <span>{pageNum >= PREVIEW_LIMIT && !hasAccess ? 'Unlock Full Book' : 'Next Page'}</span>
               <RightOutlined />
             </Button>
           </div>
         </footer>
 
-        {/* Page Index Drawer */}
+        {/* Page Index Navigation Drawer */}
         <Drawer
-          title="Page Navigation (પૃષ્ઠ અનુક્રમણિકા)"
+          title="Jump to Page (પૃષ્ઠ પસંદગી)"
           placement="right"
           onClose={() => setTocOpen(false)}
           open={tocOpen}
         >
-          <div className="grid grid-cols-4 gap-2">
-            {Array.from({ length: numPages }).map((_, idx) => {
+          <div className="mb-4 text-xs text-slate-500">
+            {hasAccess
+              ? `All ${numPages} master pages available.`
+              : `Sample preview includes pages 1 to ${PREVIEW_LIMIT}. Unlock to access all ${numPages} pages.`}
+          </div>
+          <div className="grid grid-cols-4 gap-2 max-h-[70vh] overflow-y-auto">
+            {Array.from({ length: maxAccessiblePage }).map((_, idx) => {
               const p = idx + 1
               return (
                 <button
@@ -598,7 +682,151 @@ export function EbookReaderPage() {
               )
             })}
           </div>
+
+          {!hasAccess && (
+            <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-center">
+              <p className="text-xs font-semibold text-amber-900 mb-2">
+                Want to read all {bookInfo.totalPages} pages?
+              </p>
+              <Button
+                type="primary"
+                block
+                onClick={() => {
+                  setTocOpen(false)
+                  setPaywallModalOpen(true)
+                }}
+                className="!bg-[#D4A017] !font-bold !rounded-xl"
+              >
+                Unlock Entire Book (₹{bookInfo.price})
+              </Button>
+            </div>
+          )}
         </Drawer>
+
+        {/* Paywall Modal (When preview limit is reached or user clicks Unlock) */}
+        <Modal
+          open={paywallModalOpen}
+          onCancel={() => setPaywallModalOpen(false)}
+          footer={null}
+          centered
+          width={480}
+        >
+          <div className="text-center p-2">
+            <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-700">
+              <ThunderboltOutlined className="text-2xl" />
+            </div>
+
+            <Tag color="gold" className="!mb-2 !rounded-full !px-3 !py-0.5 !text-xs !font-bold">
+              UNLOCK COMPLETE MASTER EDITION
+            </Tag>
+
+            <h3 className="font-playfair text-2xl font-bold text-slate-900 mb-1">
+              {bookInfo.title}
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Complete {bookInfo.totalPages}-page digital master edition by Manish Vaghasiya.
+            </p>
+
+            <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/70 to-orange-50/50 p-4 mb-5 text-left text-xs space-y-2">
+              <div className="flex items-center gap-2 font-semibold text-slate-800">
+                <CheckCircleOutlined className="text-emerald-600" />
+                <span>Instant download link to complete high-resolution Master PDF</span>
+              </div>
+              <div className="flex items-center gap-2 font-semibold text-slate-800">
+                <CheckCircleOutlined className="text-emerald-600" />
+                <span>Lifetime access in Web Reader across phone, tablet & laptop</span>
+              </div>
+              <div className="flex items-center gap-2 font-semibold text-slate-800">
+                <CheckCircleOutlined className="text-emerald-600" />
+                <span>Includes 21-Day Family & Mindset Transformation Exercises</span>
+              </div>
+              <div className="flex items-center gap-2 font-semibold text-slate-800">
+                <SafetyCertificateOutlined className="text-blue-600" />
+                <span>100% Secure Razorpay Payment (UPI, GPay, PhonePe, Cards)</span>
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <div className="flex items-baseline justify-center gap-2 mb-3">
+                <span className="text-3xl font-extrabold text-[#D4A017]">₹{bookInfo.price}</span>
+                <span className="text-sm text-gray-400 line-through">₹499</span>
+                <span className="rounded bg-green-100 px-2 py-0.5 text-xs font-bold text-green-700">
+                  60% OFF
+                </span>
+              </div>
+
+              {/* Guest / User Info Fields */}
+              <div className="space-y-2 mb-4 text-left">
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    Your Name
+                  </label>
+                  <Input
+                    placeholder="Enter your name"
+                    value={buyerName}
+                    onChange={(e) => setBuyerName(e.target.value)}
+                    className="!rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    Your Email (For PDF download & receipt)
+                  </label>
+                  <Input
+                    type="email"
+                    placeholder="name@example.com"
+                    value={buyerEmail}
+                    onChange={(e) => setBuyerEmail(e.target.value)}
+                    className="!rounded-xl"
+                  />
+                </div>
+              </div>
+
+              <RazorpayCheckout
+                amountInRupees={bookInfo.price}
+                itemName={bookInfo.title}
+                bookId={bookInfo.id}
+                customerName={buyerName || 'Valued Reader'}
+                customerEmail={buyerEmail || 'reader@example.com'}
+                buttonText={`Pay ₹${bookInfo.price} & Unlock Full Book`}
+                onSuccess={(data) => {
+                  try {
+                    localStorage.setItem(
+                      'mv_ebook_purchased',
+                      JSON.stringify({
+                        bookId: bookInfo.id,
+                        orderId: data.orderId,
+                        paymentId: data.paymentId,
+                        email: buyerEmail,
+                        name: buyerName,
+                      })
+                    )
+                  } catch (e) {
+                    console.error(e)
+                  }
+                  setPaywallModalOpen(false)
+                  notification.success({
+                    message: 'E-Book Unlocked',
+                    description:
+                      'Your purchase was successful! You now have full access and can download the master PDF.',
+                  })
+                  window.location.reload()
+                }}
+              />
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-100">
+              <Link to="/resources" className="text-amber-700 font-semibold hover:underline">
+                View Combo Bundle (Save 65%)
+              </Link>
+              {!isSignedIn && (
+                <Link to="/sign-in" className="text-slate-600 hover:underline">
+                  Already bought? Sign In
+                </Link>
+              )}
+            </div>
+          </div>
+        </Modal>
       </div>
     </>
   )

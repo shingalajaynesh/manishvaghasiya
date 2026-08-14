@@ -120,12 +120,15 @@ export const siteDictionary = {
     freePdfs: { en: 'Free PDFs', hi: 'मुफ्त PDF', gu: 'મફત PDF' },
     testimonials: { en: 'Testimonials', hi: 'प्रशंसापत्र', gu: 'પ્રશંસાપત્રો' },
     privacy: { en: 'Privacy Policy', hi: 'गोपनीयता नीति', gu: 'ગોપનીયતા નીતિ' },
-    terms: { en: 'Terms', hi: 'नियम', gu: 'શરતો' },
+    terms: { en: 'Terms & Conditions', hi: 'नियम और शर्तें', gu: 'નિયમો અને શરતો' },
+    refund: { en: 'Refund Policy', hi: 'रिफंड नीति', gu: 'રીફંડ નીતિ' },
+    cookies: { en: 'Cookie Policy', hi: 'कुकी नीति', gu: 'કૂકી નીતિ' },
     editorial: { en: 'Editorial Policy', hi: 'संपादकीय नीति', gu: 'સંપાદકીય નીતિ' },
     corrections: { en: 'Corrections', hi: 'सुधार नीति', gu: 'સુધારા નીતિ' },
     adDisclosure: { en: 'Ad Disclosure', hi: 'विज्ञापन प्रकटीकरण', gu: 'જાહેરાત ખુલાસો' },
     affiliateDisclosure: { en: 'Affiliate Disclosure', hi: 'एफिलिएट प्रकटीकरण', gu: 'એફિલિએટ ખુલાસો' },
   },
+
   home: {
     heroEyebrow: {
       en: 'Gujarati-first life guidance platform',

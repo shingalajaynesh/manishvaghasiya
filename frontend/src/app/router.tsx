@@ -55,13 +55,12 @@ export const router = createBrowserRouter([
       { path: 'admin-portal-v1908', element: <AdminPortalPage /> },
       { path: 'admin-1908', element: <AdminPortalPage /> },
 
-      { path: routePaths.studentGuide.slice(1), element: <ResourceLandingPage /> },
-      { path: routePaths.studentGuideThanks.slice(1), element: <ResourceThankYouPage /> },
+      { path: 'ebooks', element: <Navigate to={routePaths.resources} replace /> },
       { path: 'programs', element: <Navigate to={routePaths.resources} replace /> },
       { path: 'book-manish', element: <Navigate to={routePaths.contact} replace /> },
       { path: routePaths.contact.slice(1), element: <ContactPage /> },
-      { path: '*', element: <NotFoundPage /> },
-
+      { path: routePaths.studentGuide.slice(1), element: <ResourceLandingPage /> },
+      { path: routePaths.studentGuideThanks.slice(1), element: <ResourceThankYouPage /> },
 
       {
         path: routePaths.privacy.slice(1),
@@ -82,6 +81,28 @@ export const router = createBrowserRouter([
             title="Terms of use governing our website content and educational services."
             description="These terms outline the rules, intellectual property rights, and user responsibilities when accessing manishvaghasiya.com."
             sections={legalDrafts.terms}
+          />
+        ),
+      },
+      {
+        path: routePaths.refund.slice(1),
+        element: (
+          <LegalPage
+            eyebrow="Refund & Cancellation Policy"
+            title="Our digital e-book fulfillment and satisfaction policy."
+            description="Details on our instant digital PDF delivery, customer satisfaction guarantee, and billing support resolution."
+            sections={legalDrafts.refund}
+          />
+        ),
+      },
+      {
+        path: routePaths.cookies.slice(1),
+        element: (
+          <LegalPage
+            eyebrow="Cookie Policy"
+            title="How we use cookies and manage your consent preferences."
+            description="Information about essential cookies, Google Consent Mode v2, and third-party advertising cookies."
+            sections={legalDrafts.cookies}
           />
         ),
       },
@@ -129,6 +150,8 @@ export const router = createBrowserRouter([
           />
         ),
       },
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
 ])
+
