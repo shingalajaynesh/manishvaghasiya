@@ -1,11 +1,8 @@
 import {
   BookOutlined,
-  CheckCircleOutlined,
-  CustomerServiceOutlined,
   SafetyCertificateOutlined,
   TeamOutlined,
   TrophyOutlined,
-  YoutubeOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Row, Space, Tag, Typography } from 'antd'
 import { useNavigate, Link } from 'react-router-dom'
