@@ -176,6 +176,10 @@ export function ArticlePage() {
                     src={speakerMedia.heroStage}
                     alt="Manish Vaghasiya"
                     className="h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    width={80}
+                    height={80}
                   />
                 </div>
                 <div>

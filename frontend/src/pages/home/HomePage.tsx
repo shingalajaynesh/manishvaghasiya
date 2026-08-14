@@ -91,7 +91,16 @@ export function HomePage() {
             <Col xs={24} lg={11}>
               <MotionSection delay={0.15}>
                 <div className="hero-stage-frame">
-                  <img src={speakerMedia.heroStage} alt="Manish Vaghasiya speaking on stage" className="h-full w-full object-cover" />
+                  <img
+                    src={speakerMedia.heroStage}
+                    alt="Manish Vaghasiya speaking on stage"
+                    className="h-full w-full object-cover"
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
+                    width={600}
+                    height={750}
+                  />
                 </div>
               </MotionSection>
             </Col>
@@ -118,7 +127,15 @@ export function HomePage() {
               </div>
 
               <div className="hero-support-image">
-                <img src={speakerMedia.heroSupport} alt="Audience attending a Manish Vaghasiya seminar" className="h-full w-full object-cover" />
+                <img
+                  src={speakerMedia.heroSupport}
+                  alt="Audience attending a Manish Vaghasiya seminar"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  width={600}
+                  height={400}
+                />
               </div>
             </div>
           </MotionSection>
@@ -163,9 +180,6 @@ export function HomePage() {
         </Row>
       </PageSection>
 
-
-
-
       <PageSection title="Official Master Gujarati E-Books" description="Get instant access to Manish Vaghasiya's official life-changing Gujarati master handbooks. Read online or download PDF." tone="forest">
         <Row gutter={[24, 24]}>
           {/* Book 1 Card */}
@@ -178,9 +192,13 @@ export function HomePage() {
                 <div className="flex gap-4">
                   <div className="shrink-0 overflow-hidden rounded-xl shadow-md transition-transform duration-300 hover:scale-105" style={{ width: '110px' }}>
                     <img
-                      src="/books/images/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati.png"
+                      src="/books/images/opt/jivan-jitvu-che-cover.webp"
                       alt="જીવન જીતવું છે તો પરિવારથી શરૂઆત કરો Book Cover"
                       className="h-auto w-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      width={110}
+                      height={160}
                     />
                   </div>
                   <div>
@@ -232,9 +250,13 @@ export function HomePage() {
                 <div className="flex gap-4">
                   <div className="shrink-0 overflow-hidden rounded-xl shadow-md transition-transform duration-300 hover:scale-105" style={{ width: '110px' }}>
                     <img
-                      src="/books/images/Man-Haryu-To-Badhu-Haryu_Gujarati_Master.png"
+                      src="/books/images/opt/man-haryu-to-badhu-haryu-cover.webp"
                       alt="મન હાર્યું તો બધું હાર્યું Book Cover"
                       className="h-auto w-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      width={110}
+                      height={160}
                     />
                   </div>
                   <div>

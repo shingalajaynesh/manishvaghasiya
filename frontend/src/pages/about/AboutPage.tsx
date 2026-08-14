@@ -65,6 +65,10 @@ export function AboutPage() {
               src={speakerMedia.aboutPortrait}
               alt="Manish Vaghasiya delivering a live keynote seminar in Gujarat"
               className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+              loading="lazy"
+              decoding="async"
+              width={600}
+              height={700}
             />
           </div>
           <div className="speaker-about-summary flex flex-col justify-center">
@@ -132,9 +136,13 @@ export function AboutPage() {
             <Col xs={24} md={12}>
               <div className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 flex gap-4 items-center">
                 <img
-                  src="/books/images/Jivan-Jitvu-Che-To-Parivar-Thi-Sharu-Karo_Gujarati.png"
+                  src="/books/images/opt/jivan-jitvu-che-cover.webp"
                   alt="Jivan Jitvu Che Book Cover"
                   className="h-28 rounded-lg object-cover shadow"
+                  loading="lazy"
+                  decoding="async"
+                  width={80}
+                  height={112}
                 />
                 <div>
                   <h4 className="font-playfair font-bold text-base text-[var(--text-strong)]">
@@ -154,9 +162,13 @@ export function AboutPage() {
             <Col xs={24} md={12}>
               <div className="rounded-2xl border border-blue-200 bg-blue-50/40 p-5 flex gap-4 items-center">
                 <img
-                  src="/books/images/Man-Haryu-To-Badhu-Haryu_Gujarati_Master.png"
+                  src="/books/images/opt/man-haryu-to-badhu-haryu-cover.webp"
                   alt="Man Haryu To Badhu Haryu Book Cover"
                   className="h-28 rounded-lg object-cover shadow"
+                  loading="lazy"
+                  decoding="async"
+                  width={80}
+                  height={112}
                 />
                 <div>
                   <h4 className="font-playfair font-bold text-base text-[var(--text-strong)]">

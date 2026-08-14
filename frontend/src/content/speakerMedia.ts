@@ -1,37 +1,36 @@
-const publicImage = (folder: string, file: string) => encodeURI(`/manish/${folder}/${file}`)
+const optImage = (file: string) => `/manish/opt/${file}`
 
 const mainPortraits = [
-  publicImage('MAIN photo', '1I2A3537.jpg'),
-  publicImage('MAIN photo', '1I2A3642.jpg'),
-  publicImage('MAIN photo', '1I2A3677.jpg'),
-  publicImage('MAIN photo', '1I2A3897.jpg'),
-  publicImage('MAIN photo', '1Q2A4315.JPG'),
-  publicImage('MAIN photo', '1Q2A4319.JPG'),
-  publicImage('MAIN photo', '1Q2A4325.JPG'),
-  publicImage('MAIN photo', '1Q2A4355.JPG'),
-  publicImage('MAIN photo', 'KPCL5172.JPG'),
+  optImage('main-1.webp'),
+  optImage('main-2.webp'),
+  optImage('main-3.webp'),
+  optImage('about-portrait.webp'),
+  optImage('main-4.webp'),
+  optImage('main-5.webp'),
+  optImage('main-6.webp'),
+  optImage('hero-stage.webp'),
 ]
 
 const crowdPhotos = [
-  publicImage('Crowd PHOTO', '1I2A3376.jpg'),
-  publicImage('Crowd PHOTO', '1I2A3456.jpg'),
-  publicImage('Crowd PHOTO', '1I2A3593.jpg'),
-  publicImage('Crowd PHOTO', '1I2A3594.jpg'),
-  publicImage('Crowd PHOTO', '1I2A3724.jpg'),
-  publicImage('Crowd PHOTO', '1I2A3805.jpg'),
-  publicImage('Crowd PHOTO', 'A21I9976.JPG'),
-  publicImage('Crowd PHOTO', 'A21I9980.JPG'),
+  optImage('crowd-1.webp'),
+  optImage('crowd-2.webp'),
+  optImage('crowd-3.webp'),
+  optImage('crowd-4.webp'),
+  optImage('hero-support.webp'),
+  optImage('crowd-5.webp'),
+  optImage('crowd-6.webp'),
+  optImage('crowd-7.webp'),
 ]
 
 const momentsPhotos = [
-  publicImage('MOMENTS PHOTO', '1I2A3781.jpg'),
-  publicImage('MOMENTS PHOTO', '1I2A3785.jpg'),
-  publicImage('MOMENTS PHOTO', '1I2A3828.jpg'),
-  publicImage('MOMENTS PHOTO', '1I2A3837.jpg'),
-  publicImage('MOMENTS PHOTO', '1I2A3840.jpg'),
-  publicImage('MOMENTS PHOTO', '1I2A3875.jpg'),
-  publicImage('MOMENTS PHOTO', '1I2A3882.jpg'),
-  publicImage('MOMENTS PHOTO', '1I2A3885.jpg'),
+  optImage('moments-1.webp'),
+  optImage('moments-2.webp'),
+  optImage('moments-3.webp'),
+  optImage('moments-4.webp'),
+  optImage('moments-5.webp'),
+  optImage('moments-6.webp'),
+  optImage('moments-7.webp'),
+  optImage('moments-8.webp'),
 ]
 
 export interface FeaturedVideo {
@@ -83,13 +82,12 @@ export const featuredVideos: FeaturedVideo[] = [
   },
 ]
 
-
 export const speakerMedia = {
-  heroStage: mainPortraits[8],
-  heroSupport: crowdPhotos[4],
-  aboutPortrait: mainPortraits[3],
-  footerPortrait: mainPortraits[5],
-  homePreview: [mainPortraits[1], crowdPhotos[2], crowdPhotos[5], momentsPhotos[1]],
+  heroStage: optImage('hero-stage.webp'),
+  heroSupport: optImage('hero-support.webp'),
+  aboutPortrait: optImage('about-portrait.webp'),
+  footerPortrait: optImage('footer-portrait.webp'),
+  homePreview: [optImage('main-2.webp'), optImage('crowd-3.webp'), optImage('crowd-6.webp'), optImage('moments-2.webp')],
   mainPortraits,
   crowdPhotos,
   momentsPhotos,
