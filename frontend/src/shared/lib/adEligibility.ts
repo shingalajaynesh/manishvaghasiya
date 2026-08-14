@@ -33,10 +33,17 @@ export const ADS_FORBIDDEN_ROUTES: string[] = [
   routePaths.studentGuideThanks,
   routePaths.privacy,
   routePaths.terms,
+  routePaths.refund,
+  routePaths.cookies,
   routePaths.editorial,
   routePaths.corrections,
   routePaths.adDisclosure,
   routePaths.affiliateDisclosure,
+  routePaths.dashboard,
+  '/1908/admin',
+  '/admin-portal-v1908',
+  '/sign-in',
+  '/sign-up',
 ]
 
 export function isAdEligibleRoute(pathname: string): boolean {
